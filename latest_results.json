@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-04-27T13:17:13",
-  "runtime_seconds": 262.3,
+  "last_checked": "2026-04-27T14:25:15",
+  "runtime_seconds": 184.3,
   "results": [
     {
       "provider": "SIXT",
@@ -49,41 +49,41 @@
       "provider": "Budget",
       "car_class": "Full Size SUV",
       "model": "GMC Yukon",
-      "price": 615.0,
-      "saving": 21.73,
+      "price": 571.0,
+      "saving": 65.73,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;caragency=budget;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel;caragency=budget"
     },
     {
       "provider": "National",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 1323.11,
+      "saving": -686.38,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.enterprise.com/en/home.html"
     },
     {
       "provider": "Enterprise",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 1323.11,
+      "saving": -686.38,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.enterprise.com/en/home.html"
     },
     {
       "provider": "Alamo",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 1323.11,
+      "saving": -686.38,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.enterprise.com/en/home.html"
     },
     {
       "provider": "Dollar",
@@ -108,12 +108,12 @@
     {
       "provider": "Kayak",
       "car_class": "Full Size SUV",
-      "model": "Dodge Durango",
-      "price": 423.0,
-      "saving": 213.73,
+      "model": "Chevrolet Suburban",
+      "price": 544.0,
+      "saving": 92.73,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
     }
   ],
   "nearby": [
@@ -134,17 +134,6 @@
       "location_key": "BRANCH:46582",
       "distance_miles": 4.1,
       "cab_fare": 22.34,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York - East 76th Street",
-      "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -283,6 +272,17 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - East 76th Street",
+      "airport_code": null,
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
+      "best_price": 1354.98,
+      "best_provider": "Hertz",
+      "net_saving": -741.15,
+      "is_deal": false
+    },
+    {
       "location_name": "New York - East 48th Street",
       "airport_code": null,
       "location_key": "NYCC10",
@@ -310,7 +310,7 @@
     "best_direct_price": 448.77,
     "best_direct_saving": 187.96,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 423.0,
-    "best_ota_saving": 213.73
+    "best_ota_price": 544.0,
+    "best_ota_saving": 92.73
   }
 }
