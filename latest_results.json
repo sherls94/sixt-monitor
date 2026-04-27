@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-04-27T15:45:10",
-  "runtime_seconds": 129.8,
+  "last_checked": "2026-04-27T15:55:35",
+  "runtime_seconds": 146.8,
   "results": [
     {
       "provider": "SIXT",
@@ -27,13 +27,13 @@
     },
     {
       "provider": "Hertz",
-      "car_class": "Full Size SUV",
-      "model": "Medium 7 Passenger SUV",
-      "price": 871.24,
-      "saving": -234.51,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-05-02T12:00:00&did=LGAT01&ddate=2026-05-06T12:00:00&pCountryCode=US&age=31"
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "Avis",
@@ -53,7 +53,7 @@
       "saving": -11.27,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV;caragency=budget"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel;caragency=budget"
     },
     {
       "provider": "National",
@@ -92,7 +92,7 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "error",
+      "status": "na",
       "booking_url": null
     },
     {
@@ -108,12 +108,12 @@
     {
       "provider": "Kayak",
       "car_class": "Full Size SUV",
-      "model": "Chevrolet Suburban",
-      "price": 544.0,
-      "saving": 92.73,
+      "model": "Jeep Grand Cherokee L",
+      "price": 497.0,
+      "saving": 139.73,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
     }
   ],
   "nearby": [
@@ -140,6 +140,17 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - East 76th Street",
+      "airport_code": null,
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "Middle Village - Metropolitan Avenue",
       "airport_code": null,
       "location_key": "NYCE24",
@@ -156,6 +167,17 @@
       "location_key": "NYCW25",
       "distance_miles": 5.3,
       "cab_fare": 26.0,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York - West 55th Street",
+      "airport_code": null,
+      "location_key": "NYCC14",
+      "distance_miles": 5.6,
+      "cab_fare": 26.8,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -272,17 +294,6 @@
       "is_deal": false
     },
     {
-      "location_name": "New York - East 76th Street",
-      "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
-      "best_price": 1354.98,
-      "best_provider": "Hertz",
-      "net_saving": -741.15,
-      "is_deal": false
-    },
-    {
       "location_name": "New York - East 48th Street",
       "airport_code": null,
       "location_key": "NYCC10",
@@ -292,17 +303,6 @@
       "best_provider": "Hertz",
       "net_saving": -743.94,
       "is_deal": false
-    },
-    {
-      "location_name": "New York - West 55th Street",
-      "airport_code": null,
-      "location_key": "NYCC14",
-      "distance_miles": 5.6,
-      "cab_fare": 26.8,
-      "best_price": 1354.98,
-      "best_provider": "Hertz",
-      "net_saving": -745.05,
-      "is_deal": false
     }
   ],
   "summary": {
@@ -310,7 +310,7 @@
     "best_direct_price": 640.65,
     "best_direct_saving": -3.92,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 544.0,
-    "best_ota_saving": 92.73
+    "best_ota_price": 497.0,
+    "best_ota_saving": 139.73
   }
 }
