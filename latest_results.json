@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-04-27T14:29:08",
-  "runtime_seconds": 202.4,
+  "last_checked": "2026-04-27T15:45:10",
+  "runtime_seconds": 129.8,
   "results": [
     {
       "provider": "SIXT",
@@ -37,23 +37,23 @@
     },
     {
       "provider": "Avis",
-      "car_class": "Full-Size SUV",
-      "model": "GMC YUKON DENALI OR SIMILAR",
-      "price": 448.77,
-      "saving": 187.96,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.avis.com/en/reservation/vehicle-availability?dropoff_suggestion_type_code=AIRPORT&pickup_hour=12&pickup_location_region=NAM&pickup_minute=00&pickup_am_pm=PM&pickup_day=02&pickup_month=05&pickup_suggestion_type_code=AIRPORT&pickup_year=2026&residency_value=US&return_hour=12&return_minute=00&return_am_pm=PM&return_day=06&return_month=05&return_year=2026&pickup_location_code=LGA&return_location_code=LGA&age=31&country=us&locale=en-US&brand=avis"
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "Budget",
       "car_class": "Full Size SUV",
       "model": "GMC Yukon",
-      "price": 571.0,
-      "saving": 65.73,
+      "price": 648.0,
+      "saving": -11.27,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel;caragency=budget"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV;caragency=budget"
     },
     {
       "provider": "National",
@@ -92,7 +92,7 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null
     },
     {
@@ -108,12 +108,12 @@
     {
       "provider": "Kayak",
       "car_class": "Full Size SUV",
-      "model": "Jeep Grand Cherokee L",
-      "price": 497.0,
-      "saving": 139.73,
+      "model": "Chevrolet Suburban",
+      "price": 544.0,
+      "saving": 92.73,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
     }
   ],
   "nearby": [
@@ -134,17 +134,6 @@
       "location_key": "BRANCH:46582",
       "distance_miles": 4.1,
       "cab_fare": 22.34,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York - East 76th Street",
-      "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -200,9 +189,9 @@
       "location_key": "JFK",
       "distance_miles": 10.6,
       "cab_fare": 30.0,
-      "best_price": 415.0,
+      "best_price": 488.0,
       "best_provider": "Kayak",
-      "net_saving": 191.73,
+      "net_saving": 118.73,
       "is_deal": true
     },
     {
@@ -283,6 +272,17 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - East 76th Street",
+      "airport_code": null,
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
+      "best_price": 1354.98,
+      "best_provider": "Hertz",
+      "net_saving": -741.15,
+      "is_deal": false
+    },
+    {
       "location_name": "New York - East 48th Street",
       "airport_code": null,
       "location_key": "NYCC10",
@@ -306,11 +306,11 @@
     }
   ],
   "summary": {
-    "best_direct_provider": "Avis",
-    "best_direct_price": 448.77,
-    "best_direct_saving": 187.96,
+    "best_direct_provider": "SIXT",
+    "best_direct_price": 640.65,
+    "best_direct_saving": -3.92,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 497.0,
-    "best_ota_saving": 139.73
+    "best_ota_price": 544.0,
+    "best_ota_saving": 92.73
   }
 }
