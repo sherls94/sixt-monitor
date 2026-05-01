@@ -12,28 +12,28 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-04-27T16:03:40",
-  "runtime_seconds": 145.1,
+  "last_checked": "2026-05-01T08:38:23",
+  "runtime_seconds": 299.1,
   "results": [
     {
       "provider": "SIXT",
       "car_class": "Full Size SUV",
-      "model": "Fullsize (CHEVROLET TAHOE)",
-      "price": 640.65,
-      "saving": -3.92,
+      "model": "Fullsize Elite (BMW X5)",
+      "price": 596.28,
+      "saving": 40.45,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.sixt.com/car-rental/usa/"
     },
     {
       "provider": "Hertz",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Medium 7 Passenger SUV",
+      "price": 1024.91,
+      "saving": -388.18,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-05-02T12:00:00&did=LGAT01&ddate=2026-05-06T12:00:00&pCountryCode=US&age=31"
     },
     {
       "provider": "Avis",
@@ -47,43 +47,43 @@
     },
     {
       "provider": "Budget",
-      "car_class": "Full Size SUV",
-      "model": "GMC Yukon",
-      "price": 648.0,
-      "saving": -11.27,
-      "source": "Kayak",
-      "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;caragency=budget;carpolicies=cancel"
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
+      "source": "direct",
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "National",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV",
-      "price": 711.45,
-      "saving": -74.72,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/home.html"
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "Enterprise",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 711.45,
-      "saving": -74.72,
+      "price": 614.75,
+      "saving": 21.98,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.enterprise.com/en/home.html"
     },
     {
       "provider": "Alamo",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV",
-      "price": 711.45,
-      "saving": -74.72,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/home.html"
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "Dollar",
@@ -108,12 +108,12 @@
     {
       "provider": "Kayak",
       "car_class": "Full Size SUV",
-      "model": "Chevrolet Suburban",
-      "price": 544.0,
-      "saving": 92.73,
+      "model": "Full-size SUV",
+      "price": 597.0,
+      "saving": 39.73,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
     }
   ],
   "nearby": [
@@ -195,26 +195,26 @@
       "is_deal": false
     },
     {
-      "location_name": "Newark Liberty International Airport",
-      "airport_code": "EWR",
-      "location_key": "EWR",
-      "distance_miles": 16.5,
-      "cab_fare": 55.0,
-      "best_price": 300.0,
-      "best_provider": "Kayak",
-      "net_saving": 281.73,
-      "is_deal": true
-    },
-    {
       "location_name": "New York City Williamsburg",
       "airport_code": null,
       "location_key": "BRANCH:47571",
       "distance_miles": 6.2,
       "cab_fare": 28.6,
-      "best_price": 374.65,
-      "best_provider": "SIXT",
-      "net_saving": 233.48,
-      "is_deal": true
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Newark Liberty International Airport",
+      "airport_code": "EWR",
+      "location_key": "EWR",
+      "distance_miles": 16.5,
+      "cab_fare": 55.0,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
     },
     {
       "location_name": "John F Kennedy Intl, New York, United States (JFK)",
@@ -222,10 +222,21 @@
       "location_key": "JFK",
       "distance_miles": 10.6,
       "cab_fare": 30.0,
-      "best_price": 488.0,
+      "best_price": 423.0,
       "best_provider": "Kayak",
-      "net_saving": 118.73,
+      "net_saving": 183.73,
       "is_deal": true
+    },
+    {
+      "location_name": "New York City Upper East Side",
+      "airport_code": null,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": 649.64,
+      "best_provider": "SIXT",
+      "net_saving": -34.91,
+      "is_deal": false
     },
     {
       "location_name": "East Elmhurst",
@@ -272,17 +283,6 @@
       "is_deal": false
     },
     {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
-      "best_price": 752.01,
-      "best_provider": "SIXT",
-      "net_saving": -137.28,
-      "is_deal": false
-    },
-    {
       "location_name": "Astoria",
       "airport_code": null,
       "location_key": "2490",
@@ -307,10 +307,10 @@
   ],
   "summary": {
     "best_direct_provider": "SIXT",
-    "best_direct_price": 640.65,
-    "best_direct_saving": -3.92,
+    "best_direct_price": 596.28,
+    "best_direct_saving": 40.45,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 544.0,
-    "best_ota_saving": 92.73
+    "best_ota_price": 597.0,
+    "best_ota_saving": 39.73
   }
 }
