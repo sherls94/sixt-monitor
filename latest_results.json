@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-01T14:45:18",
-  "runtime_seconds": 246.9,
+  "last_checked": "2026-05-01T14:50:05",
+  "runtime_seconds": 386.4,
   "results": [
     {
       "provider": "SIXT",
@@ -57,23 +57,23 @@
     },
     {
       "provider": "National",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 709.68,
+      "saving": -72.95,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.nationalcar.com/en/car-rental.html"
     },
     {
       "provider": "Enterprise",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 675.97,
+      "saving": -39.24,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.enterprise.com/en/home.html"
     },
     {
       "provider": "Alamo",
@@ -92,7 +92,7 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null
     },
     {
@@ -113,7 +113,7 @@
       "saving": -19.27,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
     }
   ],
   "nearby": [
@@ -123,6 +123,28 @@
       "location_key": "BRANCH:46773",
       "distance_miles": 0.9,
       "cab_fare": 12.6,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "East Elmhurst",
+      "airport_code": null,
+      "location_key": "2485",
+      "distance_miles": 1.3,
+      "cab_fare": 13.91,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Woodside",
+      "airport_code": null,
+      "location_key": "2481",
+      "distance_miles": 2.1,
+      "cab_fare": 16.18,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -239,17 +261,6 @@
       "is_deal": false
     },
     {
-      "location_name": "East Elmhurst",
-      "airport_code": null,
-      "location_key": "2485",
-      "distance_miles": 1.3,
-      "cab_fare": 13.91,
-      "best_price": 676.86,
-      "best_provider": "EHI",
-      "net_saving": -54.04,
-      "is_deal": false
-    },
-    {
       "location_name": "Forest Hills",
       "airport_code": null,
       "location_key": "2489",
@@ -269,17 +280,6 @@
       "best_price": 701.03,
       "best_provider": "EHI",
       "net_saving": -90.82,
-      "is_deal": false
-    },
-    {
-      "location_name": "Woodside",
-      "airport_code": null,
-      "location_key": "2481",
-      "distance_miles": 2.1,
-      "cab_fare": 16.18,
-      "best_price": 725.21,
-      "best_provider": "EHI",
-      "net_saving": -104.66,
       "is_deal": false
     },
     {
@@ -306,9 +306,9 @@
     }
   ],
   "summary": {
-    "best_direct_provider": "SIXT",
-    "best_direct_price": 741.4,
-    "best_direct_saving": -104.67,
+    "best_direct_provider": "Enterprise",
+    "best_direct_price": 675.97,
+    "best_direct_saving": -39.24,
     "best_ota_provider": "Kayak",
     "best_ota_price": 656.0,
     "best_ota_saving": -19.27
