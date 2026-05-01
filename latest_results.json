@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-01T14:35:18",
-  "runtime_seconds": 344.7,
+  "last_checked": "2026-05-01T14:37:04",
+  "runtime_seconds": 306.6,
   "results": [
     {
       "provider": "SIXT",
@@ -288,10 +288,10 @@
       "location_key": "EWR",
       "distance_miles": 16.5,
       "cab_fare": 55.0,
-      "best_price": 520.0,
-      "best_provider": "Kayak",
-      "net_saving": 61.73,
-      "is_deal": true
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
     },
     {
       "location_name": "New York City Times Square",
