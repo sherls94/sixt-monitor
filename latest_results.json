@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-01T15:14:28",
-  "runtime_seconds": 196.6,
+  "last_checked": "2026-05-01T15:21:48",
+  "runtime_seconds": 176.9,
   "results": [
     {
       "provider": "SIXT",
@@ -77,13 +77,13 @@
     },
     {
       "provider": "Alamo",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 585.35,
+      "saving": 51.38,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.alamo.com/en/reserve.html#/start"
     },
     {
       "provider": "Dollar",
@@ -306,9 +306,9 @@
     }
   ],
   "summary": {
-    "best_direct_provider": "Enterprise",
-    "best_direct_price": 675.97,
-    "best_direct_saving": -39.24,
+    "best_direct_provider": "Alamo",
+    "best_direct_price": 585.35,
+    "best_direct_saving": 51.38,
     "best_ota_provider": "Kayak",
     "best_ota_price": 656.0,
     "best_ota_saving": -19.27
