@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-01T08:53:26",
-  "runtime_seconds": 340.5,
+  "last_checked": "2026-05-01T09:22:14",
+  "runtime_seconds": 315.0,
   "results": [
     {
       "provider": "SIXT",
@@ -67,13 +67,13 @@
     },
     {
       "provider": "Enterprise",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV",
-      "price": 614.75,
-      "saving": 21.98,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/home.html"
+      "status": "error",
+      "booking_url": null
     },
     {
       "provider": "Alamo",
@@ -92,7 +92,7 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null
     },
     {
@@ -108,12 +108,12 @@
     {
       "provider": "Kayak",
       "car_class": "Full Size SUV",
-      "model": "Ford Expedition",
-      "price": 562.0,
-      "saving": 74.73,
+      "model": "Chevrolet Suburban",
+      "price": 754.0,
+      "saving": -117.27,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-05-02/2026-05-06?sort=rank_a&fs=carclass=SUV;carpolicies=cancel"
     }
   ],
   "nearby": [
@@ -310,7 +310,7 @@
     "best_direct_price": 596.28,
     "best_direct_saving": 40.45,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 562.0,
-    "best_ota_saving": 74.73
+    "best_ota_price": 754.0,
+    "best_ota_saving": -117.27
   }
 }
