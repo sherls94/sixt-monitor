@@ -2,25 +2,25 @@
   "booking": {
     "provider": "SIXT",
     "car_class": "Full Size SUV",
-    "location": "LaGuardia Airport, New York",
+    "location": "LGA Airport",
     "airport_code": "LGA",
     "pickup_date": "2026-06-02",
     "pickup_time": "12:00",
-    "return_date": "2026-06-06",
+    "return_date": "2026-06-05",
     "return_time": "12:00",
-    "booked_price": 636.73,
+    "booked_price": 600.0,
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-02T17:30:00",
-  "runtime_seconds": 124.5,
+  "last_checked": "2026-05-03T16:13:51",
+  "runtime_seconds": 220.9,
   "results": [
     {
       "provider": "SIXT",
       "car_class": "Full Size SUV",
       "model": "Fullsize Elite (BMW X5)",
-      "price": 1032.82,
-      "saving": -396.09,
+      "price": 757.25,
+      "saving": -157.25,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.sixt.com/car-rental/usa/"
@@ -29,11 +29,11 @@
       "provider": "Hertz",
       "car_class": "Full Size SUV",
       "model": "Medium 7 Passenger SUV",
-      "price": 770.61,
-      "saving": -133.88,
+      "price": 606.55,
+      "saving": -6.55,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-06-02T12:00:00&did=LGAT01&ddate=2026-06-06T12:00:00&pCountryCode=US&age=31"
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-06-02T12:00:00&did=LGAT01&ddate=2026-06-05T12:00:00&pCountryCode=US&age=31"
     },
     {
       "provider": "Avis",
@@ -49,18 +49,18 @@
       "provider": "Budget",
       "car_class": "Full Size SUV",
       "model": "GMC Yukon",
-      "price": 918.0,
-      "saving": -281.27,
+      "price": 689.0,
+      "saving": -89.0,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-06?sort=rank_a&fs=carpolicies=cancel;caragency=budget;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=caragency=budget;carpolicies=cancel;carclass=SUV"
     },
     {
       "provider": "National",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 1415.18,
-      "saving": -778.45,
+      "price": 1041.77,
+      "saving": -441.77,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.nationalcar.com/en/car-rental.html"
@@ -69,8 +69,8 @@
       "provider": "Enterprise",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 1323.11,
-      "saving": -686.38,
+      "price": 992.34,
+      "saving": -392.34,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.enterprise.com/en/home.html"
@@ -79,8 +79,8 @@
       "provider": "Alamo",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 1212.59,
-      "saving": -575.86,
+      "price": 909.45,
+      "saving": -309.45,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.alamo.com/en/reserve.html#/start"
@@ -109,11 +109,11 @@
       "provider": "Kayak",
       "car_class": "Full Size SUV",
       "model": "Dodge Durango",
-      "price": 451.0,
-      "saving": 185.73,
+      "price": 410.0,
+      "saving": 190.0,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-06?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
     }
   ],
   "nearby": [
@@ -145,9 +145,9 @@
       "location_key": "JFK",
       "distance_miles": 10.6,
       "cab_fare": 30.0,
-      "best_price": 322.0,
+      "best_price": 226.0,
       "best_provider": "Kayak",
-      "net_saving": 284.73,
+      "net_saving": 344.0,
       "is_deal": true
     },
     {
@@ -156,9 +156,9 @@
       "location_key": "EWR",
       "distance_miles": 16.5,
       "cab_fare": 55.0,
-      "best_price": 340.0,
+      "best_price": 237.0,
       "best_provider": "Kayak",
-      "net_saving": 241.73,
+      "net_saving": 308.0,
       "is_deal": true
     },
     {
@@ -167,42 +167,9 @@
       "location_key": "24C6",
       "distance_miles": 5.5,
       "cab_fare": 26.52,
-      "best_price": 435.11,
+      "best_price": 326.33,
       "best_provider": "EHI",
-      "net_saving": 175.1,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York City Long Island City",
-      "airport_code": null,
-      "location_key": "BRANCH:46582",
-      "distance_miles": 4.1,
-      "cab_fare": 22.34,
-      "best_price": 553.5,
-      "best_provider": "SIXT",
-      "net_saving": 60.89,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York City Williamsburg",
-      "airport_code": null,
-      "location_key": "BRANCH:47571",
-      "distance_miles": 6.2,
-      "cab_fare": 28.6,
-      "best_price": 585.91,
-      "best_provider": "SIXT",
-      "net_saving": 22.22,
-      "is_deal": true
-    },
-    {
-      "location_name": "Middle Village - Metropolitan Avenue",
-      "airport_code": null,
-      "location_key": "NYCE24",
-      "distance_miles": 4.9,
-      "cab_fare": 24.78,
-      "best_price": 590.35,
-      "best_provider": "Hertz",
-      "net_saving": 21.6,
+      "net_saving": 247.15,
       "is_deal": true
     },
     {
@@ -211,10 +178,10 @@
       "location_key": "2481",
       "distance_miles": 2.1,
       "cab_fare": 16.18,
-      "best_price": 628.41,
+      "best_price": 398.82,
       "best_provider": "EHI",
-      "net_saving": -7.86,
-      "is_deal": false
+      "net_saving": 185.0,
+      "is_deal": true
     },
     {
       "location_name": "Astoria",
@@ -222,10 +189,21 @@
       "location_key": "2490",
       "distance_miles": 3.5,
       "cab_fare": 20.63,
-      "best_price": 628.41,
+      "best_price": 398.82,
       "best_provider": "EHI",
-      "net_saving": -12.31,
-      "is_deal": false
+      "net_saving": 180.55,
+      "is_deal": true
+    },
+    {
+      "location_name": "New York City Long Island City",
+      "airport_code": null,
+      "location_key": "BRANCH:46582",
+      "distance_miles": 4.1,
+      "cab_fare": 22.34,
+      "best_price": 414.66,
+      "best_provider": "SIXT",
+      "net_saving": 163.0,
+      "is_deal": true
     },
     {
       "location_name": "New York City Upper East Side",
@@ -233,21 +211,32 @@
       "location_key": "BRANCH:45899",
       "distance_miles": 4.0,
       "cab_fare": 22.0,
-      "best_price": 672.71,
+      "best_price": 435.36,
       "best_provider": "SIXT",
-      "net_saving": -57.98,
-      "is_deal": false
+      "net_saving": 142.64,
+      "is_deal": true
     },
     {
-      "location_name": "East Elmhurst",
+      "location_name": "Middle Village - Metropolitan Avenue",
       "airport_code": null,
-      "location_key": "2485",
-      "distance_miles": 1.3,
-      "cab_fare": 13.91,
-      "best_price": 725.11,
-      "best_provider": "EHI",
-      "net_saving": -102.29,
-      "is_deal": false
+      "location_key": "NYCE24",
+      "distance_miles": 4.9,
+      "cab_fare": 24.78,
+      "best_price": 442.77,
+      "best_provider": "Hertz",
+      "net_saving": 132.45,
+      "is_deal": true
+    },
+    {
+      "location_name": "New York City Williamsburg",
+      "airport_code": null,
+      "location_key": "BRANCH:47571",
+      "distance_miles": 6.2,
+      "cab_fare": 28.6,
+      "best_price": 438.98,
+      "best_provider": "SIXT",
+      "net_saving": 132.42,
+      "is_deal": true
     },
     {
       "location_name": "New York City Times Square",
@@ -255,10 +244,21 @@
       "location_key": "BRANCH:45915",
       "distance_miles": 5.7,
       "cab_fare": 27.07,
-      "best_price": 712.16,
+      "best_price": 483.98,
       "best_provider": "SIXT",
-      "net_saving": -102.5,
-      "is_deal": false
+      "net_saving": 88.95,
+      "is_deal": true
+    },
+    {
+      "location_name": "East Elmhurst",
+      "airport_code": null,
+      "location_key": "2485",
+      "distance_miles": 1.3,
+      "cab_fare": 13.91,
+      "best_price": 543.84,
+      "best_provider": "EHI",
+      "net_saving": 42.25,
+      "is_deal": true
     },
     {
       "location_name": "Forest Hills",
@@ -266,10 +266,10 @@
       "location_key": "2489",
       "distance_miles": 4.5,
       "cab_fare": 23.42,
-      "best_price": 725.11,
+      "best_price": 543.84,
       "best_provider": "EHI",
-      "net_saving": -111.8,
-      "is_deal": false
+      "net_saving": 32.74,
+      "is_deal": true
     },
     {
       "location_name": "New York - East 76th Street",
@@ -277,9 +277,9 @@
       "location_key": "NYCC13",
       "distance_miles": 4.3,
       "cab_fare": 22.9,
-      "best_price": 1929.17,
+      "best_price": 1446.87,
       "best_provider": "Hertz",
-      "net_saving": -1315.34,
+      "net_saving": -869.77,
       "is_deal": false
     },
     {
@@ -288,9 +288,9 @@
       "location_key": "NYCC10",
       "distance_miles": 5.2,
       "cab_fare": 25.69,
-      "best_price": 1929.17,
+      "best_price": 1446.87,
       "best_provider": "Hertz",
-      "net_saving": -1318.13,
+      "net_saving": -872.56,
       "is_deal": false
     },
     {
@@ -299,18 +299,18 @@
       "location_key": "NYCC14",
       "distance_miles": 5.6,
       "cab_fare": 26.8,
-      "best_price": 1929.17,
+      "best_price": 1446.87,
       "best_provider": "Hertz",
-      "net_saving": -1319.24,
+      "net_saving": -873.67,
       "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 770.61,
-    "best_direct_saving": -133.88,
+    "best_direct_price": 606.55,
+    "best_direct_saving": -6.55,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 451.0,
-    "best_ota_saving": 185.73
+    "best_ota_price": 410.0,
+    "best_ota_saving": 190.0
   }
 }
