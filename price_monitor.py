@@ -3203,7 +3203,10 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
     KAYAK_TAB_STAGGER_S = 2.0   # seconds between opening each parallel tab
 
     browser = await get_browser(playwright)   # routes through Bright Data CDP on server
-    ctx     = await _new_context(browser)
+    # Bright Data CDP: must reuse existing context — creating a new one
+    # with custom headers raises "forbidden" errors. Local: create a stealth ctx.
+    ctx = browser.contexts[0] if (BRIGHT_DATA_CDP_URL and browser.contexts) else await _new_context(browser)
+    _ctx_owned = not (BRIGHT_DATA_CDP_URL and browser.contexts)
     results: Dict[str, Dict] = {}
 
     async def _fetch_one(
@@ -3363,7 +3366,10 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
         _kayak_cache = {}
     finally:
         try:
-            await ctx.close()
+            if not _ctx_owned:  # don't close the CDP default context we don't own
+                pass
+            else:
+                await ctx.close()
         except Exception:
             pass
         await browser.close()
@@ -3451,7 +3457,10 @@ async def fetch_nearby_kayak_prices(
     fs = _build_kayak_fs_param(with_free_cancel=False)
 
     browser = await get_browser(playwright)   # routes through Bright Data CDP on server
-    ctx     = await _new_context(browser)
+    # Bright Data CDP: must reuse existing context — creating a new one
+    # with custom headers raises "forbidden" errors. Local: create a stealth ctx.
+    _cdp_mode = bool(BRIGHT_DATA_CDP_URL and browser.contexts)
+    ctx = browser.contexts[0] if _cdp_mode else await _new_context(browser)
     prices: Dict[str, float] = {}
 
     async def _fetch_airport(loc: Dict, delay_s: float) -> None:
@@ -3504,7 +3513,8 @@ async def fetch_nearby_kayak_prices(
     await asyncio.gather(*tasks, return_exceptions=True)
 
     try:
-        await ctx.close()
+        if not _cdp_mode:   # don't close the CDP default context we don't own
+            await ctx.close()
     except Exception:
         pass
     await browser.close()
