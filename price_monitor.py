@@ -3202,7 +3202,7 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
 
     KAYAK_TAB_STAGGER_S = 2.0   # seconds between opening each parallel tab
 
-    browser = await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
+    browser = await get_browser(playwright)   # routes through Bright Data CDP on server
     ctx     = await _new_context(browser)
     results: Dict[str, Dict] = {}
 
@@ -3450,7 +3450,7 @@ async def fetch_nearby_kayak_prices(
     # smaller inventory means the strict filter often returns empty.
     fs = _build_kayak_fs_param(with_free_cancel=False)
 
-    browser = await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
+    browser = await get_browser(playwright)   # routes through Bright Data CDP on server
     ctx     = await _new_context(browser)
     prices: Dict[str, float] = {}
 
@@ -5553,12 +5553,40 @@ async def main() -> None:
         if phase3_tasks:
             print(f"Phase 3 — Nearby airport prices  [{' | '.join(phase3_labels)}]")
             phase3_results = await asyncio.gather(*phase3_tasks, return_exceptions=True)
+
+            # Collect all per-provider results for the debug table
+            all_provider_prices: Dict[str, Dict[str, float]] = {}  # {src: {code: price}}
             for pr, src in zip(phase3_results, phase3_sources):
+                if isinstance(pr, Exception):
+                    print(f"  [Phase3] {src} raised an exception: {pr}")
+                    continue
                 if isinstance(pr, dict):
+                    all_provider_prices[src] = pr
                     for code, price in pr.items():
                         if code not in nearby_prices or price < nearby_prices[code]:
                             nearby_prices[code] = price
                             nearby_sources[code] = src
+
+            # Debug summary — which providers were checked at each location
+            all_codes = sorted({c for prices in all_provider_prices.values() for c in prices})
+            if all_codes:
+                src_cols = list(all_provider_prices.keys())
+                header = f"  {'Location':<32}" + "".join(f"  {s:<12}" for s in src_cols) + "  Best"
+                print(f"\n  [Phase3 Debug] Provider prices per nearby location:")
+                print(f"  {'-' * (len(header) - 2)}")
+                print(header)
+                print(f"  {'-' * (len(header) - 2)}")
+                for code in all_codes:
+                    row = f"  {code:<32}"
+                    for s in src_cols:
+                        p = all_provider_prices[s].get(code)
+                        row += f"  {'${:.2f}'.format(p) if p else 'N/A':<12}"
+                    best_p = nearby_prices.get(code)
+                    best_s = nearby_sources.get(code, "?")
+                    row += f"  ${best_p:.2f} ({best_s})" if best_p else "  N/A"
+                    print(row)
+                print(f"  {'-' * (len(header) - 2)}\n")
+
             print(f"  Phase 3 done — {len(nearby_prices)} locations priced")
             print()
 
