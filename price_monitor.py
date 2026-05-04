@@ -3220,7 +3220,8 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
         if delay_s:
             await asyncio.sleep(delay_s)
         pg = await ctx.new_page()
-        await _apply_stealth(pg)
+        if _ctx_owned:
+            await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
         try:
             print(f"  [Kayak/{label}] Loading: {url}")
             await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
@@ -3470,7 +3471,8 @@ async def fetch_nearby_kayak_prices(
         loc_id = loc["kayak_location_id"]
         url    = f"https://www.kayak.com/cars/{loc_id}/{_pu}/{_re}?sort=rank_a&fs={fs}"
         pg     = await ctx.new_page()
-        await _apply_stealth(pg)
+        if not _cdp_mode:
+            await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
         try:
             print(f"  [NearbyKayak/{lkey}] Loading: {url}")
             await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
