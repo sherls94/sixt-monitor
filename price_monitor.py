@@ -523,6 +523,11 @@ DEBUG_CARDS = True
 
 BRIGHT_DATA_CDP_URL = "wss://brd-customer-hl_71b98e26-zone-car_rental_monitor:d69ojowoqp6o@brd.superproxy.io:9222"
 
+# Maximum concurrent Bright Data CDP browser connections.
+# Each connect_over_cdp() occupies one slot; released automatically on browser.close().
+BD_MAX_CONCURRENT = 5
+BD_SEMAPHORE: asyncio.Semaphore | None = None   # initialised in main() after event loop starts
+
 # ─────────────────────────────────────────────────────────────────────────────
 # KAYAK AGGREGATOR CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1391,23 +1396,53 @@ def _stealth_launch_args():
 # BRIGHT DATA BROWSER HELPER
 # ─────────────────────────────────────────────────────────────────────────────
 
+class _SemaphoreBrowser:
+    """
+    Thin proxy around a Playwright browser that releases BD_SEMAPHORE when
+    close() is called.  All other attribute accesses are forwarded to the
+    real browser object, so call sites need no changes.
+    """
+    def __init__(self, browser):
+        self._browser = browser
+
+    def __getattr__(self, name):
+        return getattr(self._browser, name)
+
+    @property
+    def contexts(self):
+        return self._browser.contexts
+
+    async def close(self):
+        try:
+            await self._browser.close()
+        finally:
+            if BD_SEMAPHORE is not None:
+                BD_SEMAPHORE.release()
+
+
 async def get_browser(playwright):
     """
     Return a Playwright browser object.
 
-    • If BRIGHT_DATA_CDP_URL is set → connect to the Bright Data Browser API
-      via CDP (residential IP, anti-bot bypass).  The returned object behaves
-      exactly like a locally-launched browser; call browser.new_page() as usual.
-    • Otherwise → launch a local headless=True Chromium instance with the
-      standard stealth args.
+    • If BRIGHT_DATA_CDP_URL is set → acquire BD_SEMAPHORE (max BD_MAX_CONCURRENT
+      concurrent connections), then connect via Bright Data CDP.  The semaphore
+      slot is released automatically when browser.close() is called.
+    • Otherwise → launch a local headless=True Chromium instance.
 
     Always call `await browser.close()` in a finally block after use.
     """
     if BRIGHT_DATA_CDP_URL:
-        print(f"  [Browser] PATH: Bright Data CDP  url={BRIGHT_DATA_CDP_URL[:60]}...")
-        browser = await playwright.chromium.connect_over_cdp(BRIGHT_DATA_CDP_URL)
-        print("  [Browser] CDP connection established OK")
-        return browser
+        if BD_SEMAPHORE is not None:
+            await BD_SEMAPHORE.acquire()
+        try:
+            print(f"  [Browser] PATH: Bright Data CDP  url={BRIGHT_DATA_CDP_URL[:60]}...")
+            browser = await playwright.chromium.connect_over_cdp(BRIGHT_DATA_CDP_URL)
+            print("  [Browser] CDP connection established OK")
+            return _SemaphoreBrowser(browser)
+        except Exception:
+            if BD_SEMAPHORE is not None:
+                BD_SEMAPHORE.release()
+            raise
     else:
         print("  [Browser] PATH: local chromium.launch (BRIGHT_DATA_CDP_URL is None)")
         return await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
@@ -5430,6 +5465,9 @@ def _reinitialize_location_constants() -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 async def main() -> None:
+    global BD_SEMAPHORE
+    BD_SEMAPHORE = asyncio.Semaphore(BD_MAX_CONCURRENT)
+
     from playwright.async_api import async_playwright
 
     # ── Supabase / CLI argument handling ────────────────────────────────────
