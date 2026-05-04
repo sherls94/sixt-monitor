@@ -1,0 +1,6 @@
+@echo off
+cd /d C:\Users\leesh\OneDrive\Desktop\sixt-monitor
+set SUPABASE_URL=https://kqdraiypfajtbltgiggd.supabase.co
+set SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxZHJhaXlwZmFqdGJsdGdpZ2dkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Nzc0MzU0NCwiZXhwIjoyMDkzMzE5NTQ0fQ.HvrhiAsxdL39OAblYdl7XdtKmm-jGGJCjeLA3sOOWKo
+set BRIGHT_DATA_CDP_URL=wss://brd-customer-hl_71b98e26-zone-car_rental_monitor:d69ojowoqp6o@brd.superproxy.io:9222
+python scheduler.py

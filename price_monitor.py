@@ -33,6 +33,12 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent / '.env')
+except ImportError:
+    pass  # python-dotenv not installed — rely on env vars being set externally
+
+try:
     from supabase import create_client, Client as SupabaseClient
     _SUPABASE_AVAILABLE = True
 except ImportError:
