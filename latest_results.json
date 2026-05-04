@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-03T16:13:51",
-  "runtime_seconds": 220.9,
+  "last_checked": "2026-05-04T16:10:16",
+  "runtime_seconds": 207.2,
   "results": [
     {
       "provider": "SIXT",
@@ -29,8 +29,8 @@
       "provider": "Hertz",
       "car_class": "Full Size SUV",
       "model": "Medium 7 Passenger SUV",
-      "price": 606.55,
-      "saving": -6.55,
+      "price": 600.06,
+      "saving": -0.06,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-06-02T12:00:00&did=LGAT01&ddate=2026-06-05T12:00:00&pCountryCode=US&age=31"
@@ -49,18 +49,18 @@
       "provider": "Budget",
       "car_class": "Full Size SUV",
       "model": "GMC Yukon",
-      "price": 689.0,
-      "saving": -89.0,
+      "price": 783.0,
+      "saving": -183.0,
       "source": "Kayak",
       "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=caragency=budget;carpolicies=cancel;carclass=SUV"
+      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=carpolicies=cancel;caragency=budget;carclass=SUV&attempt=1&lastms=1777925227792"
     },
     {
       "provider": "National",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 1041.77,
-      "saving": -441.77,
+      "price": 1058.65,
+      "saving": -458.65,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.nationalcar.com/en/car-rental.html"
@@ -109,8 +109,8 @@
       "provider": "Kayak",
       "car_class": "Full Size SUV",
       "model": "Dodge Durango",
-      "price": 410.0,
-      "saving": 190.0,
+      "price": 397.0,
+      "saving": 203.0,
       "source": "Kayak",
       "status": "ok",
       "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
@@ -129,6 +129,28 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - East 76th Street",
+      "airport_code": null,
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York - East 48th Street",
+      "airport_code": null,
+      "location_key": "NYCC10",
+      "distance_miles": 5.2,
+      "cab_fare": 25.69,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "New York - West 83rd Street",
       "airport_code": null,
       "location_key": "NYCW25",
@@ -140,14 +162,25 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - West 55th Street",
+      "airport_code": null,
+      "location_key": "NYCC14",
+      "distance_miles": 5.6,
+      "cab_fare": 26.8,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "John F Kennedy Intl, New York, United States (JFK)",
       "airport_code": "JFK",
       "location_key": "JFK",
       "distance_miles": 10.6,
       "cab_fare": 30.0,
-      "best_price": 226.0,
+      "best_price": 217.0,
       "best_provider": "Kayak",
-      "net_saving": 344.0,
+      "net_saving": 353.0,
       "is_deal": true
     },
     {
@@ -156,9 +189,9 @@
       "location_key": "EWR",
       "distance_miles": 16.5,
       "cab_fare": 55.0,
-      "best_price": 237.0,
+      "best_price": 240.0,
       "best_provider": "Kayak",
-      "net_saving": 308.0,
+      "net_saving": 305.0,
       "is_deal": true
     },
     {
@@ -270,47 +303,14 @@
       "best_provider": "EHI",
       "net_saving": 32.74,
       "is_deal": true
-    },
-    {
-      "location_name": "New York - East 76th Street",
-      "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
-      "best_price": 1446.87,
-      "best_provider": "Hertz",
-      "net_saving": -869.77,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York - East 48th Street",
-      "airport_code": null,
-      "location_key": "NYCC10",
-      "distance_miles": 5.2,
-      "cab_fare": 25.69,
-      "best_price": 1446.87,
-      "best_provider": "Hertz",
-      "net_saving": -872.56,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York - West 55th Street",
-      "airport_code": null,
-      "location_key": "NYCC14",
-      "distance_miles": 5.6,
-      "cab_fare": 26.8,
-      "best_price": 1446.87,
-      "best_provider": "Hertz",
-      "net_saving": -873.67,
-      "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 606.55,
-    "best_direct_saving": -6.55,
+    "best_direct_price": 600.06,
+    "best_direct_saving": -0.06,
     "best_ota_provider": "Kayak",
-    "best_ota_price": 410.0,
-    "best_ota_saving": 190.0
+    "best_ota_price": 397.0,
+    "best_ota_saving": 203.0
   }
 }
