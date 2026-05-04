@@ -16,12 +16,10 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-# Load .env if present (before any os.environ.get calls)
-try:
-    from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent / '.env')
-except ImportError:
-    pass  # python-dotenv not installed — rely on env vars being set externally
+# Load .env — try server path first, fall back to script-relative
+from dotenv import load_dotenv
+load_dotenv('/root/sixt-monitor/.env')          # server (Linux)
+load_dotenv(Path(__file__).parent / '.env')     # local fallback (Windows)
 
 from supabase import create_client
 
