@@ -20,6 +20,7 @@ import argparse
 import asyncio
 import builtins
 import csv
+import gzip
 import io
 import json
 import math
@@ -27,8 +28,10 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 import urllib.parse
+import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -343,6 +346,11 @@ EH_API_BASE = "https://prd-east.webapi.enterprise.com/enterprise-ewt"
 _ehi_cache: Dict[str, Optional[Dict]] = {}
 _ehi_lock: Optional["asyncio.Lock"] = None
 
+# After _check_ehi_all() runs Enterprise/National, the browser/page/ctx are kept
+# alive here so fetch_nearby_ehi_prices() can reuse them without re-loading
+# enterprise.com.  Closed at the END of fetch_nearby_ehi_prices().
+_ehi_enterprise_shared: Dict = {"browser": None, "page": None, "ctx": None}
+
 
 def _get_ehi_lock() -> "asyncio.Lock":
     global _ehi_lock
@@ -529,6 +537,185 @@ BD_MAX_CONCURRENT = 5
 BD_SEMAPHORE: asyncio.Semaphore | None = None   # initialised in main() after event loop starts
 
 # ─────────────────────────────────────────────────────────────────────────────
+# BRIGHT DATA USAGE TRACKING (Priority 5)
+# ─────────────────────────────────────────────────────────────────────────────
+# Estimated MB transferred per Bright Data page load by provider (after resource
+# blocking via _block_heavy_resources).  Adjust as you gather real HAR data.
+BD_COST_ESTIMATES: Dict[str, float] = {
+    "kayak":      3.5,   # Kayak SPA results page
+    "avis":       2.5,
+    "budget":     2.5,
+    "enterprise": 2.0,   # enterprise.com home + API fetch
+    "national":   2.0,   # nationalcar.com home + API fetch
+    "alamo":      3.0,   # alamo.com form-fill + session extraction
+    "ehi_nearby": 0.0,   # reuses enterprise.com session (Priority 2) — no extra MB
+    "hertz":      0.0,   # direct API — no browser
+    "sixt":       0.0,   # direct gRPC-JSON API — no browser
+    "dollar":     0.0,   # priced via Kayak
+    "thrifty":    0.0,   # priced via Kayak
+    "default":    2.5,   # fallback for unlabelled pages
+}
+BD_PRICE_PER_GB = 8.50   # USD — adjust to your actual Bright Data plan rate
+
+# Populated at runtime by _bd_track(); each entry is a lowercase provider label.
+_bd_page_log: List[str] = []
+
+
+def _bd_track(label: str) -> None:
+    """Record one Bright Data page load for end-of-run cost estimation."""
+    if BRIGHT_DATA_CDP_URL:
+        _bd_page_log.append(label.lower())
+
+
+def _print_bd_usage() -> None:
+    """Print a Bright Data GB/cost summary for this run.  Called at end of main()."""
+    if not BRIGHT_DATA_CDP_URL or not _bd_page_log:
+        return
+    from collections import Counter
+    counts   = Counter(_bd_page_log)
+    total_mb = 0.0
+    print("\n  ── Bright Data usage estimate ──────────────────────────────")
+    for label, n in sorted(counts.items(), key=lambda x: -x[1]):
+        mb_each = BD_COST_ESTIMATES.get(label, BD_COST_ESTIMATES["default"])
+        mb_tot  = mb_each * n
+        total_mb += mb_tot
+        if mb_each > 0:
+            print(f"    {label:18s} × {n:2d}  ≈ {mb_tot:5.1f} MB")
+        else:
+            print(f"    {label:18s} × {n:2d}  (API — no BD traffic)")
+    cost_usd = total_mb / 1024 * BD_PRICE_PER_GB
+    print(f"  {'─'*51}")
+    print(f"    Total                    ≈ {total_mb:5.1f} MB  (${cost_usd:.4f})")
+    print(f"  {'─'*51}\n")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# HERTZ DIRECT API — no browser, no Bright Data
+# ─────────────────────────────────────────────────────────────────────────────
+# Hertz uses a standard OAuth2 client_credentials flow.  The client_id/secret
+# are embedded in hertz.com's JS bundle (public, unauthenticated scope).
+# Token is valid 1799 s (~30 min) and is cached module-wide so all calls
+# within a run (main check + all nearby stations) share one token fetch.
+#
+# Flow discovered via browser network capture (2026-05-08):
+#   POST https://api.hertz.io/api/login/token
+#     Authorization: Basic <base64(client_id:secret)>
+#     Content-Type:  application/x-www-form-urlencoded
+#     Body:          grant_type=client_credentials
+#   → { access_token, expires_in: 1799, scope: "prod unauthenticated" }
+#
+#   GET https://api.hertz.io/vehicle-rates?...
+#     Authorization: Bearer <access_token>
+#     client-id: 6L2J
+#     correlation-id: <uuid4>
+#   → [ { sipp_code, vehicle_display_name, pricing: { ... } }, ... ]
+# ─────────────────────────────────────────────────────────────────────────────
+
+_HERTZ_OAUTH_URL  = "https://api.hertz.io/api/login/token"
+_HERTZ_RATES_URL  = "https://api.hertz.io/vehicle-rates"
+# base64( client_id : client_secret ) — embedded in hertz.com JS bundle
+_HERTZ_BASIC_AUTH = (
+    "NjM5U0pXeTVUM2xJOXdpeHdVOUE3Q1JRUXpzQVpsT0RqclJ6dDdQeU1FRTpfYUR4UlA3ZVFORGNHLWt5"
+    "LWY1MDhHSjlaQVdvRHoyMll2YjNqREZKZ2lv"
+)
+_HERTZ_CLIENT_ID  = "6L2J"
+# Module-level token cache — shared across all calls within a run
+_hertz_token_cache: Dict = {"token": None, "expires_at": 0.0}
+
+
+def _hertz_get_token() -> str:
+    """
+    Return a valid Hertz Bearer token, fetching a fresh one when the cached
+    token has expired (or has never been fetched).  Thread-safe enough for
+    asyncio.to_thread() use: worst case two threads fetch simultaneously and
+    the second write wins — both tokens are equally valid.
+    """
+    now = time.time()
+    if _hertz_token_cache["token"] and now < _hertz_token_cache["expires_at"]:
+        return _hertz_token_cache["token"]
+
+    body = urllib.parse.urlencode({"grant_type": "client_credentials"}).encode()
+    req = urllib.request.Request(
+        _HERTZ_OAUTH_URL,
+        data=body,
+        headers={
+            "Authorization":  "Basic " + _HERTZ_BASIC_AUTH,
+            "Content-Type":   "application/x-www-form-urlencoded;charset=UTF-8",
+            "User-Agent":     USER_AGENT,
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        tok = json.loads(resp.read())
+
+    access_token = tok["access_token"]
+    expires_in   = int(tok.get("expires_in", 1799))
+    _hertz_token_cache["token"]      = access_token
+    _hertz_token_cache["expires_at"] = now + expires_in - 30  # 30 s safety margin
+    print(f"  [Hertz/API] Token obtained (valid {expires_in}s, scope={tok.get('scope')})")
+    return access_token
+
+
+def _hertz_direct_rates(
+    station: str,
+    pickup_dt: str,
+    return_dt: str,
+    age: int,
+    brand: str = "HERTZ",
+) -> list:
+    """
+    Call api.hertz.io/vehicle-rates directly and return the raw vehicle list.
+
+    Args:
+        station   : Hertz OAG station code (e.g. "LGAT01")
+        pickup_dt : ISO datetime string "YYYY-MM-DDTHH:MM:00"
+        return_dt : ISO datetime string "YYYY-MM-DDTHH:MM:00"
+        age       : driver age (integer)
+        brand     : "HERTZ", "DOLLAR", or "THRIFTY"
+
+    Returns:
+        list of vehicle dicts (may be empty if no availability).
+
+    Raises:
+        urllib.error.HTTPError / Exception on network/API failure.
+    """
+    _bd_track("hertz")   # 0 MB — direct API, no browser
+    token  = _hertz_get_token()
+    params = urllib.parse.urlencode({
+        "rental_type":          "LEISURE",
+        "brand":                brand,
+        "country_code":         "US",
+        "drop_off_location":    station,
+        "drop_off_time":        return_dt,
+        "min_customer_age":     str(age),
+        "pick_up_location":     station,
+        "pick_up_time":         pickup_dt,
+        "embed":                "PRICING",
+        "customer_country_code":"US",
+    })
+    url = f"{_HERTZ_RATES_URL}?{params}"
+    req = urllib.request.Request(url, headers={
+        "Authorization":             "Bearer " + token,
+        "client-id":                 _HERTZ_CLIENT_ID,
+        "Accept":                    "*/*",
+        "Accept-Language":           "en-US",
+        "Accept-Encoding":           "gzip, deflate, br",
+        "Content-Type":              "application/json",
+        "Origin":                    "https://www.hertz.com",
+        "Referer":                   "https://www.hertz.com/",
+        "User-Agent":                USER_AGENT,
+        "correlation-id":            str(uuid.uuid4()),
+        "platform-name":             "GBP",
+        "vehicle-smartpick-enabled": "false",
+    })
+    with urllib.request.urlopen(req, timeout=20) as resp:
+        raw = resp.read()
+    if raw[:2] == b"\x1f\x8b":
+        raw = gzip.decompress(raw)
+    data = json.loads(raw)
+    return data if isinstance(data, list) else [data]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # KAYAK AGGREGATOR CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -567,11 +754,12 @@ if not KAYAK_LOCATION_ID:
     print(f"  [DB] No Kayak entry for {BOOKING['airport_code']} — Kayak fallback will be unavailable.")
 
 # Kayak caragency= URL slug for each Kayak-backed provider.
-# Hertz/National/Enterprise/Alamo removed — they use direct API checks.
+# Dollar and Thrifty are only included when a station exists for the booking airport —
+# avoids an empty-result tab at airports where those brands have no presence.
 _KAYAK_AGENCY_SLUGS: Dict[str, str] = {
-    "Budget":  "budget",
-    "Dollar":  "dollar",
-    "Thrifty": "thrifty",
+    "Budget": "budget",
+    **( {"Dollar":  "dollar"}  if _dollar_loc  else {} ),
+    **( {"Thrifty": "thrifty"} if _thrifty_loc else {} ),
 }
 
 # Module-level cache so Budget/Dollar/Thrifty share one Kayak browser session
@@ -1114,16 +1302,6 @@ def discover_nearby_locations(booking: Dict) -> Dict[str, List[Dict]]:
     else:
         print(f"  [Locations] SIXT: no nearby locations within {NEARBY_RADIUS_MILES}mi of {airport}")
 
-    kayak_locs = _cab_filter(_kayak_nearby_from_db(airport), "Kayak")
-    if kayak_locs:
-        locations["Kayak"] = kayak_locs
-        print(f"  [Locations] Kayak: {len(kayak_locs)} nearby locations within {NEARBY_RADIUS_MILES}mi")
-        for k in kayak_locs:
-            print(f"    • {k['name']} ({k['airport_code']})  {k['distance_miles']}mi  "
-                  f"cab≈${k['cab_fare']:.0f}  id={k['kayak_location_id']}")
-    else:
-        print(f"  [Locations] Kayak: no nearby locations within {NEARBY_RADIUS_MILES}mi of {airport}")
-
     hertz_locs = _cab_filter(_hertz_nearby_from_db(airport), "Hertz")
     if hertz_locs:
         locations["Hertz"] = hertz_locs
@@ -1448,11 +1626,51 @@ async def get_browser(playwright):
         return await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
 
 
-async def _new_bd_page(browser):
+async def _block_heavy_resources(page) -> None:
+    """
+    Block resource types that are never needed for price scraping.
+    Aborts: images, media, fonts, and known tracking/ad domains.
+    Does NOT block: scripts (needed for SPAs), XHR/fetch, documents.
+
+    Estimated saving: 20–40% of page weight per Kayak/Avis/Budget tab.
+    Called on every page before navigation.
+    """
+    _BLOCKED_RESOURCE_TYPES = {"image", "media", "font", "texttrack", "eventsource", "manifest"}
+    _BLOCKED_DOMAINS = (
+        "doubleclick.net", "google-analytics.com", "googletagmanager.com",
+        "googlesyndication.com", "facebook.net", "facebook.com/tr",
+        "analytics", "tracking", "segment.io", "segment.com",
+        "newrelic.com", "nr-data.net", "hotjar.com", "mixpanel.com",
+        "fullstory.com", "mouseflow.com", "heap.io", "crazyegg.com",
+        "adnxs.com", "rubiconproject.com", "pubmatic.com", "openx.net",
+        "criteo.com", "tapad.com", "adsystem.com",
+    )
+
+    async def _route_handler(route):
+        req = route.request
+        if req.resource_type in _BLOCKED_RESOURCE_TYPES:
+            await route.abort()
+            return
+        url = req.url.lower()
+        if any(d in url for d in _BLOCKED_DOMAINS):
+            await route.abort()
+            return
+        await route.continue_()
+
+    await page.route("**/*", _route_handler)
+
+
+async def _new_bd_page(browser, label: str = "default"):
     """
     Create a new page from a Bright-Data (or local) browser.
-    Applies stealth if available and sets a realistic viewport + user-agent.
+    Applies stealth if available, sets a realistic viewport + user-agent,
+    and blocks heavy resources (images, media, fonts, tracking) to reduce
+    Bright Data GB usage by 20–40% per tab.
+
+    ``label`` (lowercase provider name, e.g. "kayak", "enterprise") is used
+    by the per-run GB tracker (_bd_track).
     """
+    _bd_track(label)
     try:
         # connect_over_cdp returns existing contexts; create a fresh one
         ctx = await browser.new_context(
@@ -1464,6 +1682,7 @@ async def _new_bd_page(browser):
         ctx = browser.contexts[0] if browser.contexts else await browser.new_context()
     page = await ctx.new_page()
     await _apply_stealth(page)
+    await _block_heavy_resources(page)
     return page, ctx
 
 
@@ -1699,7 +1918,7 @@ async def _check_direct_with_bd_fallback(playwright, provider: str, direct_url: 
     ctx = None
     try:
         browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, provider.lower())
 
         await page.goto(direct_url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
         await dismiss_popups(page)
@@ -1742,119 +1961,42 @@ async def _check_direct_with_bd_fallback(playwright, provider: str, direct_url: 
 
 async def check_hertz(playwright) -> Dict:
     """
-    Hertz — direct API via Bright Data browser session.
+    Hertz — direct API call (no browser, no Bright Data).
 
-    Discovered API (confirmed via network capture):
-      GET https://api.hertz.io/vehicle-rates?rental_type=LEISURE&brand=HERTZ&...
+    Uses the Hertz OAuth2 client_credentials flow to fetch a Bearer token, then
+    calls api.hertz.io/vehicle-rates directly.  No browser session is opened.
 
-    Flow:
-    1. Register page.route() handler for api.hertz.io/vehicle-rates BEFORE navigation.
-    2. Navigate to HERTZ_RESULTS_URL — the page automatically fetches vehicle-rates.
-    3. Route handler intercepts the response, reads the full JSON, fulfills the request.
-    4. Extract Full Size SUV (sipp FFAR/FFDR or Fullsize+body SUV) with the payment type
-       set by HERTZ_RATE_TYPE (derived from BOOKING["payment_type"]; None = any rate).
-    5. Returns ERROR on failure — does NOT fall back to Kayak.
+    Token is cached for ~30 minutes so nearby-station checks in the same run
+    reuse it without an additional OAuth round-trip.
 
-    No Bearer token required — the page fetches it via client_credentials on load.
-    The route intercept captures the response transparently without blocking the page.
+    playwright arg is kept for API compatibility but is never used.
     """
-    if not BRIGHT_DATA_CDP_URL:
-        msg = "Bright Data not configured — Hertz requires direct API check"
-        print(f"  [Hertz] {msg}")
-        return make_result("Hertz", error=msg)
-    if not HERTZ_RESULTS_URL:
+    if not HERTZ_STATION_CODE:
         airport = BOOKING["airport_code"]
         msg = f"No Hertz station for {airport} in locations_db.json"
         print(f"  [Hertz] {msg}")
         return make_result("Hertz", error=msg)
 
-    print("  [Hertz] Direct API via Bright Data (intercepting api.hertz.io/vehicle-rates)...")
-    browser = None
-    ctx = None
+    pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}:00"
+    return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}:00"
+    age       = int(BOOKING["driver_age"])
+
+    print(f"  [Hertz] Direct API call (no browser) — station {HERTZ_STATION_CODE}...")
     try:
-        browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
-
-        # Capture the vehicle-rates JSON response using page.on('response').
-        # This is a passive observer — no route interception, no fulfill race condition.
-        # Use asyncio.Event to wait until the body has been read rather than a fixed sleep.
-        vehicle_data: list = []
-        vehicle_ready = asyncio.Event()
-
-        async def _on_response(response):
-            if "vehicle-rates" not in response.url:
-                return
-            try:
-                body = await response.body()
-                parsed = json.loads(body.decode("utf-8"))
-                vehicle_data.extend(parsed if isinstance(parsed, list) else [parsed])
-                print(f"  [Hertz] Captured vehicle-rates: {len(vehicle_data)} vehicles")
-            except Exception as e:
-                print(f"  [Hertz] Parse error on vehicle-rates: {e!s:.80}")
-            finally:
-                vehicle_ready.set()  # always signal, even on error
-
-        page.on("response", _on_response)
-
-        await page.goto(HERTZ_RESULTS_URL, wait_until="domcontentloaded", timeout=90_000)
-        # Wait for at least one MUI card to confirm the React app has hydrated and
-        # fired its XHR calls, then give the response observer up to 60s total.
-        try:
-            await page.wait_for_selector(
-                "[class*='MuiCard'], [class*='vehicle'], [class*='VehicleCard']",
-                timeout=45_000,
-            )
-        except Exception:
-            pass  # continue regardless — observer may still fire
-        try:
-            await asyncio.wait_for(vehicle_ready.wait(), timeout=60.0)
-        except asyncio.TimeoutError:
-            raise Exception("vehicle-rates response not seen within 60s — API call did not fire")
-
-        if not vehicle_data:
-            raise Exception("vehicle-rates response captured but contained no data")
-
-        # ── Identify Full Size SUVs ────────────────────────────────────────────
-        # SIPP codes come from CAR_CLASS_EQUIVALENTS[ACTIVE_CAR_CLASS]["hertz_sipp_codes"].
-        # Fallback: Fullsize category + SUV body type.
-        _active_cls = CAR_CLASS_EQUIVALENTS.get(ACTIVE_CAR_CLASS, {})
-        HERTZ_FULLSIZE_SUV_SIPP: Set[str] = set(
-            _active_cls.get("hertz_sipp_codes", {"FFAR", "FFDR"})
+        vehicle_data = await asyncio.to_thread(
+            _hertz_direct_rates, HERTZ_STATION_CODE, pickup_dt, return_dt, age, "HERTZ"
         )
+        print(f"  [Hertz] {len(vehicle_data)} vehicles returned")
 
-        def _is_hertz_fullsize_suv(vehicle: dict) -> bool:
-            sipp = vehicle.get("sipp_code", "")
-            if sipp in HERTZ_FULLSIZE_SUV_SIPP:
-                return True
-            cat  = (vehicle.get("vehicle_category") or "").lower()
-            body = vehicle.get("vehicle_body_type") or []
-            return cat == "fullsize" and "SUV" in body
-
-        best_price: Optional[float] = None
-        best_name = ""
-        for v in vehicle_data:
-            if not _is_hertz_fullsize_suv(v):
-                continue
-            name = v.get("vehicle_display_name") or v.get("sipp_code") or "Full Size SUV"
-            for rate in v.get("pricing", {}).values():
-                # Filter by payment type when a preference is set
-                if HERTZ_RATE_TYPE and rate.get("rate_type") != HERTZ_RATE_TYPE:
-                    continue
-                total = rate.get("approximate_total")
-                if total is None:
-                    continue
-                try:
-                    price = float(total)
-                except (TypeError, ValueError):
-                    continue
-                if price > 0 and (best_price is None or price < best_price):
-                    best_price = price
-                    best_name = name
+        best_price, best_name = _hertz_extract_best(vehicle_data)
 
         if best_price is None:
-            suvs = [v.get("sipp_code") for v in vehicle_data if "SUV" in str(v.get("vehicle_body_type", []))]
+            suvs = [v.get("sipp_code") for v in vehicle_data
+                    if "SUV" in str(v.get("vehicle_body_type", []))]
             rate_label = HERTZ_RATE_TYPE or "any rate"
-            raise Exception(f"No Full Size SUV {rate_label} rate found. SUV sipp codes: {suvs}")
+            raise Exception(
+                f"No Full Size SUV {rate_label} rate found. SUV sipp codes seen: {suvs}"
+            )
 
         rate_label = HERTZ_RATE_TYPE or "any rate"
         print(f"  [Hertz] Best Full Size SUV: {best_name} ({rate_label}) @ ${best_price:.2f}")
@@ -1863,24 +2005,22 @@ async def check_hertz(playwright) -> Dict:
             car_class="Full Size SUV",
             model=best_name,
             price=best_price,
-            url=HERTZ_RESULTS_URL,
+            url=HERTZ_RESULTS_URL or "",
         )
 
+    except urllib.error.HTTPError as exc:
+        body = ""
+        try:
+            body = exc.read()[:200].decode(errors="replace")
+        except Exception:
+            pass
+        err = f"HTTP {exc.code}: {body}"
+        print(f"  [Hertz] API error: {err}")
+        return make_result("Hertz", error=err)
     except Exception as exc:
         err = str(exc)[:150]
         print(f"  [Hertz] API check failed: {err}")
         return make_result("Hertz", error=err)
-    finally:
-        try:
-            if ctx:
-                await ctx.close()
-        except Exception:
-            pass
-        try:
-            if browser:
-                await browser.close()
-        except Exception:
-            pass
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1899,7 +2039,7 @@ async def check_avis(playwright) -> Dict:
     from /vehicle-availability, we seed a session via the Avis homepage then retry.
     """
     browser = await get_browser(playwright)
-    page, ctx = await _new_bd_page(browser)
+    page, ctx = await _new_bd_page(browser, "avis")
 
     try:
         # Tight per-goto timeouts: on a healthy BD session Avis loads in ~15 s.
@@ -1976,7 +2116,7 @@ async def check_budget(playwright) -> Dict:
     Routing through Bright Data matches Avis and eliminates intermittent bot-blocking.
     """
     browser = await get_browser(playwright)
-    page, ctx = await _new_bd_page(browser)
+    page, ctx = await _new_bd_page(browser, "budget")
 
     try:
         print("  [Budget] Loading direct results URL...")
@@ -2090,17 +2230,23 @@ def _ehi_extract_best(car_classes: list, provider: str) -> tuple:
     return best_price, best_name
 
 
-async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float) -> None:
+async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
     """
     Enterprise via enterprise-ewt API (original approach, unchanged logic).
     Loads enterprise.com once to establish Incapsula cookies, then POSTs to
     enterprise-ewt/reservations/initiate with brand=ENTERPRISE.
+
+    Returns (page, ctx) on success so the caller can keep the enterprise.com
+    session alive for subsequent nearby-EHI branch lookups.
+    Returns (None, None) on failure (ctx already closed).
     """
     home_url = "https://www.enterprise.com/en/home.html"
     api_url  = f"{EH_API_BASE}/reservations/initiate"
     ctx = None
+    page = None
+    _success = False
     try:
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, "enterprise")
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
         try:
             await page.wait_for_selector("input", timeout=15_000)
@@ -2183,15 +2329,20 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float) -> None:
             price=best_price,
             url=home_url,
         )
+        _success = True
+        return page, ctx   # caller keeps session alive for nearby-EHI reuse
     except Exception as exc:
         print(f"  [Enterprise] API error: {str(exc)[:120]} — will form-fill")
         _ehi_cache["Enterprise"] = None
+        return None, None
     finally:
-        try:
-            if ctx:
-                await ctx.close()
-        except Exception:
-            pass
+        if not _success:
+            # Only close ctx on failure — on success the caller owns it
+            try:
+                if ctx:
+                    await ctx.close()
+            except Exception:
+                pass
 
 
 async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
@@ -2237,7 +2388,7 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
     initiate_body_json = json.dumps(initiate_body)
 
     try:
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, "national")
         # Navigate to establish session cookies — no form fill (autocomplete click
         # disrupts the SPA and breaks subsequent fetch() calls in page context).
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
@@ -2357,7 +2508,7 @@ async def _ehi_alamo_form(playwright, loc_cfg: Dict, t0: float) -> None:
         # Open own browser session (alamo.com would exceed the 2-domain limit
         # if sharing the Enterprise+National browser)
         browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, "alamo")
 
         # Navigate to establish session cookies — no form fill needed.
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
@@ -2465,10 +2616,22 @@ async def _check_ehi_all(playwright) -> None:
     try:
         browser = await get_browser(playwright)
 
-        await _ehi_enterprise_api(browser, loc_cfg, t0)
+        ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
         await _ehi_national_api(browser, loc_cfg, t0)
-        await browser.close()   # close before Alamo opens its own browser (2-domain limit)
-        browser = None
+
+        # Keep the enterprise.com page alive so fetch_nearby_ehi_prices() can
+        # reuse the Incapsula-authenticated session without loading the site again.
+        if ent_page and ent_ctx:
+            _ehi_enterprise_shared["browser"] = browser
+            _ehi_enterprise_shared["page"]    = ent_page
+            _ehi_enterprise_shared["ctx"]     = ent_ctx
+            browser = None  # fetch_nearby_ehi_prices() owns cleanup from here
+            print(f"  [EHI] enterprise.com session stored for nearby-EHI reuse")
+        else:
+            # Enterprise API failed — close browser now; nearby EHI will open fresh
+            await browser.close()
+            browser = None
+
         await _ehi_alamo_form(playwright, loc_cfg, t0)
 
         print(f"  [EHI] All brands done  [{time.monotonic()-t0:.1f}s total]")
@@ -2546,7 +2709,7 @@ async def _check_eh_brand_direct(playwright, provider: str, home_url: str) -> Di
     ctx = None
     try:
         browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, provider.lower())
 
         # NOTE: Enterprise Holdings results page (reserve.html#car_select) is
         # session-based — there is NO bookmarkable URL with date/location params.
@@ -2699,7 +2862,7 @@ async def check_dollar(playwright) -> Dict:
     ctx = None
     try:
         browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, "dollar")
 
         # Dollar's /us/en/book/vehicles page loads correctly but shows a cookie
         # consent wall first. We need domcontentloaded (not just commit) so the
@@ -2827,7 +2990,7 @@ async def check_thrifty(playwright) -> Dict:
     ctx = None
     try:
         browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
+        page, ctx = await _new_bd_page(browser, "thrifty")
         try:
             await page.goto(THRIFTY_RESULTS_URL, timeout=60_000, wait_until="domcontentloaded")
         except Exception as goto_exc:
@@ -3171,14 +3334,20 @@ async def _fill_kayak_form(page) -> None:
     await page.wait_for_timeout(5000)
 
 
-async def _dump_kayak_raw_body(ctx, label: str, url: str) -> None:
+async def _dump_kayak_raw_body(playwright, label: str, url: str) -> None:
     """
-    Open a fresh browser tab, navigate to url, and print the first 3000 chars of
-    page body text.  Used as last-resort diagnosis when a Kayak tab returns empty
-    even after relaxed retry.
+    Open a fresh browser tab in its own Bright Data session, navigate to url, and
+    print the first 60 lines of page body text.  Used as last-resort diagnosis when
+    a Kayak tab returns empty even after relaxed retry.
     """
-    pg = await ctx.new_page()
-    await _apply_stealth(pg)
+    _bd_track("kayak")
+    _browser = await get_browser(playwright)
+    _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
+    _ctx = _browser.contexts[0] if _cdp else await _new_context(_browser)
+    pg = await _ctx.new_page()
+    if not _cdp:
+        await _apply_stealth(pg)
+    await _block_heavy_resources(pg)
     try:
         await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
         await pg.wait_for_timeout(8000)
@@ -3204,6 +3373,12 @@ async def _dump_kayak_raw_body(ctx, label: str, url: str) -> None:
             await pg.close()
         except Exception:
             pass
+        try:
+            if not _cdp:
+                await _ctx.close()
+        except Exception:
+            pass
+        await _browser.close()
 
 
 async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
@@ -3237,26 +3412,31 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
 
     KAYAK_TAB_STAGGER_S = 2.0   # seconds between opening each parallel tab
 
-    browser = await get_browser(playwright)   # routes through Bright Data CDP on server
-    # Bright Data CDP: must reuse existing context — creating a new one
-    # with custom headers raises "forbidden" errors. Local: create a stealth ctx.
-    ctx = browser.contexts[0] if (BRIGHT_DATA_CDP_URL and browser.contexts) else await _new_context(browser)
-    _ctx_owned = not (BRIGHT_DATA_CDP_URL and browser.contexts)
     results: Dict[str, Dict] = {}
 
     async def _fetch_one(
         label: str, url: str, load_all: bool = False, delay_s: float = 0.0
     ) -> Dict[str, Dict]:
         """
-        Open a browser tab, navigate to url, parse results, close tab.
-        delay_s staggers tab-opening to reduce Kayak bot-detection risk.
+        Open a browser tab in its own Bright Data CDP session, navigate to url,
+        parse results, close tab and session.
+        Each call acquires an independent session so that one tab's "Missing
+        Credentials" error cannot affect the others.
+        delay_s staggers connection attempts to reduce Kayak bot-detection risk.
         Always returns a dict (empty on failure).
         """
         if delay_s:
             await asyncio.sleep(delay_s)
-        pg = await ctx.new_page()
-        if _ctx_owned:
+        # Own Bright Data session per tab — avoids "Missing Credentials" caused by
+        # multiple concurrent navigations inside a shared session.
+        _bd_track("kayak")
+        _browser = await get_browser(playwright)
+        _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
+        _ctx = _browser.contexts[0] if _cdp else await _new_context(_browser)
+        pg = await _ctx.new_page()
+        if not _cdp:
             await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
+        await _block_heavy_resources(pg)
         try:
             print(f"  [Kayak/{label}] Loading: {url}")
             await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
@@ -3312,6 +3492,12 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
                 await pg.close()
             except Exception:
                 pass
+            try:
+                if not _cdp:
+                    await _ctx.close()
+            except Exception:
+                pass
+            await _browser.close()
 
     try:
         # Build all 8 (label, url, load_all, delay) tuples.
@@ -3393,22 +3579,13 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
                 else:
                     print(f"  [Kayak] {label}: still empty after relaxed retry")
                     # ── Last resort: dump raw page body snippet for diagnosis ──
-                    await _dump_kayak_raw_body(ctx, f"{label}[raw]", _url)
+                    await _dump_kayak_raw_body(playwright, f"{label}[raw]", _url)
 
         _kayak_cache = results
 
     except Exception as exc:
         print(f"  [Kayak] Exception in outer fetch: {exc}")
         _kayak_cache = {}
-    finally:
-        try:
-            if not _ctx_owned:  # don't close the CDP default context we don't own
-                pass
-            else:
-                await ctx.close()
-        except Exception:
-            pass
-        await browser.close()
 
     return _kayak_cache
 
@@ -3492,11 +3669,6 @@ async def fetch_nearby_kayak_prices(
     # smaller inventory means the strict filter often returns empty.
     fs = _build_kayak_fs_param(with_free_cancel=False)
 
-    browser = await get_browser(playwright)   # routes through Bright Data CDP on server
-    # Bright Data CDP: must reuse existing context — creating a new one
-    # with custom headers raises "forbidden" errors. Local: create a stealth ctx.
-    _cdp_mode = bool(BRIGHT_DATA_CDP_URL and browser.contexts)
-    ctx = browser.contexts[0] if _cdp_mode else await _new_context(browser)
     prices: Dict[str, float] = {}
 
     async def _fetch_airport(loc: Dict, delay_s: float) -> None:
@@ -3505,9 +3677,21 @@ async def fetch_nearby_kayak_prices(
         lkey   = loc.get("location_key") or loc["airport_code"]
         loc_id = loc["kayak_location_id"]
         url    = f"https://www.kayak.com/cars/{loc_id}/{_pu}/{_re}?sort=rank_a&fs={fs}"
-        pg     = await ctx.new_page()
-        if not _cdp_mode:
+
+        # Skip consistently overpriced locations (saves a full Bright Data tab load)
+        if not should_check_nearby_location(lkey, BOOKING["booked_price"]):
+            return
+
+        # Own Bright Data CDP session per airport — avoids "Missing Credentials" caused
+        # by multiple concurrent navigations inside a shared session.
+        _bd_track("kayak")
+        _browser = await get_browser(playwright)
+        _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
+        _ctx  = _browser.contexts[0] if _cdp else await _new_context(_browser)
+        pg     = await _ctx.new_page()
+        if not _cdp:
             await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
+        await _block_heavy_resources(pg)
         try:
             print(f"  [NearbyKayak/{lkey}] Loading: {url}")
             await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
@@ -3529,6 +3713,7 @@ async def fetch_nearby_kayak_prices(
             best   = parsed.get("__kayak_best__")
             if best and best.get("price"):
                 prices[lkey] = best["price"]
+                update_location_price_cache(lkey, best["price"])
                 raw = best.get("kayak_class_raw", "")
                 print(f"  [NearbyKayak/{lkey}] Best: ${best['price']:.2f}"
                       f"  model='{best.get('model', '')}'"
@@ -3545,16 +3730,15 @@ async def fetch_nearby_kayak_prices(
                 await pg.close()
             except Exception:
                 pass
+            try:
+                if not _cdp:
+                    await _ctx.close()
+            except Exception:
+                pass
+            await _browser.close()
 
     tasks = [_fetch_airport(loc, i * 2.5) for i, loc in enumerate(kayak_locs)]
     await asyncio.gather(*tasks, return_exceptions=True)
-
-    try:
-        if not _cdp_mode:   # don't close the CDP default context we don't own
-            await ctx.close()
-    except Exception:
-        pass
-    await browser.close()
 
     return prices
 
@@ -3621,6 +3805,66 @@ def _hertz_extract_best(vehicle_data: list) -> tuple:
     return best_price, best_name
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCATION PRICE CACHE — skip consistently overpriced nearby locations
+# ─────────────────────────────────────────────────────────────────────────────
+# Persisted to location_price_cache.json next to this file.  Checked before
+# each nearby-location fetch.  If the last known price is > SKIP_THRESHOLD × the
+# booked price we skip the check (it has never been competitive).
+#
+# Threshold 1.5×: a location at $900 when booked price is $600 → skipped.
+# Always checks first time (no cache entry) and whenever price is competitive.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_LOCATION_PRICE_CACHE_FILE = Path(__file__).parent / "location_price_cache.json"
+_NEARBY_SKIP_THRESHOLD = 1.5   # skip if last_price > booked_price × threshold
+
+
+def _load_location_price_cache() -> Dict:
+    """Load the persisted price cache from disk."""
+    try:
+        if _LOCATION_PRICE_CACHE_FILE.exists():
+            return json.loads(_LOCATION_PRICE_CACHE_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    return {}
+
+
+def should_check_nearby_location(location_key: str, booked_price: float) -> bool:
+    """
+    Return True if the nearby location should be checked this run.
+    False only when cache shows the last price was > 1.5× the booked price,
+    meaning it has never been competitive.
+    """
+    cache = _load_location_price_cache()
+    if location_key not in cache:
+        return True  # never seen before — always check
+    last_price = cache[location_key].get("last_price")
+    if last_price is None:
+        return True
+    if last_price > booked_price * _NEARBY_SKIP_THRESHOLD:
+        print(f"  [NearbyCache] Skipping {location_key} — "
+              f"last price ${last_price:.2f} > {_NEARBY_SKIP_THRESHOLD}× "
+              f"booked ${booked_price:.2f}")
+        return False
+    return True
+
+
+def update_location_price_cache(location_key: str, price: float) -> None:
+    """Persist the latest price for a nearby location to disk."""
+    try:
+        cache = _load_location_price_cache()
+        cache[location_key] = {
+            "last_price":    price,
+            "last_checked":  datetime.now().isoformat(timespec="seconds"),
+        }
+        _LOCATION_PRICE_CACHE_FILE.write_text(
+            json.dumps(cache, indent=2), encoding="utf-8"
+        )
+    except Exception as exc:
+        print(f"  [NearbyCache] Failed to write cache: {exc!s:.60}")
+
+
 async def _fetch_one_hertz_station(
     playwright,
     station: str,
@@ -3628,69 +3872,39 @@ async def _fetch_one_hertz_station(
     display_name: str = "",
 ) -> tuple:
     """
-    Fetch Hertz vehicle-rates for a single station in its own Bright Data context.
+    Fetch Hertz vehicle-rates for a single station via direct API (no browser).
     Returns (location_key, best_price_or_None).
+
+    playwright arg is kept for API compatibility but is never used.
+    Token is shared from _hertz_get_token() cache — one OAuth fetch for all stations.
     """
-    url  = _build_hertz_url(station)
-    label = display_name or location_key
-    print(f"  [NearbyHertz/{label}] station={station}  {url[:80]}")
-    browser = None
-    ctx = None
+    label     = display_name or location_key
+    pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}:00"
+    return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}:00"
+    age       = int(BOOKING["driver_age"])
+
+    # Skip consistently overpriced locations
+    if not should_check_nearby_location(location_key, BOOKING["booked_price"]):
+        return location_key, None
+
+    print(f"  [NearbyHertz/{label}] Direct API — station={station}")
     try:
-        browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
-
-        vehicle_data: list = []
-        ready = asyncio.Event()
-
-        async def _on_resp(response, _ev=ready, _vd=vehicle_data):
-            if "vehicle-rates" not in response.url:
-                return
-            try:
-                body = await response.body()
-                parsed = json.loads(body.decode("utf-8"))
-                _vd.extend(parsed if isinstance(parsed, list) else [parsed])
-            except Exception:
-                pass
-            finally:
-                _ev.set()
-
-        page.on("response", _on_resp)
-        try:
-            await page.goto(url, wait_until="domcontentloaded", timeout=90_000)
-            try:
-                await asyncio.wait_for(ready.wait(), timeout=40.0)
-            except asyncio.TimeoutError:
-                print(f"  [NearbyHertz/{label}] vehicle-rates not seen within 40s")
-            page.remove_listener("response", _on_resp)
-
-            best_price, best_name = _hertz_extract_best(vehicle_data)
-            if best_price:
-                print(f"  [NearbyHertz/{label}] Best: {best_name} @ ${best_price:.2f}")
-                return location_key, best_price
-            else:
-                sipp_list = [v.get("sipp_code") for v in vehicle_data]
-                print(f"  [NearbyHertz/{label}] No Full Size SUV found "
-                      f"(sipp codes seen: {sipp_list[:6]})")
-                return location_key, None
-        except Exception as exc:
-            page.remove_listener("response", _on_resp)
-            print(f"  [NearbyHertz/{label}] Error: {exc!s:.100}")
+        vehicle_data = await asyncio.to_thread(
+            _hertz_direct_rates, station, pickup_dt, return_dt, age, "HERTZ"
+        )
+        best_price, best_name = _hertz_extract_best(vehicle_data)
+        if best_price:
+            print(f"  [NearbyHertz/{label}] Best: {best_name} @ ${best_price:.2f}")
+            update_location_price_cache(location_key, best_price)
+            return location_key, best_price
+        else:
+            sipp_list = [v.get("sipp_code") for v in vehicle_data]
+            print(f"  [NearbyHertz/{label}] No Full Size SUV found "
+                  f"(sipp codes seen: {sipp_list[:6]})")
             return location_key, None
     except Exception as exc:
-        print(f"  [NearbyHertz/{label}] Session setup failed: {exc!s:.100}")
+        print(f"  [NearbyHertz/{label}] Error: {exc!s:.100}")
         return location_key, None
-    finally:
-        try:
-            if ctx:
-                await ctx.close()
-        except Exception:
-            pass
-        try:
-            if browser:
-                await browser.close()
-        except Exception:
-            pass
 
 
 async def fetch_nearby_hertz_prices(
@@ -3710,9 +3924,6 @@ async def fetch_nearby_hertz_prices(
     hertz_locs = nearby_locations.get("Hertz", [])
     if not hertz_locs:
         print("  [NearbyHertz] No Hertz nearby locations to fetch.")
-        return {}
-    if not BRIGHT_DATA_CDP_URL:
-        print("  [NearbyHertz] No Bright Data — skipping nearby Hertz prices.")
         return {}
 
     tasks = [
@@ -3755,29 +3966,57 @@ async def fetch_nearby_ehi_prices(
     Returns:
         {location_key: cheapest_enterprise_price_float}
     """
+    async def _close_shared_session() -> None:
+        """Release the enterprise.com shared session (if any) and clear references."""
+        _sh = _ehi_enterprise_shared
+        try:
+            if _sh["ctx"]:
+                await _sh["ctx"].close()
+        except Exception:
+            pass
+        try:
+            if _sh["browser"]:
+                await _sh["browser"].close()
+        except Exception:
+            pass
+        _sh["browser"] = _sh["page"] = _sh["ctx"] = None
+
     ehi_locs = nearby_locations.get("EHI", [])
     if not ehi_locs:
         print("  [NearbyEHI] No EHI nearby locations to fetch.")
+        await _close_shared_session()   # release any kept enterprise.com session
         return {}
     if not BRIGHT_DATA_CDP_URL:
         print("  [NearbyEHI] No Bright Data — skipping nearby EHI prices.")
+        await _close_shared_session()   # release any kept enterprise.com session
         return {}
 
     prices: Dict[str, float] = {}
     browser = None
     ctx = None
+    page = None
+    _shared_session = False
     try:
-        browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser)
-
-        print("  [NearbyEHI] Establishing session via enterprise.com/en/home.html...")
-        home_url = "https://www.enterprise.com/en/home.html"
-        await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
-        try:
-            await page.wait_for_selector("input", timeout=15_000)
-        except Exception:
-            await page.wait_for_timeout(5_000)
-        print(f"  [NearbyEHI] Session ready at {page.url[:60]}")
+        # Reuse the enterprise.com browser/page left alive by _check_ehi_all()
+        # to avoid loading the site a second time (saves ~1 BD page load).
+        _shared = _ehi_enterprise_shared
+        if _shared["browser"] and _shared["page"] and _shared["ctx"]:
+            browser = _shared["browser"]
+            page    = _shared["page"]
+            ctx     = _shared["ctx"]
+            _shared_session = True
+            print(f"  [NearbyEHI] Reusing enterprise.com session from main EHI check")
+        else:
+            browser = await get_browser(playwright)
+            page, ctx = await _new_bd_page(browser, "ehi_nearby")
+            print("  [NearbyEHI] Establishing session via enterprise.com/en/home.html...")
+            home_url = "https://www.enterprise.com/en/home.html"
+            await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
+            try:
+                await page.wait_for_selector("input", timeout=15_000)
+            except Exception:
+                await page.wait_for_timeout(5_000)
+            print(f"  [NearbyEHI] Session ready at {page.url[:60]}")
 
         api_url = f"{EH_API_BASE}/reservations/initiate"
 
@@ -3877,6 +4116,9 @@ async def fetch_nearby_ehi_prices(
     except Exception as exc:
         print(f"  [NearbyEHI] Session setup failed: {exc!s:.100}")
     finally:
+        # Always clean up — whether we owned a fresh session or the shared one.
+        # If we used the shared session, ctx/browser are the shared refs;
+        # if we opened fresh, they are our own.  Either way, close and clear.
         try:
             if ctx:
                 await ctx.close()
@@ -3887,6 +4129,9 @@ async def fetch_nearby_ehi_prices(
                 await browser.close()
         except Exception:
             pass
+        _ehi_enterprise_shared["browser"] = None
+        _ehi_enterprise_shared["page"]    = None
+        _ehi_enterprise_shared["ctx"]     = None
 
     return prices
 
@@ -5569,9 +5814,11 @@ async def main() -> None:
         await asyncio.gather(*[_timed_check(p) for p in remaining])
         print()
 
-        # ── Phase 3: nearby airport price lookups (Kayak + Hertz + EHI + SIXT) ─
-        # Kayak/Hertz/EHI each open their own Bright Data browser session.
-        # SIXT uses the pure API (no browser needed) — runs concurrently with the rest.
+        # ── Phase 3: nearby airport price lookups (SIXT API + Hertz + EHI) ────────
+        # SIXT uses the pure API (no browser needed).
+        # Hertz/EHI each open their own Bright Data browser session.
+        # Kayak is intentionally excluded from Phase 3 — SIXT, Hertz and EHI have
+        # direct API/URL access to JFK and EWR, making Kayak tabs redundant here.
         # Prices are merged into nearby_prices, taking min per airport.
         # nearby_sources tracks which provider gave the best (cheapest) price.
         nearby_prices:  Dict[str, float] = {}
@@ -5579,12 +5826,7 @@ async def main() -> None:
         phase3_tasks   = []
         phase3_labels  = []
         phase3_sources = []   # human-readable source name per task, same order as tasks
-        if nearby_locations.get("Kayak"):
-            n = len(nearby_locations["Kayak"])
-            phase3_tasks.append(fetch_nearby_kayak_prices(pw, nearby_locations))
-            phase3_labels.append(f"Kayak/{n}")
-            phase3_sources.append("Kayak")
-        if nearby_locations.get("Hertz") and BRIGHT_DATA_CDP_URL:
+        if nearby_locations.get("Hertz"):  # Hertz uses direct API — no Bright Data needed
             n = len(nearby_locations["Hertz"])
             phase3_tasks.append(fetch_nearby_hertz_prices(pw, nearby_locations))
             phase3_labels.append(f"Hertz/{n}")
@@ -5617,12 +5859,12 @@ async def main() -> None:
                             nearby_prices[code] = price
                             nearby_sources[code] = src
 
-            # Debug summary — which providers were checked at each location
+            # Per-provider price table — shows SIXT, Hertz, EHI separately per location
             all_codes = sorted({c for prices in all_provider_prices.values() for c in prices})
             if all_codes:
                 src_cols = list(all_provider_prices.keys())
                 header = f"  {'Location':<32}" + "".join(f"  {s:<12}" for s in src_cols) + "  Best"
-                print(f"\n  [Phase3 Debug] Provider prices per nearby location:")
+                print(f"\n  [Phase3] Nearby airport prices by provider:")
                 print(f"  {'-' * (len(header) - 2)}")
                 print(header)
                 print(f"  {'-' * (len(header) - 2)}")
@@ -5684,6 +5926,9 @@ async def main() -> None:
     # ── Supabase results upload ──────────────────────────────────────────────
     if booking_id:
         save_results_to_supabase(booking_id, results_data)
+
+    # ── Bright Data usage summary ────────────────────────────────────────────
+    _print_bd_usage()
 
 
 def _print_nearby_opportunities(

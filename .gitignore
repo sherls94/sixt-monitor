@@ -1,1 +1,86 @@
+# Secrets
 .env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs & run output
+*.log
+run_*.txt
+run_latest.txt
+run_output.txt
+monitor_output.txt
+debug_output*.txt
+last_run.txt
+
+# Screenshots / debug captures
+*.png
+
+# One-off probe / investigation scripts
+probe_*.py
+*probe*.py
+budget_probe*.py
+capture_*.py
+discover_*.py
+find_*.py
+dump_*.py
+examine_*.py
+test_*.py
+check_*.py
+geocode_*.py
+add_airports_db.py
+sixt_login.py
+sixt_price_monitor.py
+run_pending.py
+
+# Captured request/response blobs (locations_db.json is kept)
+hertz_api_capture.json
+hertz_vehicles_full.json
+initiate_from_browser.json
+initiate_request.json
+alamo_req_body.json
+all_enterprise_calls.json
+budget_api_probe*.json
+enterprise_network_capture.json
+ffar_full_structure.json
+sixt_resp_*.json
+sixt_session.json
+sixt_suggest_probe.json
+location_data.json
+
+# JS bundle dumps
+js_bundles/
+
+# Claude Code session data
+.claude/
+
+# Card navigator subproject (separate repo)
+card-navigator/
+
+# Misc one-off scripts/output
+cdp_setup_complete.txt
+find_endpoints_run1.txt
+probe_run*.txt
+*_run*.txt
+probe_form_v*.py
+probe_enterprise_*.py
+probe_ehi_*.py
+probe_hertz_api.py
+probe_sixt_*.py
+probe_gma_*.py
+probe_intercept_initiate.py
+probe_locations.py
+probe_national_*.py
+probe_alamo*.py
+probe_api_direct*.py
+probe_api_direct_run1.txt
+probe_dom.py
+probe_from_browser.py
+probe2_locations.py
+probe3_locations.py
+capture_enterprise_js*.py
+capture_enterprise_js*_run1.txt
+scheduler.log
+test_log.log

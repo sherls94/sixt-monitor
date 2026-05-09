@@ -1,0 +1,1150 @@
+timestamp,booked_price,current_price,saving,alert_sent
+2026-03-29T20:11:22.390232+00:00,636.73,584.94,51.79,true
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,CCAR,—,457.63,636.73,179.10,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,ICAR,—,461.03,636.73,175.70,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,SCAR,—,464.31,636.73,172.42,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,FCAR,—,467.42,636.73,169.31,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,CFAR,—,513.56,636.73,123.17,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,JCAR,—,530.74,636.73,105.99,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,IFAR,—,537.54,636.73,99.19,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,GCAR,—,555.81,636.73,80.92,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,JFAR,—,588.14,636.73,48.59,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,SFAR,—,637.00,636.73,-0.27,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,UCAR,—,649.78,636.73,-13.05,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,SFAV,—,670.84,636.73,-34.11,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,RFAR,—,681.37,636.73,-44.64,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,IFDR,—,683.91,636.73,-47.18,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,GFAR,—,748.66,636.73,-111.93,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,SFDR,—,810.55,636.73,-173.82,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,RFDR,—,867.05,636.73,-230.32,,
+2026-03-30T03:31:09.793389+00:00,sixt_lga,LGA,GFDR,—,952.77,636.73,-316.04,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),457.63,636.73,179.10,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),461.03,636.73,175.70,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),464.31,636.73,172.42,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),467.42,636.73,169.31,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),513.56,636.73,123.17,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),530.74,636.73,105.99,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),537.54,636.73,99.19,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),555.81,636.73,80.92,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),588.14,636.73,48.59,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),637.00,636.73,-0.27,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),649.78,636.73,-13.05,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),670.84,636.73,-34.11,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),681.37,636.73,-44.64,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),683.91,636.73,-47.18,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),748.66,636.73,-111.93,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),810.55,636.73,-173.82,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),867.05,636.73,-230.32,,
+2026-03-30T03:33:52.408043+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),952.77,636.73,-316.04,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T03:36:32.216484+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T03:40:34.417853+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T03:51:58.650837+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T04:19:35.926737+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T04:22:05.891259+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T04:45:55.363005+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T04:49:29.783766+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:49:29.783766+00:00,sixt_nyc_search,JFK Airport,GFAR,,636.73,636.73,0.00,-41.89,cab_straight_10.6mi
+2026-03-30T04:49:29.783766+00:00,sixt_nyc_search,Newark Airport (EWR),GFAR,,636.73,636.73,0.00,-60.56,cab_straight_16.9mi
+2026-03-30T04:49:29.783766+00:00,sixt_nyc_search,Manhattan Times Square,GFAR,,636.73,636.73,0.00,-27.94,cab_straight_6.0mi
+2026-03-30T04:49:29.783766+00:00,sixt_nyc_search,Manhattan Downtown,GFAR,,636.73,636.73,0.00,-34.62,cab_straight_8.2mi
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T04:55:58.510817+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T04:55:58.510817+00:00,sixt_nyc_search,JFK Airport,GFAR,,636.73,636.73,0.00,-41.89,cab_straight_10.6mi
+2026-03-30T04:55:58.510817+00:00,sixt_nyc_search,Newark Airport (EWR),GFAR,,636.73,636.73,0.00,-60.56,cab_straight_16.9mi
+2026-03-30T04:55:58.510817+00:00,sixt_nyc_search,Manhattan Times Square,GFAR,,636.73,636.73,0.00,-27.94,cab_straight_6.0mi
+2026-03-30T04:55:58.510817+00:00,sixt_nyc_search,Manhattan Downtown,GFAR,,636.73,636.73,0.00,-34.62,cab_straight_8.2mi
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T13:01:41.743690+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T13:01:41.743690+00:00,sixt_nyc_search,JFK Airport,GFAR,,684.24,636.73,-47.51,-89.40,cab_straight_10.6mi
+2026-03-30T13:01:41.743690+00:00,sixt_nyc_search,Newark Airport (EWR),GFAR,,489.66,636.73,147.07,86.51,cab_straight_16.9mi
+2026-03-30T13:01:41.743690+00:00,sixt_nyc_search,Manhattan Times Square,GFAR,,1474.18,636.73,-837.45,-865.39,cab_straight_6.0mi
+2026-03-30T13:01:41.743690+00:00,sixt_nyc_search,Manhattan Downtown,GFAR,,1337.11,636.73,-700.38,-735.00,cab_straight_8.2mi
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),434.88,636.73,201.85,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),488.02,636.73,148.71,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),430.24,636.73,206.49,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),472.81,636.73,163.92,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),636.73,636.73,0.00,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),810.23,636.73,-173.50,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),438.11,636.73,198.62,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),510.79,636.73,125.94,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),649.84,636.73,-13.11,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),488.47,636.73,148.26,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),541.29,636.73,95.44,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),579.54,636.73,57.19,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),737.36,636.73,-100.63,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),427.37,636.73,209.36,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),586.23,636.73,50.50,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),617.38,636.73,19.35,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),745.91,636.73,-109.18,,
+2026-03-30T14:47:26.803806+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),585.04,636.73,51.69,,
+2026-03-30T14:47:26.803806+00:00,sixt_nyc_search,JFK Airport,GFAR,,684.24,636.73,-47.51,-89.40,cab_straight_10.6mi
+2026-03-30T14:47:26.803806+00:00,sixt_nyc_search,Newark Airport (EWR),GFAR,,489.66,636.73,147.07,86.51,cab_straight_16.9mi
+2026-03-30T14:47:26.803806+00:00,sixt_nyc_search,Manhattan Times Square,GFAR,,1474.18,636.73,-837.45,-865.39,cab_straight_6.0mi
+2026-03-30T14:47:26.803806+00:00,sixt_nyc_search,Manhattan Downtown,GFAR,,1337.11,636.73,-700.38,-735.00,cab_straight_8.2mi
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,CCAR,Compact (NISSAN VERSA),910.85,636.73,-274.12,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,CFAR,Compact (VOLKSWAGEN TAOS),1023.61,636.73,-386.88,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,FCAR,Fullsize (TOYOTA CAMRY),901.05,636.73,-264.32,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,GCAR,Fullsize Elite (BMW 3 SERIES),990.72,636.73,-353.99,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,GFAR,Fullsize Elite (BMW X5),1337.11,636.73,-700.38,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,GFDR,Fullsize Elite (BMW X5 AWD),1702.71,636.73,-1065.98,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,ICAR,Intermediate (NISSAN SENTRA),917.66,636.73,-280.93,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,IFAR,Intermediate (TOYOTA RAV4),1071.64,636.73,-434.91,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,IFDR,Intermediate (TOYOTA RAV4 AWD),1364.67,636.73,-727.94,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,JCAR,Intermediate Elite (BMW 2 SERIES),1023.73,636.73,-387.00,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,JFAR,Intermediate Elite (BMW X1),1135.93,636.73,-499.20,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,RFAR,Standard Elite (BMW X3),1216.55,636.73,-579.82,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,RFDR,Standard Elite (BMW X3 AWD),1549.12,636.73,-912.39,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,SCAR,Standard (VOLKSWAGEN JETTA),895.04,636.73,-258.31,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,SFAR,Standard (CHEVROLET BLAZER),1230.65,636.73,-593.92,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,SFAV,Standard (GMC ACADIA),1296.32,636.73,-659.59,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,SFDR,Standard (CHEVROLET BLAZER AWD),1567.13,636.73,-930.40,,
+2026-03-31T01:50:18.734760+00:00,sixt_lga,LGA,UCAR,Premium Elite (BMW 5 SERIES),1227.12,636.73,-590.39,,
+2026-03-31T01:50:18.734760+00:00,sixt_nearby,New York City Battery Park,GFAR,,1337.11,636.73,-700.38,-736.93,cab_straight_8.8mi
+2026-03-31T01:50:18.734760+00:00,sixt_nyc_search,JFK Airport,GFAR,,684.24,636.73,-47.51,-89.40,cab_straight_10.6mi
+2026-03-31T01:50:18.734760+00:00,sixt_nyc_search,Newark Airport (EWR),GFAR,,489.66,636.73,147.07,86.51,cab_straight_16.9mi
+2026-03-31T01:50:18.734760+00:00,sixt_nyc_search,Manhattan Times Square,GFAR,,1474.18,636.73,-837.45,-865.39,cab_straight_6.0mi
+2026-03-31T01:50:18.734760+00:00,sixt_nyc_search,Manhattan Downtown,GFAR,,1337.11,636.73,-700.38,-735.00,cab_straight_8.2mi
+2026-04-07T22:27:10,SIXT,,,,,ERROR: No Full Size SUV found in results
+2026-04-07T22:27:52,Hertz,,,,,ERROR: Timed out after 30s
+2026-04-07T22:28:23,Avis,,,,,ERROR: Timed out after 30s
+2026-04-07T22:30:38,Budget,,,,,ERROR: Timed out after 30s
+2026-04-07T22:31:38,National,,,,,ERROR: Timed out after 30s
+2026-04-07T22:32:18,Enterprise,,,,,ERROR: Timed out after 30s
+2026-04-07T22:32:49,Alamo,,,,,ERROR: Timed out after 30s
+2026-04-07T22:33:20,Dollar,,,,,ERROR: Timed out after 30s
+2026-04-07T22:33:51,Thrifty,,,,,ERROR: Timed out after 30s
+2026-04-07T22:49:29,SIXT,Full Size SUV,FULLSIZE ELITE SEDAN,104.54,532.19,OK
+2026-04-07T22:50:30,Hertz,,,,,ERROR: Timed out after 60s
+2026-04-07T22:51:30,Avis,,,,,ERROR: Timed out after 60s
+2026-04-07T22:52:31,Budget,,,,,ERROR: Timed out after 60s
+2026-04-07T22:53:32,National,,,,,ERROR: Timed out after 60s
+2026-04-07T22:54:33,Enterprise,,,,,ERROR: Timed out after 60s
+2026-04-07T22:55:31,Alamo,New York LaGuardia Airport,,2026.00,-1389.27,OK
+2026-04-07T22:56:31,Dollar,,,,,ERROR: Timed out after 60s
+2026-04-07T22:57:31,Thrifty,,,,,ERROR: Timed out after 60s
+2026-04-08T07:42:18,SIXT,,,,,ERROR: No Full Size SUV found in results
+2026-04-08T07:43:19,Hertz,,,,,ERROR: Timed out after 60s
+2026-04-08T07:44:01,Avis,,,,,"ERROR: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(""#_r_e_"")
+    - locator r"
+2026-04-08T07:45:01,Budget,,,,,ERROR: Timed out after 60s
+2026-04-08T07:45:14,National,,,,,ERROR: Invalid format string
+2026-04-08T07:46:15,Enterprise,,,,,ERROR: Timed out after 60s
+2026-04-08T07:47:16,Alamo,,,,,ERROR: Timed out after 60s
+2026-04-08T07:47:52,Dollar,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#dateTimePickerTriggerFr"
+2026-04-08T07:48:27,Thrifty,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#dateTimePickerTriggerFr"
+2026-04-10T10:00:57,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-10T10:01:10,Hertz,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:01:54,Avis,,,,,"ERROR: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(""#_r_c_"")
+    - locator r"
+2026-04-10T10:02:56,Budget,,,,,ERROR: Timed out after 60s
+2026-04-10T10:03:16,National,,,,,"ERROR: Locator.inner_text: Timeout 3000ms exceeded.
+Call log:
+  - waiting for locator("".date-selector__mont"
+2026-04-10T10:04:23,Enterprise,,,,,ERROR: Timed out after 60s
+2026-04-10T10:05:24,Alamo,,,,,ERROR: Timed out after 60s
+2026-04-10T10:06:11,Dollar,,,,,"ERROR: Locator.click: Timeout 5000ms exceeded.
+Call log:
+  - waiting for locator("".DayPicker-Day[aria-label"
+2026-04-10T10:06:55,Thrifty,,,,,"ERROR: Locator.click: Timeout 5000ms exceeded.
+Call log:
+  - waiting for locator("".DayPicker-Day[aria-label"
+2026-04-10T10:12:38,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-10T10:14:24,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-10T10:15:09,Avis,,,,,"ERROR: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator(""#_r_c_"")
+    - locator r"
+2026-04-10T10:16:28,Budget,,,,,"ERROR: Locator.wait_for: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""#_r_c_"") to be visibl"
+2026-04-10T10:19:09,National,,,,,"ERROR: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""[class*='vehicl"
+2026-04-10T10:20:27,Enterprise,,,,,"ERROR: Locator.wait_for: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete_"
+2026-04-10T10:21:41,Alamo,,,,,"ERROR: Locator.wait_for: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete_"
+2026-04-10T10:22:24,Dollar,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:23:04,Thrifty,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:29:59,SIXT,Full Size SUV,Fullsize Elite SUV,701.15,-64.42,OK
+2026-04-10T10:30:15,Hertz,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:32:01,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:34:20,Budget,,,,,"ERROR: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator("".MuiCard-root"")"
+2026-04-10T10:37:00,National,,,,,"ERROR: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""[class*='vehicl"
+2026-04-10T10:39:38,Enterprise,,,,,"ERROR: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""[class*='vehicl"
+2026-04-10T10:40:10,Alamo,New York LaGuardia Airport,,1200.00,-563.27,OK
+2026-04-10T10:40:56,Dollar,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T10:41:38,Thrifty,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T14:58:50,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-10T15:00:56,Hertz,,,,,"ERROR: Page.wait_for_selector: Timeout 120000ms exceeded.
+Call log:
+  - waiting for locator("".MuiCard-root"""
+2026-04-10T15:01:10,Avis,Full-Size,RECOMMENDED,336.57,300.16,OK
+2026-04-10T15:02:50,Budget,,,,,"ERROR: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator(""article"") to be"
+2026-04-10T15:04:07,National,,,,,"ERROR: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""[class*='vehicl"
+2026-04-10T15:05:24,Enterprise,,,,,"ERROR: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""[class*='vehicl"
+2026-04-10T15:05:53,Alamo,New York LaGuardia Airport,,1200.00,-563.27,OK
+2026-04-10T15:06:27,Dollar,,,,,ERROR: No Full Size SUV found on results page
+2026-04-10T15:07:00,Thrifty,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:15:46,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T10:17:21,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:17:33,Avis,Full-Size,RECOMMENDED,326.37,310.36,OK
+2026-04-11T10:19:41,Budget,,,,,"ERROR: Page.wait_for_selector: Timeout 120000ms exceeded.
+Call log:
+  - waiting for locator(""article"") to b"
+2026-04-11T10:22:02,National,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:24:22,Enterprise,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:26:22,Alamo,New York LaGuardia Airport,,1200.00,-563.27,OK
+2026-04-11T10:26:57,Dollar,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:27:31,Thrifty,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:32:05,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T10:32:13,Hertz,,,,,ERROR: No Full Size SUV found on results page
+2026-04-11T10:32:24,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T10:34:51,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:36:01,National,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:37:11,Enterprise,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:38:25,Alamo,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:40:01,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:41:37,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:44:32,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T10:45:37,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:45:48,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T10:48:00,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:49:52,National,New York LaGuardia Airport (LGA),,1200.00,-563.27,OK
+2026-04-11T10:51:02,Enterprise,,,,,"ERROR: Locator.click: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__in"
+2026-04-11T10:53:04,Alamo,New York LaGuardia Airport,,1200.00,-563.27,OK
+2026-04-11T10:54:09,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:55:15,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:57:55,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T10:59:31,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T10:59:42,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T11:01:53,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:03:45,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:05:37,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:07:38,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:09:14,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:10:50,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:18:40,SIXT,Full Size SUV,FULLSIZE ELITE SUV,618.34,18.39,OK
+2026-04-11T11:20:20,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:22:00,Avis,,,,,"ERROR: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator(""article"") to be"
+2026-04-11T11:24:29,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:26:32,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:28:37,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:30:50,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:32:30,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:34:09,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:35:34,SIXT,Full Size SUV,FULLSIZE ELITE SUV,618.34,18.39,OK
+2026-04-11T11:37:15,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:39:07,Avis,,,,,"ERROR: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator(""article"") to be"
+2026-04-11T11:41:26,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:43:23,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:45:20,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:47:23,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T11:48:58,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:50:04,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:52:10,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T11:53:46,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T11:57:47,Avis,,,,,ERROR: Timed out after 240s
+2026-04-11T12:00:10,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:02:07,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:04:05,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:04:24,Alamo,,,,,"ERROR: Page.evaluate: SyntaxError: Illegal return statement
+    at eval (<anonymous>)
+    at UtilityScript."
+2026-04-11T12:05:31,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:06:38,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:09:19,SIXT,Full Size SUV,FULLSIZE ELITE SUV,701.15,-64.42,OK
+2026-04-11T12:10:27,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:10:44,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T12:13:10,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:15:09,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:17:09,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:19:03,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:20:10,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:21:47,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:24:33,SIXT,Full Size SUV,FULLSIZE ELITE SUV,631.27,5.46,OK
+2026-04-11T12:25:38,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:25:50,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T12:28:09,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:30:05,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:32:02,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:33:54,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T12:35:00,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T12:36:05,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:26:44,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T22:27:49,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:28:00,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T22:30:21,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:32:21,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:34:22,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:36:14,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:37:50,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:38:56,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:41:43,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T22:42:49,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:46:07,Avis,,,,,"ERROR: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+  - waiting for locator(""article[data-te"
+2026-04-11T22:48:26,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:50:28,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:52:31,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:54:27,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T22:56:02,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T22:57:08,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:02:00,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T23:03:36,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:03:47,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T23:06:06,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:06:46,National,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:07:26,Enterprise,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:08:05,Alamo,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:09:41,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:10:47,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:12:53,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T23:14:29,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:14:39,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T23:17:04,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:19:15,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:21:28,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:23:28,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:25:04,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:26:10,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:29:37,SIXT,Full Size SUV,Fullsize Elite SUV,631.27,5.46,OK
+2026-04-11T23:31:13,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:31:24,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T23:33:44,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:35:48,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:37:53,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:39:53,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:41:29,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:42:34,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:45:09,SIXT,Full Size SUV,FULLSIZE ELITE SUV,687.16,-50.43,OK
+2026-04-11T23:46:15,Hertz,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:46:26,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-11T23:48:45,Budget,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:50:51,National,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:52:58,Enterprise,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:54:57,Alamo,,,,,ERROR: Form submission failed — still on homepage
+2026-04-11T23:56:04,Dollar,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-11T23:57:09,Thrifty,,,,,ERROR: No Full Size SUV found (text fallback)
+2026-04-12T13:15:00,SIXT,Full Size SUV,FULLSIZE ELITE SUV,707.70,-70.97,OK
+2026-04-12T13:15:26,Hertz,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-12T13:15:39,Budget,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,National,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,Enterprise,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,Alamo,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,Dollar,,,,,ERROR: Not found on Kayak
+2026-04-12T13:15:39,Thrifty,,,,,ERROR: Not found on Kayak
+2026-04-12T13:59:22,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-12T14:00:23,Hertz,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-12T14:00:35,Budget,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,National,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Enterprise,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Alamo,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Dollar,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Thrifty,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:00:35,Kayak,Full Size SUV,Share,385.00,251.73,OK
+2026-04-12T14:04:06,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-12T14:05:07,Hertz,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:15,Avis,,,,,ERROR: Timed out after 240s
+2026-04-12T14:10:20,Budget,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:20,National,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:20,Enterprise,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:21,Alamo,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:21,Dollar,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:21,Thrifty,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:10:21,Kayak,Full Size SUV,Dodge Durango,385.00,251.73,OK
+2026-04-12T14:16:48,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-12T14:17:57,Hertz,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-12T14:18:11,Budget,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,National,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Enterprise,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Alamo,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Dollar,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Thrifty,,,,,ERROR: Not on Kayak — check Kayak Best row
+2026-04-12T14:18:11,Kayak,Full Size SUV,Dodge Durango,385.00,251.73,OK
+2026-04-12T16:03:47,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-12T16:06:38,Hertz,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-12T16:07:07,Avis,,,,,ERROR: Bot-blocked — redirected away from results page
+2026-04-12T16:07:07,Budget,Full Size SUV,GMC Yukon,876.00,-239.27,OK
+2026-04-12T16:07:07,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-12T16:07:07,Enterprise,Full Size SUV,Full-size SUV,921.00,-284.27,OK
+2026-04-12T16:07:07,Alamo,Full Size SUV,Full-size SUV,876.00,-239.27,OK
+2026-04-12T16:07:07,Dollar,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-12T16:07:07,Thrifty,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-12T16:07:07,Kayak,Full Size SUV,Dodge Durango,385.00,251.73,OK
+2026-04-13T12:27:44,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-13T12:31:44,Hertz,,,,,ERROR: Timed out after 240s
+2026-04-13T12:32:16,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-13T12:32:16,Budget,Full Size SUV,GMC Yukon,852.00,-215.27,OK
+2026-04-13T12:32:16,National,Full Size SUV,Full-size SUV,1368.00,-731.27,OK
+2026-04-13T12:32:16,Enterprise,Full Size SUV,Full-size SUV,921.00,-284.27,OK
+2026-04-13T12:32:16,Alamo,Full Size SUV,Full-size SUV,876.00,-239.27,OK
+2026-04-13T12:32:16,Dollar,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-13T12:32:16,Thrifty,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-13T12:32:16,Kayak,Full Size SUV,Dodge Durango,413.00,223.73,OK
+2026-04-13T13:01:58,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-13T13:01:58,Hertz,Full Size SUV,Ford Expedition,1467.00,-830.27,OK
+2026-04-13T13:02:20,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-13T13:02:20,Budget,Full Size SUV,GMC Yukon,852.00,-215.27,OK
+2026-04-13T13:02:20,National,Full Size SUV,Full-size SUV,1368.00,-731.27,OK
+2026-04-13T13:02:20,Enterprise,Full Size SUV,Full-size SUV,921.00,-284.27,OK
+2026-04-13T13:02:20,Alamo,Full Size SUV,Full-size SUV,876.00,-239.27,OK
+2026-04-13T13:02:20,Dollar,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-13T13:02:20,Thrifty,Full Size SUV,Nissan Pathfinder,496.00,140.73,OK
+2026-04-13T13:02:20,Kayak,Full Size SUV,Dodge Durango,413.00,223.73,OK
+2026-04-14T08:43:07,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-14T08:43:08,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-14T08:43:37,Hertz,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:43:37,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:43:37,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:43:37,Enterprise,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:43:37,Alamo,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:43:37,Dollar,Full Size SUV,Chevrolet Suburban,931.00,-294.27,OK
+2026-04-14T08:43:37,Thrifty,Full Size SUV,Chevrolet Suburban,931.00,-294.27,OK
+2026-04-14T08:43:37,Kayak,Full Size SUV,BMW X5,672.00,-35.27,OK
+2026-04-14T08:51:16,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,581.37,55.36,OK
+2026-04-14T08:51:23,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-14T08:53:20,Hertz,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:53:20,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:53:20,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:53:20,Enterprise,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:53:20,Alamo,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-14T08:53:20,Dollar,Full Size SUV,Chevrolet Suburban,931.00,-294.27,OK
+2026-04-14T08:53:20,Thrifty,Full Size SUV,Chevrolet Suburban,931.00,-294.27,OK
+2026-04-14T08:53:20,Kayak,,,,,ERROR: No Full Size SUV found on Kayak
+2026-04-15T06:35:59,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T06:36:11,SIXT,Full Size SUV,Fullsize Elite SUV,693.59,-56.86,OK
+2026-04-15T06:42:05,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T06:42:17,SIXT,Full Size SUV,FULLSIZE ELITE SUV,707.70,-70.97,OK
+2026-04-15T06:46:11,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T06:46:15,SIXT,Full Size SUV,FULLSIZE ELITE SUV,693.59,-56.86,OK
+2026-04-15T06:48:18,Kayak,,,,,ERROR: No Full Size SUV found on Kayak
+2026-04-15T06:49:40,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-15T06:51:02,Enterprise,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T06:51:03,Alamo,Full Size SUV,Mercedes-Benz GLE,620.00,16.73,OK
+2026-04-15T06:51:03,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T06:51:10,Dollar,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T06:51:19,Thrifty,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T06:52:20,Budget,,,,,ERROR: Timed out after 240s
+2026-04-15T14:00:48,SIXT,Full Size SUV,FULLSIZE ELITE SUV,624.10,12.63,OK
+2026-04-15T14:00:48,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T14:03:16,Kayak,,,,,ERROR: No Full Size SUV found on Kayak
+2026-04-15T14:03:42,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-15T14:03:56,Enterprise,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:04:01,Alamo,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:04:44,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:05:03,Thrifty,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:05:35,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:07:16,Dollar,,,,,ERROR: Timed out after 240s
+2026-04-15T14:18:03,SIXT,Full Size SUV,FULLSIZE ELITE SUV,636.79,-0.06,OK
+2026-04-15T14:18:13,Avis,,,,,ERROR: Bot-blocked — redirected away from results page
+2026-04-15T14:20:30,Kayak,,,,,ERROR: No Full Size SUV found on Kayak
+2026-04-15T14:20:48,Dollar,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:21:07,Thrifty,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:21:14,Alamo,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:21:16,Enterprise,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:21:28,National,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:21:43,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-15T14:22:55,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-04-15T14:29:11,SIXT,Full Size SUV,FULLSIZE ELITE SUV,624.10,12.63,OK
+2026-04-15T14:29:11,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T14:29:47,Kayak,Full Size SUV,Dodge Durango,240.00,396.73,OK
+2026-04-15T14:30:10,Thrifty,Full Size SUV,Nissan Pathfinder,515.00,121.73,OK
+2026-04-15T14:30:19,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-15T14:30:25,Dollar,Full Size SUV,Nissan Pathfinder,682.00,-45.27,OK
+2026-04-15T14:30:35,Enterprise,Full Size SUV,Full-size SUV,809.00,-172.27,OK
+2026-04-15T14:30:37,Alamo,Full Size SUV,Full-size SUV,785.00,-148.27,OK
+2026-04-15T14:30:51,National,Full Size SUV,Full-size SUV,886.00,-249.27,OK
+2026-04-15T14:32:11,Budget,Full Size SUV,GMC Yukon,830.00,-193.27,OK
+2026-04-15T23:43:01,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,588.17,48.56,OK
+2026-04-15T23:43:03,SIXT,Full Size SUV,FULLSIZE ELITE SUV,624.10,12.63,OK
+2026-04-15T23:43:37,Kayak,Full Size SUV,Dodge Durango,240.00,396.73,OK
+2026-04-15T23:44:18,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-15T23:44:22,Dollar,Full Size SUV,Nissan Pathfinder,682.00,-45.27,OK
+2026-04-15T23:44:22,Thrifty,Full Size SUV,Nissan Pathfinder,515.00,121.73,OK
+2026-04-15T23:44:24,Alamo,Full Size SUV,Full-size SUV,785.00,-148.27,OK
+2026-04-15T23:44:40,National,Full Size SUV,Full-size SUV,886.00,-249.27,OK
+2026-04-15T23:44:50,Enterprise,Full Size SUV,Full-size SUV,809.00,-172.27,OK
+2026-04-15T23:45:56,Budget,Full Size SUV,GMC Yukon,830.00,-193.27,OK
+2026-04-16T11:55:32,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,540.57,96.16,OK
+2026-04-16T11:55:37,SIXT,Full Size SUV,FULLSIZE ELITE SUV,624.10,12.63,OK
+2026-04-16T11:56:07,Kayak,Full Size SUV,Dodge Durango,383.00,253.73,OK
+2026-04-16T11:56:38,Hertz,Full Size SUV,Ford Expedition,932.00,-295.27,OK
+2026-04-16T11:56:49,Thrifty,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-16T11:56:52,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-16T11:57:04,Alamo,Full Size SUV,Full-size SUV,688.00,-51.27,OK
+2026-04-16T11:57:10,National,Full Size SUV,Full-size SUV,886.00,-249.27,OK
+2026-04-16T11:57:16,Enterprise,Full Size SUV,Full-size SUV,709.00,-72.27,OK
+2026-04-16T11:58:24,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-16T12:10:35,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,540.57,96.16,OK
+2026-04-16T12:10:36,SIXT,Full Size SUV,FULLSIZE ELITE SUV,624.10,12.63,OK
+2026-04-16T12:10:57,Kayak,Full Size SUV,Dodge Durango,383.00,253.73,OK
+2026-04-16T12:11:24,Hertz,Full Size SUV,Large 2WD SUV,535.00,101.73,OK
+2026-04-16T12:11:30,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-16T12:11:44,Alamo,Full Size SUV,Full-size SUV,688.00,-51.27,OK
+2026-04-16T12:11:57,National,Full Size SUV,Full-size SUV,886.00,-249.27,OK
+2026-04-16T12:12:07,Enterprise,Full Size SUV,Full-size SUV,709.00,-72.27,OK
+2026-04-16T12:12:09,Thrifty,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-16T12:13:07,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-21T22:26:57,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-21T22:27:33,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,492.97,143.76,OK
+2026-04-21T22:27:52,Kayak,Full Size SUV,Dodge Durango,297.00,339.73,OK
+2026-04-21T22:28:23,National,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-21T22:28:23,Enterprise,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-21T22:28:23,Alamo,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-21T22:28:43,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-21T22:28:43,Thrifty,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-21T22:29:09,Hertz,Full Size SUV,Medium 7 Passenger SUV,628.53,8.20,OK
+2026-04-21T22:30:56,Budget,Full Size SUV,GMC Yukon,614.00,22.73,OK
+2026-04-22T08:21:02,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T08:21:38,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T08:22:01,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T08:22:01,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T08:22:21,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:22:21,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:22:21,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:22:22,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T08:22:27,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-22T08:24:54,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T08:28:59,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T08:29:38,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T08:30:58,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T08:30:58,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T08:31:15,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:31:15,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:31:15,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:31:23,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T08:31:46,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-22T08:32:48,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T08:35:25,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T08:35:58,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T08:36:39,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T08:36:39,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T08:37:01,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T08:37:28,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-22T08:37:43,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:37:43,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:37:43,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T08:38:27,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T09:11:20,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T09:11:43,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T09:12:04,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T09:12:04,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T09:12:28,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T09:12:32,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-22T09:13:10,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T09:13:21,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:13:21,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:13:21,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:15:06,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T09:19:05,Avis,,,,,ERROR: Timed out after 240s
+2026-04-22T09:19:05,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T09:19:05,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T09:19:28,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:19:28,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:19:28,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:19:29,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T09:19:32,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T09:20:23,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-22T09:25:58,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T09:27:54,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T09:27:54,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T09:27:54,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T09:28:13,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-22T09:28:15,National,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:28:15,Enterprise,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:28:15,Alamo,Full Size SUV,Full Size SUV,716.81,-80.08,OK
+2026-04-22T09:28:15,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T09:28:23,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T09:35:29,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T09:36:05,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-22T09:36:05,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T09:36:05,Kayak,Full Size SUV,Dodge Durango,338.00,298.73,OK
+2026-04-22T09:36:24,National,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T09:36:24,Enterprise,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T09:36:24,Alamo,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T09:36:33,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T09:36:44,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-22T09:37:10,Hertz,Full Size SUV,Medium 7 Passenger SUV,622.79,13.94,OK
+2026-04-22T13:38:05,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),467.30,169.43,OK
+2026-04-22T13:39:52,Avis,,,,,"ERROR: Page.wait_for_selector: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator(""article"") to be"
+2026-04-22T13:39:52,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-22T13:39:52,Kayak,Full Size SUV,Hyundai Santa Fe,354.00,282.73,OK
+2026-04-22T13:40:10,National,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T13:40:10,Enterprise,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T13:40:10,Alamo,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-22T13:40:11,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-22T13:40:13,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-22T13:40:15,Hertz,Full Size SUV,Medium 7 Passenger SUV,628.58,8.15,OK
+2026-04-23T09:26:04,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),472.61,164.12,OK
+2026-04-23T09:26:26,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-23T09:26:57,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-23T09:26:57,Kayak,Full Size SUV,Dodge Durango,323.00,313.73,OK
+2026-04-23T09:27:16,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-23T09:27:22,National,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:27:22,Enterprise,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:27:22,Alamo,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:27:30,Hertz,Full Size SUV,Medium 7 Passenger SUV,628.58,8.15,OK
+2026-04-23T09:27:31,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-23T09:54:32,SIXT,Full Size SUV,Premium (CHEVROLET SUBURBAN),472.61,164.12,OK
+2026-04-23T09:54:59,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,438.57,198.16,OK
+2026-04-23T09:55:29,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-23T09:55:29,Kayak,Full Size SUV,Dodge Durango,323.00,313.73,OK
+2026-04-23T09:55:47,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-23T09:55:48,National,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:55:48,Enterprise,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:55:48,Alamo,Full Size SUV,Full Size SUV,695.31,-58.58,OK
+2026-04-23T09:55:50,Budget,Full Size SUV,GMC Yukon,586.00,50.73,OK
+2026-04-23T09:55:52,Hertz,Full Size SUV,Medium 7 Passenger SUV,628.58,8.15,OK
+2026-04-27T12:05:16,SIXT,Full Size SUV,Fullsize Elite (BMW X5),689.83,-53.10,OK
+2026-04-27T12:05:49,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T12:05:49,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T12:05:49,Kayak,Full Size SUV,Dodge Durango,368.00,268.73,OK
+2026-04-27T12:06:06,National,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T12:06:06,Enterprise,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T12:06:06,Alamo,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T12:06:07,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T12:06:10,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T12:06:14,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T12:23:21,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T12:23:55,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/reservatio"
+2026-04-27T12:24:05,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T12:24:05,Kayak,Full Size SUV,Dodge Durango,423.00,213.73,OK
+2026-04-27T12:24:25,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T12:24:26,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T12:24:32,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T12:25:24,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-04-27T12:25:34,Enterprise,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.enterprise.com/en/home.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) reserve"
+2026-04-27T12:26:36,National,,,,,ERROR: Timed out after 150s
+2026-04-27T12:39:37,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T12:40:10,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T12:40:19,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T12:40:19,Kayak,Full Size SUV,Dodge Durango,423.00,213.73,OK
+2026-04-27T12:40:41,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T12:40:43,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:40:43,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:40:43,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:40:50,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-27T12:40:55,Hertz,Full Size SUV,Medium 7 Passenger SUV,848.17,-211.44,OK
+2026-04-27T12:55:02,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T12:55:37,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T12:55:46,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T12:55:46,Kayak,Full Size SUV,Dodge Durango,423.00,213.73,OK
+2026-04-27T12:56:07,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T12:56:18,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T12:56:21,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T12:56:23,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:56:23,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:56:23,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T12:59:36,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T13:00:19,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T13:00:44,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T13:00:44,Kayak,Full Size SUV,Dodge Durango,423.00,213.73,OK
+2026-04-27T13:01:01,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T13:01:01,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T13:01:01,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T13:01:05,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T13:01:10,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T13:01:10,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-27T13:12:53,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T13:13:26,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T13:13:30,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T13:13:30,Kayak,Full Size SUV,Dodge Durango,423.00,213.73,OK
+2026-04-27T13:13:51,Budget,Full Size SUV,GMC Yukon,615.00,21.73,OK
+2026-04-27T13:13:52,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T13:13:57,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T13:15:17,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-04-27T13:15:31,National,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.nationalcar.com/en/home.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) reserv"
+2026-04-27T13:16:00,Enterprise,,,,,ERROR: Timed out after 150s
+2026-04-27T14:22:13,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T14:22:47,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T14:22:47,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T14:22:47,Kayak,Full Size SUV,Chevrolet Suburban,544.00,92.73,OK
+2026-04-27T14:23:07,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T14:23:09,Budget,Full Size SUV,GMC Yukon,571.00,65.73,OK
+2026-04-27T14:23:12,National,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T14:23:12,Enterprise,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T14:23:12,Alamo,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-04-27T14:23:13,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T14:25:47,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T14:26:26,Avis,Full-Size SUV,GMC YUKON DENALI OR SIMILAR,448.77,187.96,OK
+2026-04-27T14:26:28,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T14:26:28,Kayak,Full Size SUV,Jeep Grand Cherokee L,497.00,139.73,OK
+2026-04-27T14:26:53,Budget,Full Size SUV,GMC Yukon,571.00,65.73,OK
+2026-04-27T14:26:56,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T14:26:57,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T14:27:12,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T14:27:12,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T14:27:12,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:43:10,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T15:43:40,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-04-27T15:43:40,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T15:43:40,Kayak,Full Size SUV,Chevrolet Suburban,544.00,92.73,OK
+2026-04-27T15:44:00,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:44:00,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:44:00,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:44:01,Budget,Full Size SUV,GMC Yukon,648.00,-11.27,OK
+2026-04-27T15:44:02,Hertz,Full Size SUV,Medium 7 Passenger SUV,871.24,-234.51,OK
+2026-04-27T15:44:16,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-04-27T15:53:10,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T15:53:41,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-04-27T15:53:51,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T15:53:51,Kayak,Full Size SUV,Jeep Grand Cherokee L,497.00,139.73,OK
+2026-04-27T15:54:08,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:54:08,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:54:08,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T15:54:10,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T15:54:11,Budget,Full Size SUV,GMC Yukon,648.00,-11.27,OK
+2026-04-27T15:54:26,Hertz,,,,,ERROR: No Full Size SUV PAYLATER rate found. SUV sipp codes: []
+2026-04-27T16:01:16,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),640.65,-3.92,OK
+2026-04-27T16:01:42,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-04-27T16:01:42,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-04-27T16:01:42,Kayak,Full Size SUV,Chevrolet Suburban,544.00,92.73,OK
+2026-04-27T16:02:00,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-04-27T16:02:03,Budget,Full Size SUV,GMC Yukon,648.00,-11.27,OK
+2026-04-27T16:02:19,Hertz,,,,,ERROR: No Full Size SUV PAYLATER rate found. SUV sipp codes: []
+2026-04-27T16:02:23,National,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T16:02:23,Enterprise,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-04-27T16:02:23,Alamo,Full Size SUV,Full Size SUV,711.45,-74.72,OK
+2026-05-01T08:33:27,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T08:34:14,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T08:34:58,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T08:34:58,Kayak,Full Size SUV,Full-size SUV,597.00,39.73,OK
+2026-05-01T08:35:18,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T08:35:20,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T08:35:20,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T08:36:34,Enterprise,Full Size SUV,Full Size SUV,614.75,21.98,OK
+2026-05-01T08:37:19,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T08:37:29,National,,,,,ERROR: Timed out after 150s
+2026-05-01T08:45:58,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T08:46:33,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T08:47:35,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T08:47:35,Kayak,,,,,ERROR: [Errno 22] Invalid argument
+2026-05-01T08:47:51,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T08:48:31,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T08:49:58,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T08:49:58,Kayak,Full Size SUV,Ford Expedition,562.00,74.73,OK
+2026-05-01T08:50:18,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T08:50:19,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T08:50:21,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T08:50:52,Enterprise,Full Size SUV,Full Size SUV,614.75,21.98,OK
+2026-05-01T08:51:39,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T08:52:02,National,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.nationalcar.com/en/car-rental.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) "
+2026-05-01T09:17:02,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T09:17:13,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T09:17:31,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T09:17:51,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T09:18:50,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T09:18:50,Kayak,Full Size SUV,Chevrolet Suburban,754.00,-117.27,OK
+2026-05-01T09:18:52,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T09:18:52,Kayak,Full Size SUV,Chevrolet Suburban,754.00,-117.27,OK
+2026-05-01T09:19:11,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T09:19:11,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T09:19:13,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T09:19:23,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T09:19:24,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T09:19:28,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-05-01T09:21:20,Enterprise,,,,,ERROR: Timed out after 150s
+2026-05-01T09:21:20,Alamo,,,,,ERROR: Timed out after 150s
+2026-05-01T09:21:20,National,,,,,ERROR: Timed out after 150s
+2026-05-01T09:21:22,Enterprise,,,,,ERROR: Timed out after 150s
+2026-05-01T09:21:22,Alamo,,,,,ERROR: Timed out after 150s
+2026-05-01T09:21:22,National,,,,,ERROR: Timed out after 150s
+2026-05-01T09:25:53,SIXT,Full Size SUV,Fullsize Elite (BMW X5),596.28,40.45,OK
+2026-05-01T09:26:21,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T09:27:03,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T09:27:03,Kayak,Full Size SUV,Chevrolet Suburban,754.00,-117.27,OK
+2026-05-01T09:27:20,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T09:27:24,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T09:27:33,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T09:29:04,Enterprise,Full Size SUV,Full Size SUV,614.75,21.98,OK
+2026-05-01T09:29:49,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T09:30:07,National,,,,,"ERROR: Page.evaluate: TypeError: Cannot read properties of null (reading 'style')
+    at eval (eval at evaluate (:290:30), <anonymous>:3:27)
+    at eval (<an"
+2026-05-01T14:29:43,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:30:31,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T14:30:43,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:30:43,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:31:04,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T14:31:04,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:31:22,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:31:59,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:32:31,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T14:32:51,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T14:32:51,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T14:33:14,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:33:14,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:33:34,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T14:33:35,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:33:36,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:33:39,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T14:35:18,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T14:35:18,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T14:36:06,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T14:41:17,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:41:39,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T14:42:20,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:42:20,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:42:41,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:42:42,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:42:57,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T14:43:40,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:43:58,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T14:44:10,National,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.nationalcar.com/en/car-rental.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) "
+2026-05-01T14:44:19,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T14:44:24,Enterprise,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.enterprise.com/en/home.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) reserve"
+2026-05-01T14:44:44,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:44:44,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:45:04,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:45:05,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:45:30,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-05-01T14:47:15,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T14:47:15,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T14:48:07,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T14:52:55,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:53:25,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/reservatio"
+2026-05-01T14:54:01,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:54:01,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:54:06,Dollar,,,,,ERROR: goto timed out or failed: Page.goto: net::ERR_CONNECTION_CLOSED at https://www.dollar.
+2026-05-01T14:54:22,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:54:27,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:55:58,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:56:21,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T14:56:21,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T14:56:23,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T14:56:59,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:56:59,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:57:14,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T14:57:17,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T14:57:20,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:57:22,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:57:45,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T14:58:51,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/home"", wai"
+2026-05-01T14:58:51,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T14:58:51,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T14:59:07,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T14:59:12,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T14:59:13,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T14:59:13,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T14:59:58,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T15:00:08,Dollar,,,,,ERROR: No Full Size SUV found in direct results
+2026-05-01T15:00:51,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T15:01:29,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T15:01:55,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T15:01:55,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T15:02:15,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T15:02:16,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T15:02:19,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T15:03:29,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T15:03:29,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T15:03:51,Alamo,,,,,ERROR: Timed out after 300s
+2026-05-01T15:05:51,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T15:05:51,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T15:06:38,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T15:11:14,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T15:11:39,Avis,,,,,ERROR: No Full Size SUV found on results page
+2026-05-01T15:12:17,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T15:12:17,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T15:12:37,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T15:12:38,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T15:12:56,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T15:12:56,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T15:13:01,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T15:13:49,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-01T15:18:53,SIXT,Full Size SUV,Fullsize (CHEVROLET TAHOE),741.40,-104.67,OK
+2026-05-01T15:19:45,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/home"", wai"
+2026-05-01T15:20:05,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-01T15:20:05,Kayak,Full Size SUV,Full-size SUV,656.00,-19.27,OK
+2026-05-01T15:20:24,Hertz,Full Size SUV,Medium 7 Passenger SUV,1024.91,-388.18,OK
+2026-05-01T15:20:26,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-01T15:20:27,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-01T15:20:47,National,Full Size SUV,Full Size SUV,709.68,-72.95,OK
+2026-05-01T15:20:47,Enterprise,Full Size SUV,Full Size SUV,675.97,-39.24,OK
+2026-05-01T15:20:47,Alamo,Full Size SUV,Full Size SUV,585.35,51.38,OK
+2026-05-02T17:17:01,SIXT,,,,,ERROR: SelectLocation or GetOfferRecommendationsV2 API failed
+2026-05-02T17:18:06,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/home"", wai"
+2026-05-02T17:18:27,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-02T17:18:27,Kayak,,,,,ERROR: No Full Size SUV found on Kayak
+2026-05-02T17:18:43,Hertz,,,,,ERROR: No Full Size SUV PAYLATER rate found. SUV sipp codes: []
+2026-05-02T17:18:48,Budget,,,,,ERROR: No Full Size SUV found on Kayak for this agency
+2026-05-02T17:18:50,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-02T17:19:48,Alamo,,,,,"ERROR: Locator.click: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator(""#search-autocomplete__input-PICKUP"")
+"
+2026-05-02T17:20:13,Enterprise,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.enterprise.com/en/home.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) reserve"
+2026-05-02T17:20:36,National,,,,,"ERROR: Form submit did not navigate to results — URL: https://www.nationalcar.com/en/car-rental.html
+  Note: Enterprise Holdings (Enterprise/National/Alamo) "
+2026-05-02T17:27:57,SIXT,Full Size SUV,Fullsize Elite (BMW X5),1032.82,-396.09,OK
+2026-05-02T17:28:55,Avis,,,,,ERROR: Bot-blocked — redirected away from results page
+2026-05-02T17:28:55,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-02T17:28:55,Kayak,Full Size SUV,Dodge Durango,451.00,185.73,OK
+2026-05-02T17:29:09,Hertz,Full Size SUV,Medium 7 Passenger SUV,770.61,-133.88,OK
+2026-05-02T17:29:13,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-02T17:29:15,Budget,Full Size SUV,GMC Yukon,918.00,-281.27,OK
+2026-05-02T17:29:32,National,Full Size SUV,Full Size SUV,1415.18,-778.45,OK
+2026-05-02T17:29:32,Enterprise,Full Size SUV,Full Size SUV,1323.11,-686.38,OK
+2026-05-02T17:29:32,Alamo,Full Size SUV,Full Size SUV,1212.59,-575.86,OK
+2026-05-03T16:10:28,SIXT,Full Size SUV,Fullsize Elite (BMW X5),757.25,-157.25,OK
+2026-05-03T16:11:12,Avis,,,,,"ERROR: Page.wait_for_timeout: Target page, context or browser has been closed"
+2026-05-03T16:11:36,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-03T16:11:36,Kayak,Full Size SUV,Dodge Durango,410.00,190.00,OK
+2026-05-03T16:11:57,Budget,Full Size SUV,GMC Yukon,689.00,-89.00,OK
+2026-05-03T16:11:59,Hertz,Full Size SUV,Medium 7 Passenger SUV,606.55,-6.55,OK
+2026-05-03T16:12:17,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-03T16:13:26,National,Full Size SUV,Full Size SUV,1041.77,-441.77,OK
+2026-05-03T16:13:26,Enterprise,Full Size SUV,Full Size SUV,992.34,-392.34,OK
+2026-05-03T16:13:26,Alamo,Full Size SUV,Full Size SUV,909.45,-309.45,OK
+2026-05-04T16:07:01,SIXT,Full Size SUV,Fullsize Elite (BMW X5),757.25,-157.25,OK
+2026-05-04T16:07:32,Avis,,,,,"ERROR: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to ""https://www.avis.com/en/reservatio"
+2026-05-04T16:07:44,Thrifty,,,,,ERROR: No Thrifty station configured for LGA
+2026-05-04T16:07:44,Kayak,Full Size SUV,Dodge Durango,397.00,203.00,OK
+2026-05-04T16:08:12,Hertz,Full Size SUV,Medium 7 Passenger SUV,600.06,-0.06,OK
+2026-05-04T16:08:17,Dollar,,,,,ERROR: Dollar location error: INVALID PICKUP LOCATION (station=LGAO01)
+2026-05-04T16:08:18,Budget,Full Size SUV,GMC Yukon,783.00,-183.00,OK
+2026-05-04T16:08:52,National,Full Size SUV,Full Size SUV,1058.65,-458.65,OK
+2026-05-04T16:08:52,Enterprise,Full Size SUV,Full Size SUV,992.34,-392.34,OK
+2026-05-04T16:08:52,Alamo,Full Size SUV,Full Size SUV,909.45,-309.45,OK
