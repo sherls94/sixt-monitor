@@ -9,7 +9,8 @@ git push origin master
 echo "=== Deploying to server ==="
 ssh root@178.156.231.79 '
   cd /root/sixt-monitor &&
-  git pull origin master &&
+  git fetch origin &&
+  git reset --hard origin/master &&
   echo "Pull complete" &&
   systemctl restart cardvault-scheduler &&
   echo "Scheduler restarted"
