@@ -128,6 +128,7 @@ BOOKING = {
     "transmission":       "AUTOMATIC",   # "AUTOMATIC" | "MANUAL" | None — NOT applied (unverified)
     "min_passengers":     5,             # ≥5 → carcapacity=pas_5_6  (CONFIRMED WORKING; seats= broken)
     "ac_required":        True,          # informational only; Kayak has no A/C filter
+    "providers_to_check": None,          # None = check all providers; list of names to restrict
 }
 
 MIN_SAVING = 15.00  # Only flag deals that save at least this amount
@@ -1358,6 +1359,13 @@ def make_result(
     }
 
 
+def should_check_provider(provider_name: str) -> bool:
+    providers = BOOKING.get("providers_to_check")
+    if not providers:
+        return True  # None or empty = check all
+    return provider_name in providers
+
+
 def parse_price(text: str) -> Optional[float]:
     """
     Extract the first numeric price from a string.
@@ -1788,6 +1796,8 @@ async def check_sixt(playwright) -> Dict:  # noqa: ARG001 (playwright unused —
       4. Filter for Full Size SUV (ACRISS[1] == 'F', not compact/economy/minivan).
       5. Return cheapest match.
     """
+    if not should_check_provider("SIXT"):
+        return make_result("SIXT", na=True, error="Not in providers_to_check")
     if not SIXT_LOCATION:
         airport = BOOKING["airport_code"]
         print(f"  [SIXT] No location data for {airport} in locations_db.json — skipping.")
@@ -1971,6 +1981,8 @@ async def check_hertz(playwright) -> Dict:
 
     playwright arg is kept for API compatibility but is never used.
     """
+    if not should_check_provider("Hertz"):
+        return make_result("Hertz", na=True, error="Not in providers_to_check")
     if not HERTZ_STATION_CODE:
         airport = BOOKING["airport_code"]
         msg = f"No Hertz station for {airport} in locations_db.json"
@@ -2038,6 +2050,8 @@ async def check_avis(playwright) -> Dict:
     Cookie-seeding retry logic is preserved: if the direct URL redirects away
     from /vehicle-availability, we seed a session via the Avis homepage then retry.
     """
+    if not should_check_provider("Avis"):
+        return make_result("Avis", na=True, error="Not in providers_to_check")
     browser = await get_browser(playwright)
     page, ctx = await _new_bd_page(browser, "avis")
 
@@ -2115,6 +2129,8 @@ async def check_budget(playwright) -> Dict:
 
     Routing through Bright Data matches Avis and eliminates intermittent bot-blocking.
     """
+    if not should_check_provider("Budget"):
+        return make_result("Budget", na=True, error="Not in providers_to_check")
     browser = await get_browser(playwright)
     page, ctx = await _new_bd_page(browser, "budget")
 
@@ -2798,6 +2814,8 @@ async def check_national(playwright) -> Dict:
     One BD browser is shared with Enterprise and Alamo via _check_ehi_all().
     Returns ERROR on failure — no Kayak fallback.
     """
+    if not should_check_provider("National"):
+        return make_result("National", na=True, error="Not in providers_to_check")
     return await _check_ehi_brand(
         playwright, "National", "https://www.nationalcar.com/en/car-rental.html"
     )
@@ -2814,6 +2832,8 @@ async def check_enterprise(playwright) -> Dict:
     One BD browser is shared with National and Alamo via _check_ehi_all().
     Returns ERROR on failure — no Kayak fallback.
     """
+    if not should_check_provider("Enterprise"):
+        return make_result("Enterprise", na=True, error="Not in providers_to_check")
     return await _check_ehi_brand(
         playwright, "Enterprise", "https://www.enterprise.com/en/home.html"
     )
@@ -2830,6 +2850,8 @@ async def check_alamo(playwright) -> Dict:
     One BD browser is shared with Enterprise and National via _check_ehi_all().
     Returns ERROR on failure — no Kayak fallback.
     """
+    if not should_check_provider("Alamo"):
+        return make_result("Alamo", na=True, error="Not in providers_to_check")
     return await _check_ehi_brand(
         playwright, "Alamo", "https://www.alamo.com/en/reserve.html#/start"
     )
@@ -2849,6 +2871,8 @@ async def check_dollar(playwright) -> Dict:
 
     Direct URL: DOLLAR_RESULTS_URL (Hertz Holdings platform, station from DB).
     """
+    if not should_check_provider("Dollar"):
+        return make_result("Dollar", na=True, error="Not in providers_to_check")
     if not BRIGHT_DATA_CDP_URL:
         print("  [Dollar] No Bright Data — returning N/A.")
         return make_result("Dollar", error="Dollar requires Bright Data for direct URL checks", na=True)
@@ -2977,6 +3001,8 @@ async def check_thrifty(playwright) -> Dict:
     Thrifty has its own station codes in locations_db.json (separate from Hertz/Dollar).
     When no Thrifty station exists at the airport, returns N/A cleanly.
     """
+    if not should_check_provider("Thrifty"):
+        return make_result("Thrifty", na=True, error="Not in providers_to_check")
     if not BRIGHT_DATA_CDP_URL:
         print("  [Thrifty] No Bright Data — returning N/A.")
         return make_result("Thrifty", error="Thrifty requires Bright Data for direct URL checks", na=True)
@@ -5573,6 +5599,7 @@ def load_booking_from_supabase(booking_id: str) -> dict:
         "ac_required":        True,
         "pickup_lat":         float(b.get("pickup_lat") or 0),
         "pickup_lng":         float(b.get("pickup_lng") or 0),
+        "providers_to_check": b.get("providers_to_check") or None,
     }
 
 
