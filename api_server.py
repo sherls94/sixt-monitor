@@ -107,7 +107,7 @@ async def _run_monitor():
     global RUNNING
     try:
         proc = await asyncio.create_subprocess_exec(
-            "python", "price_monitor.py",
+            "python3", "price_monitor.py",
             cwd=Path(__file__).parent,
         )
         await proc.wait()
