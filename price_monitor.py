@@ -129,6 +129,7 @@ BOOKING = {
     "min_passengers":     5,             # ≥5 → carcapacity=pas_5_6  (CONFIRMED WORKING; seats= broken)
     "ac_required":        True,          # informational only; Kayak has no A/C filter
     "providers_to_check": None,          # None = check all providers; list of names to restrict
+    "additional_classes": None,          # None = only check booked class; list of ACRISS codes for extra class checks
 }
 
 MIN_SAVING = 15.00  # Only flag deals that save at least this amount
@@ -5448,10 +5449,36 @@ def print_results(results: List[Dict]) -> None:
 # JSON OUTPUT
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _format_results_section(results: List[Dict], booked_price: float) -> List[Dict]:
+    """Convert raw provider result dicts into the standardised JSON results section."""
+    out = []
+    for r in results:
+        price = r.get("price")
+        saving = round(booked_price - price, 2) if price is not None else None
+        via_kayak = "kayak.com" in (r.get("url") or "")
+        source = "Kayak" if via_kayak else "direct"
+        if r.get("error"):
+            status = "na" if r.get("na") else "error"
+        else:
+            status = "ok"
+        out.append({
+            "provider":    r.get("provider"),
+            "car_class":   r.get("car_class") or "",
+            "model":       r.get("model") or "",
+            "price":       round(price, 2) if price is not None else None,
+            "saving":      saving,
+            "source":      source,
+            "status":      status,
+            "booking_url": r.get("url") or None,
+        })
+    return out
+
+
 def _write_json_results(
     results: List[Dict],
     nearby_rows: List[Dict],
     total_seconds: float,
+    alternative_classes: Optional[List[Dict]] = None,
 ) -> None:
     """
     Write latest_results.json next to price_monitor.py.
@@ -5482,26 +5509,7 @@ def _write_json_results(
     }
 
     # ── results section ──────────────────────────────────────────────────────
-    results_section = []
-    for r in results:
-        price = r.get("price")
-        saving = round(booked - price, 2) if price is not None else None
-        via_kayak = "kayak.com" in (r.get("url") or "")
-        source = "Kayak" if via_kayak else "direct"
-        if r.get("error"):
-            status = "na" if r.get("na") else "error"
-        else:
-            status = "ok"
-        results_section.append({
-            "provider":    r.get("provider"),
-            "car_class":   r.get("car_class") or "",
-            "model":       r.get("model") or "",
-            "price":       round(price, 2) if price is not None else None,
-            "saving":      saving,
-            "source":      source,
-            "status":      status,
-            "booking_url": r.get("url") or None,
-        })
+    results_section = _format_results_section(results, booked)
 
     # ── nearby section ───────────────────────────────────────────────────────
     nearby_section = []
@@ -5544,12 +5552,13 @@ def _write_json_results(
 
     # ── assemble and write ───────────────────────────────────────────────────
     payload = {
-        "booking":         booking_section,
-        "last_checked":    datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
-        "runtime_seconds": round(total_seconds, 1),
-        "results":         results_section,
-        "nearby":          nearby_section,
-        "summary":         summary_section,
+        "booking":            booking_section,
+        "last_checked":       datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+        "runtime_seconds":    round(total_seconds, 1),
+        "results":            results_section,
+        "nearby":             nearby_section,
+        "summary":            summary_section,
+        "alternative_classes": alternative_classes or [],
     }
 
     out_path = Path(__file__).parent / "latest_results.json"
@@ -5600,6 +5609,7 @@ def load_booking_from_supabase(booking_id: str) -> dict:
         "pickup_lat":         float(b.get("pickup_lat") or 0),
         "pickup_lng":         float(b.get("pickup_lng") or 0),
         "providers_to_check": b.get("providers_to_check") or None,
+        "additional_classes": b.get("additional_classes") or None,
     }
 
 
@@ -5607,12 +5617,13 @@ def save_results_to_supabase(booking_id: str, results_data: dict) -> None:
     try:
         sb = get_supabase()
         sb.table("price_results").insert({
-            "booking_id":       booking_id,
-            "checked_at":       datetime.now().isoformat(),
-            "runtime_seconds":  results_data.get("runtime_seconds"),
-            "results":          results_data.get("results"),
-            "nearby":           results_data.get("nearby"),
-            "summary":          results_data.get("summary"),
+            "booking_id":          booking_id,
+            "checked_at":          datetime.now().isoformat(),
+            "runtime_seconds":     results_data.get("runtime_seconds"),
+            "results":             results_data.get("results"),
+            "nearby":              results_data.get("nearby"),
+            "summary":             results_data.get("summary"),
+            "alternative_classes": results_data.get("alternative_classes") or [],
         }).execute()
         print(f"Results saved to Supabase for booking {booking_id}")
     except Exception as e:
@@ -5733,6 +5744,47 @@ def _reinitialize_location_constants() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ALTERNATIVE CLASS CHECK
+# ─────────────────────────────────────────────────────────────────────────────
+
+async def _check_providers_for_class(pw, acriss: str) -> List[Dict]:
+    """
+    Run all provider checks for a single ACRISS class, independent of the main run.
+
+    Sets ACTIVE_CAR_CLASS, clears the Kayak cache so Kayak re-fetches with the
+    correct class filter, runs all providers concurrently, then restores state.
+    Returns a plain list of raw result dicts in PROVIDERS order.
+    """
+    global ACTIVE_CAR_CLASS, _kayak_cache
+
+    old_class = ACTIVE_CAR_CLASS
+    old_cache = _kayak_cache
+    ACTIVE_CAR_CLASS = acriss
+    _kayak_cache = None  # force fresh Kayak fetch for this class
+
+    alt_map: Dict[str, Dict] = {}
+
+    async def _run(provider: str) -> None:
+        alt_map[provider] = await check_provider(pw, provider)
+
+    try:
+        # Kayak + SIXT + Avis concurrently (mirrors main Phase 1)
+        await asyncio.gather(
+            _fetch_kayak_results(pw),
+            _run("SIXT"),
+            _run("Avis"),
+        )
+        # Remaining providers read from the newly populated cache
+        remaining = [p for p in PROVIDERS if p not in ("SIXT", "Avis")]
+        await asyncio.gather(*[_run(p) for p in remaining])
+    finally:
+        ACTIVE_CAR_CLASS = old_class
+        _kayak_cache = old_cache
+
+    return [alt_map[p] for p in PROVIDERS if p in alt_map]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -5841,6 +5893,26 @@ async def main() -> None:
         await asyncio.gather(*[_timed_check(p) for p in remaining])
         print()
 
+        # ── Additional class checks ───────────────────────────────────────────
+        alternative_classes: List[Dict] = []
+        extra_acriss = BOOKING.get("additional_classes") or []
+        for acriss in extra_acriss:
+            cls_info = CAR_CLASS_EQUIVALENTS.get(acriss)
+            if not cls_info:
+                print(f"  [alt-class] {acriss} not in CAR_CLASS_EQUIVALENTS — skipping")
+                continue
+            label = cls_info["name"]
+            print(f"\nAlternative class — {acriss} ({label})")
+            alt_results = await _check_providers_for_class(pw, acriss)
+            alternative_classes.append({
+                "acriss":   acriss,
+                "label":    label,
+                "results":  _format_results_section(alt_results, BOOKING["booked_price"]),
+            })
+            print(f"  [{acriss}] done — {sum(1 for r in alt_results if r.get('price') is not None)} prices found")
+        if alternative_classes:
+            print()
+
         # ── Phase 3: nearby airport price lookups (SIXT API + Hertz + EHI) ────────
         # SIXT uses the pure API (no browser needed).
         # Hertz/EHI each open their own Bright Data browser session.
@@ -5927,7 +5999,7 @@ async def main() -> None:
     print(f"Results logged to: {os.path.abspath(LOG_FILE)}")
 
     # ── JSON output ──────────────────────────────────────────────────────────
-    results_data = _write_json_results(results, nearby_rows, total)
+    results_data = _write_json_results(results, nearby_rows, total, alternative_classes)
 
     # ── Git commit + push ────────────────────────────────────────────────────
     import subprocess as _sp
