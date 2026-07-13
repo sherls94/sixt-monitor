@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, HTTPException, Header, Request, Response
 from fastapi.responses import JSONResponse
 import json
 import asyncio
+import os
 from pathlib import Path
 from datetime import datetime
 
@@ -64,7 +65,13 @@ app = _make_app()
 _r = _fastapi_app
 
 RESULTS_FILE = Path(__file__).parent / "latest_results.json"
+API_KEY = os.environ.get("CARDVAULT_API_KEY", "changeme")
 RUNNING = False
+
+
+@_r.get("/health")
+async def health():
+    return {"status": "ok"}
 
 
 @_r.get("/results")
@@ -75,8 +82,10 @@ async def get_results():
 
 
 @_r.post("/run")
-async def trigger_run():
+async def trigger_run(x_api_key: str = Header(None)):
     global RUNNING
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     if RUNNING:
         return {"status": "already_running"}
     RUNNING = True
