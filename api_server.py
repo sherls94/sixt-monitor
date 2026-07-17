@@ -82,14 +82,14 @@ async def get_results():
 
 
 @_r.post("/run")
-async def trigger_run(x_api_key: str = Header(None)):
+async def trigger_run(x_api_key: str = Header(None), booking_id: str | None = None):
     global RUNNING
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
     if RUNNING:
         return {"status": "already_running"}
     RUNNING = True
-    asyncio.create_task(_run_monitor())
+    asyncio.create_task(_run_monitor(booking_id))
     return {"status": "started"}
 
 
@@ -103,11 +103,14 @@ async def get_status():
     }
 
 
-async def _run_monitor():
+async def _run_monitor(booking_id: str | None = None):
     global RUNNING
     try:
+        cmd = ["python3", "price_monitor.py"]
+        if booking_id:
+            cmd += ["--booking-id", booking_id]
         proc = await asyncio.create_subprocess_exec(
-            "python3", "price_monitor.py",
+            *cmd,
             cwd=Path(__file__).parent,
         )
         await proc.wait()
