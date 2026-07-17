@@ -1528,6 +1528,21 @@ async def dismiss_popups(page) -> None:
     except Exception:
         pass
 
+    # 5 — National/EHI: mvt-1396-modal sweepstakes popup blocks all pointer events.
+    #     Hide via CSS (safer than remove() which can cause React errors).
+    try:
+        await page.evaluate("""
+            const modal = document.querySelector('.mvt-1396-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.style.pointerEvents = 'none';
+            }
+            const sdk = document.getElementById('onetrust-consent-sdk');
+            if (sdk) { sdk.style.display = 'none'; sdk.style.pointerEvents = 'none'; }
+        """)
+    except Exception:
+        pass
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BROWSER CONTEXT HELPER
@@ -2599,7 +2614,7 @@ async def _ehi_national_api(playwright, loc_cfg: Dict, t0: float) -> None:
         # disrupts the SPA and breaks subsequent fetch() calls in page context).
         print(f"  [National] Navigating to {home_url}...")
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
-        await page.wait_for_timeout(3_000)
+        await dismiss_popups(page)   # handles mvt-1396-modal + onetrust
         print(f"  [National] Page loaded: '{await page.title()}' @ {page.url[:80]}  [{time.monotonic()-t0:.1f}s]")
         print(f"  [National] Sending API request to {api_url}  (loc_id={loc_id})")
 
@@ -2852,9 +2867,19 @@ async def _check_ehi_all(playwright) -> None:
     browser = None
 
     try:
+        # Enterprise: "Frame was detached" is a transient Bright Data drop — retry once.
         browser = await get_browser(playwright)
-
         ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
+        if ent_page is None and ent_ctx is None:
+            # First attempt failed — close that browser and open a fresh one
+            print(f"  [EHI] Enterprise first attempt failed — retrying with fresh browser")
+            try:
+                await browser.close()
+            except Exception:
+                pass
+            browser = await get_browser(playwright)
+            ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
+
         await _ehi_national_api(playwright, loc_cfg, t0)
 
         # Keep the enterprise.com page alive so fetch_nearby_ehi_prices() can
