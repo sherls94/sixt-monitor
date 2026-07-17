@@ -2559,6 +2559,98 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
                 pass
 
 
+async def _ehi_brand_from_ent_page(page, brand: str, home_url: str, loc_cfg: Dict, t0: float) -> None:
+    """
+    Fetch National or Alamo prices by calling enterprise-ewt with brand=NATIONAL/ALAMO
+    from the already-loaded enterprise.com page.
+
+    Confirmed working (probe_national7.py): enterprise-ewt returns 200 with 58 classes
+    for both brand=NATIONAL and brand=ALAMO when called from enterprise.com context.
+    No separate browser session needed — reuses the Incapsula cookies already established.
+    """
+    api_url = f"{EH_API_BASE}/reservations/initiate"
+    initiate_body_json = (
+        '{"pickup_location_id":"%(id)s","return_location_id":"%(id)s",'
+        '"pickup_location":%(loc_json)s,"return_location":%(loc_json)s,'
+        '"renter_age":%(age)s,"renter_age_label":"%(age)s+",'
+        '"pickup_time":"%(pu)s","return_time":"%(re)s",'
+        '"applied_vehicle_class_filters":[],"country_of_residence_code":"US",'
+        '"enable_north_american_prepay_rates":false,"view_currency_code":"USD",'
+        '"check_if_no_vehicles_available":true,"check_if_oneway_allowed":true}'
+    ) % {
+        "id":       loc_cfg["id"],
+        "loc_json": json.dumps({
+            "airport_code":    loc_cfg["airport_code"],
+            "location_type":   "BRANCH",
+            "my_location":     False,
+            "gps":             loc_cfg["gps"],
+            "name":            loc_cfg["name"],
+            "country_code":    loc_cfg["country_code"],
+            "group_branch_id": loc_cfg["group_branch_id"],
+            "type":            "BRANCH",
+            "id":              loc_cfg["id"],
+            "time_zone_id":    loc_cfg["time_zone_id"],
+        }),
+        "age": BOOKING["driver_age"],
+        "pu":  f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}",
+        "re":  f"{BOOKING['return_date']}T{BOOKING['return_time']}",
+    }
+
+    t_brand = time.monotonic()
+    js = f"""async () => {{
+        const body = {initiate_body_json};
+        const r = await fetch('{api_url}', {{
+            method: 'POST',
+            headers: {{
+                'content-type': 'application/json',
+                'accept': 'application/json, text/plain, */*',
+                'brand': '{brand}',
+                'channel': 'WEB',
+                'locale': 'en_US',
+                'page_type': 'home',
+                'sofresh': 'SOCLEAN',
+            }},
+            credentials: 'include',
+            body: JSON.stringify(body),
+        }});
+        const d = await r.json();
+        const classes = d?.session?.gbo?.reservation?.car_classes
+                     || d?.session?.analytics?.gbo?.reservation?.car_classes
+                     || [];
+        const EHI_CODE_NAMES = {{{_EHI_CODE_NAMES_JS}}};
+        return classes.map(c => ({{
+            code:   c.code,
+            name:   c.name || EHI_CODE_NAMES[c.code] || '',
+            status: c.status || '',
+            total:  c?.charges?.{EHI_CHARGE_KEY}?.total_price_view?.amount,
+        }}));
+    }}"""
+    try:
+        car_classes = await page.evaluate(js)
+        elapsed = time.monotonic() - t_brand
+        print(f"  [{brand.capitalize()[:8]}] {len(car_classes)} classes via enterprise-ewt  [{elapsed:.1f}s]")
+
+        best_price, best_name = _ehi_extract_best(car_classes, brand.capitalize())
+        if best_price is None:
+            raise Exception(f"No Full Size SUV in {len(car_classes)} classes")
+
+        provider = brand.capitalize() if brand != "NATIONAL" else "National"
+        if brand == "ALAMO":
+            provider = "Alamo"
+        print(f"  [{provider}] Best: {best_name} @ ${best_price:.2f}")
+        _ehi_cache[provider] = make_result(
+            provider,
+            car_class="Full Size SUV",
+            model=best_name,
+            price=best_price,
+            url=home_url,
+        )
+    except Exception as exc:
+        provider = "National" if brand == "NATIONAL" else "Alamo"
+        print(f"  [{provider}] enterprise-ewt error: {str(exc)[:120]} — will form-fill")
+        _ehi_cache[provider] = None
+
+
 async def _ehi_national_api(playwright, loc_cfg: Dict, t0: float) -> None:
     """
     National via Bright Data browser intercept of gma-national/reservations/initiate.
@@ -2809,12 +2901,17 @@ async def _ehi_alamo_form(playwright, loc_cfg: Dict, t0: float) -> None:
 async def _check_ehi_all(playwright) -> None:
     """
     Open ONE Bright Data browser session and populate _ehi_cache for all three
-    EHI brands sequentially, each on its own page context.
+    EHI brands from a single enterprise.com page.
 
-    Enterprise:  unchanged — enterprise-ewt API from enterprise.com page.
-    National:    new — nationalcar.com form + gma-national/reservations/initiate
-                 (ISO datetime pickup_time, top-level pickup_location_id).
-    Alamo:       new — alamo.com form-fill + session/current extraction.
+    All three brands (Enterprise, National, Alamo) are fetched by calling the
+    enterprise-ewt/reservations/initiate API three times with different brand headers
+    from the same enterprise.com page context. Confirmed working:
+      brand=ENTERPRISE → 58 classes, Enterprise prices
+      brand=NATIONAL   → 58 classes, National prices (same endpoint, same page)
+      brand=ALAMO      → 58 classes, Alamo prices   (same endpoint, same page)
+
+    "Frame was detached" on the first Enterprise call is a transient Bright Data
+    drop — retried once with a fresh browser.
 
     Called exclusively through _check_ehi_brand(), which holds _ehi_lock so
     this runs at most once per process.
@@ -2828,7 +2925,7 @@ async def _check_ehi_all(playwright) -> None:
             _ehi_cache[brand] = None
         return
 
-    print(f"  [EHI] Shared session: {airport} — Enterprise + National + Alamo...")
+    print(f"  [EHI] Shared session: {airport} — Enterprise + National + Alamo via enterprise-ewt...")
     t0 = time.monotonic()
     browser = None
 
@@ -2837,7 +2934,6 @@ async def _check_ehi_all(playwright) -> None:
         browser = await get_browser(playwright)
         ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
         if ent_page is None and ent_ctx is None:
-            # First attempt failed — close that browser and open a fresh one
             print(f"  [EHI] Enterprise first attempt failed — retrying with fresh browser")
             try:
                 await browser.close()
@@ -2846,22 +2942,30 @@ async def _check_ehi_all(playwright) -> None:
             browser = await get_browser(playwright)
             ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
 
-        await _ehi_national_api(playwright, loc_cfg, t0)
-
-        # Keep the enterprise.com page alive so fetch_nearby_ehi_prices() can
-        # reuse the Incapsula-authenticated session without loading the site again.
         if ent_page and ent_ctx:
+            # Enterprise page is live — call enterprise-ewt with NATIONAL and ALAMO brands
+            # from the same page context (no extra browser sessions needed).
+            nat_home   = "https://www.nationalcar.com/en/car-rental.html"
+            alamo_home = "https://www.alamo.com/en/reserve.html#/start"
+            await _ehi_brand_from_ent_page(ent_page, "NATIONAL", nat_home,   loc_cfg, t0)
+            await _ehi_brand_from_ent_page(ent_page, "ALAMO",    alamo_home, loc_cfg, t0)
+
+            # Keep enterprise.com page alive for nearby-EHI reuse
             _ehi_enterprise_shared["browser"] = browser
             _ehi_enterprise_shared["page"]    = ent_page
             _ehi_enterprise_shared["ctx"]     = ent_ctx
             browser = None  # fetch_nearby_ehi_prices() owns cleanup from here
             print(f"  [EHI] enterprise.com session stored for nearby-EHI reuse")
         else:
-            # Enterprise API failed — close browser now; nearby EHI will open fresh
-            await browser.close()
+            # Enterprise API failed entirely — National and Alamo fall back to form-fill
+            print(f"  [EHI] Enterprise failed after retry — National/Alamo will form-fill")
+            _ehi_cache.setdefault("National", None)
+            _ehi_cache.setdefault("Alamo",    None)
+            try:
+                await browser.close()
+            except Exception:
+                pass
             browser = None
-
-        await _ehi_alamo_form(playwright, loc_cfg, t0)
 
         print(f"  [EHI] All brands done  [{time.monotonic()-t0:.1f}s total]")
 
