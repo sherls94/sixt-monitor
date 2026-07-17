@@ -3454,15 +3454,11 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
         """
         if delay_s:
             await asyncio.sleep(delay_s)
-        # Own Bright Data session per tab — avoids "Missing Credentials" caused by
-        # multiple concurrent navigations inside a shared session.
-        _bd_track("kayak")
-        _browser = await get_browser(playwright)
-        _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
-        _ctx = _browser.contexts[0] if _cdp else await _new_context(_browser)
+        # Local Chromium — Kayak blocks Bright Data zones via robots.txt restriction.
+        _browser = await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
+        _ctx = await _new_context(_browser)
         pg = await _ctx.new_page()
-        if not _cdp:
-            await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
+        await _apply_stealth(pg)
         await _block_heavy_resources(pg)
         try:
             print(f"  [Kayak/{label}] Loading: {url}")
@@ -3709,15 +3705,11 @@ async def fetch_nearby_kayak_prices(
         if not should_check_nearby_location(lkey, BOOKING["booked_price"]):
             return
 
-        # Own Bright Data CDP session per airport — avoids "Missing Credentials" caused
-        # by multiple concurrent navigations inside a shared session.
-        _bd_track("kayak")
-        _browser = await get_browser(playwright)
-        _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
-        _ctx  = _browser.contexts[0] if _cdp else await _new_context(_browser)
+        # Local Chromium — Kayak blocks Bright Data zones via robots.txt restriction.
+        _browser = await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
+        _ctx  = await _new_context(_browser)
         pg     = await _ctx.new_page()
-        if not _cdp:
-            await _apply_stealth(pg)   # skip in CDP mode — Bright Data forbids header overrides
+        await _apply_stealth(pg)
         await _block_heavy_resources(pg)
         try:
             print(f"  [NearbyKayak/{lkey}] Loading: {url}")
