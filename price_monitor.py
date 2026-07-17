@@ -2544,11 +2544,14 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
                 pass
 
 
-async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
+async def _ehi_national_api(playwright, loc_cfg: Dict, t0: float) -> None:
     """
     National via gma-national/reservations/initiate direct API.
 
-    Confirmed working approach (probe_form_v25 Strategy 6):
+    Opens its own Bright Data browser (Bright Data zone limits each browser to
+    one domain; sharing the Enterprise browser causes navigate_domains_limit).
+
+    Flow:
     1. Navigate nationalcar.com to establish session cookies (no form fill needed).
     2. POST to gma-national/reservations/initiate from the page context using
        credentials: 'include' so session cookies are sent.
@@ -2566,6 +2569,7 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
     api_url  = "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate"
     # Use the National-specific GMA location ID (stored separately from Enterprise ID)
     loc_id   = loc_cfg.get("national_id", loc_cfg["id"])
+    browser  = None
     ctx      = None
 
     pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}"
@@ -2587,6 +2591,9 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
     initiate_body_json = json.dumps(initiate_body)
 
     try:
+        # Own browser: BD zone limits each browser to 1 domain; sharing Enterprise's
+        # browser causes navigate_domains_limit on nationalcar.com.
+        browser = await get_browser(playwright)
         page, ctx = await _new_bd_page(browser, "national")
         # Navigate to establish session cookies — no form fill (autocomplete click
         # disrupts the SPA and breaks subsequent fetch() calls in page context).
@@ -2684,6 +2691,11 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
         try:
             if ctx:
                 await ctx.close()
+        except Exception:
+            pass
+        try:
+            if browser:
+                await browser.close()
         except Exception:
             pass
 
@@ -2843,7 +2855,7 @@ async def _check_ehi_all(playwright) -> None:
         browser = await get_browser(playwright)
 
         ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
-        await _ehi_national_api(browser, loc_cfg, t0)
+        await _ehi_national_api(playwright, loc_cfg, t0)
 
         # Keep the enterprise.com page alive so fetch_nearby_ehi_prices() can
         # reuse the Incapsula-authenticated session without loading the site again.
