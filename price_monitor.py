@@ -2114,60 +2114,152 @@ async def check_avis(playwright) -> Dict:
 # PROVIDER: BUDGET
 # ─────────────────────────────────────────────────────────────────────────────
 
+async def _dismiss_avis_first(page) -> bool:
+    """
+    Detect and dismiss the Avis First / Budget Fast Break loyalty interstitial
+    that appears on ABG pages when no loyalty cookie is present.
+
+    Returns True if an interstitial was detected (regardless of whether dismissal
+    succeeded), so the caller can decide whether to retry the results URL.
+    """
+    url  = page.url
+    title = await page.title()
+    body_snippet = ""
+    try:
+        body_snippet = (await page.inner_text("body"))[:400]
+    except Exception:
+        pass
+
+    is_interstitial = (
+        "avisfirst" in url.lower()
+        or "fastbreak" in url.lower()
+        or "loyalty" in url.lower()
+        or "avisfirst" in body_snippet.lower()
+        or "fast break" in body_snippet.lower()
+        or "lbl.res.step2.avisfirst" in body_snippet
+        or "Sign In" in title and "vehicle-availability" not in url
+    )
+    if not is_interstitial:
+        return False
+
+    print(f"  [Budget] Avis First / Fast Break interstitial detected — attempting dismissal")
+    print(f"    url={url[:80]}  title={title[:60]}")
+
+    # Try explicit skip/no-thanks selectors first
+    skip_selectors = [
+        "a[href*='vehicle-availability']",       # direct link back to results
+        "button[data-testid*='skip']",
+        "a[data-testid*='skip']",
+        "[class*='skip']",
+        "[class*='no-thanks']",
+        "[class*='nothanks']",
+        "button[aria-label*='close' i]",
+        "button[aria-label*='skip' i]",
+    ]
+    for sel in skip_selectors:
+        try:
+            el = page.locator(sel).first
+            if await el.is_visible(timeout=1500):
+                await el.click(timeout=3000)
+                await page.wait_for_timeout(1500)
+                print(f"  [Budget] Clicked interstitial selector: {sel}")
+                return True
+        except Exception:
+            pass
+
+    # Text-based fallback
+    for text in ["Skip", "No thanks", "No Thanks", "Maybe later", "Continue without signing in",
+                 "Close", "Not now", "Continue as guest"]:
+        try:
+            btn = page.get_by_role("button", name=re.compile(text, re.IGNORECASE)).first
+            if await btn.is_visible(timeout=1000):
+                await btn.click(timeout=2000)
+                await page.wait_for_timeout(1500)
+                print(f"  [Budget] Clicked interstitial button: '{text}'")
+                return True
+        except Exception:
+            pass
+        try:
+            lnk = page.get_by_role("link", name=re.compile(text, re.IGNORECASE)).first
+            if await lnk.is_visible(timeout=1000):
+                await lnk.click(timeout=2000)
+                await page.wait_for_timeout(1500)
+                print(f"  [Budget] Clicked interstitial link: '{text}'")
+                return True
+        except Exception:
+            pass
+
+    # Last resort: Escape
+    try:
+        await page.keyboard.press("Escape")
+        await page.wait_for_timeout(1000)
+    except Exception:
+        pass
+
+    print("  [Budget] Interstitial dismissal — no button found, will retry URL directly")
+    return True
+
+
 async def check_budget(playwright) -> Dict:
     """
     Budget — same ABG platform as Avis (BUDGET_RESULTS_URL is AVIS_RESULTS_URL
     with brand=budget and www.budget.com substituted).
 
-    Strategy mirrors check_avis() exactly:
-      1. Connect via Bright Data (falls back to local browser if BD not configured).
+    Strategy:
+      1. Connect via Bright Data, clear all cookies (prevents stale Avis First state).
       2. Navigate directly to BUDGET_RESULTS_URL.
-      3. If redirected away from /vehicle-availability, seed a session cookie by
-         visiting the Budget homepage, then retry the direct URL.
-      4. Wait for <article> vehicle cards (same DOM structure as Avis).
-      5. Extract cheapest Full Size SUV via _extract_cheapest_suv().
-      6. Fall back to Kayak only if the direct approach fails entirely.
-
-    Routing through Bright Data matches Avis and eliminates intermittent bot-blocking.
+      3. If an Avis First / Fast Break loyalty interstitial appears, dismiss it
+         and retry the results URL.
+      4. If still redirected away, seed a session via Budget homepage then retry.
+      5. Wait for <article> vehicle cards (same DOM as Avis).
+      6. Fall back to Kayak only if direct approach fails entirely.
     """
     if not should_check_provider("Budget"):
         return make_result("Budget", na=True, error="Not in providers_to_check")
     browser = await get_browser(playwright)
     page, ctx = await _new_bd_page(browser, "budget")
 
+    _BUDGET_TIMEOUT = 30_000   # match Avis — 30 s per goto
+
     try:
+        # Clear all cookies so no stale Avis First / loyalty session bleeds in
+        await ctx.clear_cookies()
+
         print("  [Budget] Loading direct results URL...")
         print(f"  [Budget] URL: {BUDGET_RESULTS_URL[:120]}")
-        # 20 s cap: budget.com through Bright Data consistently fails to load
-        # within the global 60 s window, so fail fast and fall through to Kayak.
-        await page.goto(BUDGET_RESULTS_URL, timeout=20_000, wait_until="domcontentloaded")
+        await page.goto(BUDGET_RESULTS_URL, timeout=_BUDGET_TIMEOUT, wait_until="domcontentloaded")
         await dismiss_popups(page)
         print(f"  [Budget] Landed: '{await page.title()}' @ {page.url[:80]}")
 
-        # If redirected away from vehicle-availability, seed cookies then retry
+        # Detect and dismiss Avis First / Fast Break interstitial
         if "vehicle-availability" not in page.url:
-            print(f"  [Budget] Not on results page ({page.url[:60]}) — seeding cookie via homepage...")
-            await page.goto("https://www.budget.com/en/home", timeout=20_000, wait_until="domcontentloaded")
+            hit = await _dismiss_avis_first(page)
+            if hit and "vehicle-availability" not in page.url:
+                # Retry the results URL directly after dismissal
+                print("  [Budget] Retrying results URL after interstitial dismissal...")
+                await page.goto(BUDGET_RESULTS_URL, timeout=_BUDGET_TIMEOUT, wait_until="domcontentloaded")
+                await dismiss_popups(page)
+                print(f"  [Budget] After interstitial retry: '{await page.title()}' @ {page.url[:80]}")
+
+        # If still not on results page, try seeding a session via homepage
+        if "vehicle-availability" not in page.url:
+            print(f"  [Budget] Not on results page — seeding cookie via homepage...")
+            await page.goto("https://www.budget.com/en/home", timeout=_BUDGET_TIMEOUT, wait_until="domcontentloaded")
             await dismiss_popups(page)
-            await page.wait_for_timeout(5000)
-            await page.goto(BUDGET_RESULTS_URL, timeout=20_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(3000)
+            await page.goto(BUDGET_RESULTS_URL, timeout=_BUDGET_TIMEOUT, wait_until="domcontentloaded")
             await dismiss_popups(page)
-            print(f"  [Budget] After retry: '{await page.title()}' @ {page.url[:80]}")
+            print(f"  [Budget] After homepage seed: '{await page.title()}' @ {page.url[:80]}")
 
         if "vehicle-availability" not in page.url:
-            print(f"  [Budget] Still not on results page after retry — falling back to Kayak")
+            print(f"  [Budget] Still not on results page — falling back to Kayak")
             return await _check_from_kayak(playwright, "Budget")
 
-        # Poll every 2 s (up to 40 s) for EITHER vehicle cards OR i18n broken render.
-        # Budget through Bright Data sometimes renders bare translation keys
-        # ("lbl.res.step2.avisfirst.*") instead of vehicle cards — this typically
-        # becomes visible after ~5–15 s of JS hydration, well after domcontentloaded.
-        # Polling lets us bail to Kayak within 2 s of the i18n content appearing
-        # rather than waiting out the full 30 s + 15 s selector timeouts.
-        print("  [Budget] Polling for vehicle cards (i18n detection every 2 s, 40 s max)...")
+        # Poll every 2 s (up to 40 s) for vehicle cards OR broken i18n render
+        print("  [Budget] Polling for vehicle cards (i18n detection, 40 s max)...")
         _poll_start = time.monotonic()
         _article_found = False
-        for _poll_i in range(20):   # 20 × 2 s = 40 s ceiling
+        for _poll_i in range(20):
             _state = await page.evaluate(
                 "() => {"
                 "  const t = document.body.innerText;"
@@ -2183,12 +2275,8 @@ async def check_budget(playwright) -> Dict:
             if _state == 'i18n':
                 print(f"  [Budget] i18n render detected at {_elapsed:.1f}s — falling back to Kayak")
                 return await _check_from_kayak(playwright, "Budget")
-            if _state == 'article':
-                print(f"  [Budget] Vehicle article cards found at {_elapsed:.1f}s.")
-                _article_found = True
-                break
-            if _state == 'broad':
-                print(f"  [Budget] Broad article cards found at {_elapsed:.1f}s.")
+            if _state in ('article', 'broad'):
+                print(f"  [Budget] Vehicle cards found ({_state}) at {_elapsed:.1f}s.")
                 _article_found = True
                 break
             await page.wait_for_timeout(2000)
