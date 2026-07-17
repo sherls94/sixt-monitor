@@ -3498,6 +3498,9 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
     Fetch Kayak results in PARALLEL browser tabs within one shared browser context.
     All searches apply BOOKING filter preferences via _build_kayak_fs_param().
 
+    Disabled via KAYAK_ENABLED=false env var (server IP blocked by CAPTCHA;
+    enable a residential proxy before re-enabling).
+
     Tabs opened (max 4):
       1. "best"    — all agencies, load all results → __kayak_best__
       2. "Budget"  — agency-filtered (caragency=budget)
@@ -3512,6 +3515,11 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
     """
     global _kayak_cache
     if _kayak_cache is not None:
+        return _kayak_cache
+
+    if os.environ.get("KAYAK_ENABLED", "true").lower() in ("false", "0", "no"):
+        print("  [Kayak] Disabled — server IP blocked by CAPTCHA. Enable a residential proxy to restore.")
+        _kayak_cache = {}
         return _kayak_cache
 
     _pu = BOOKING["pickup_date"]
@@ -5813,6 +5821,7 @@ def _reinitialize_location_constants() -> None:
     """Re-run all module-level location lookups after BOOKING has been updated."""
     global SIXT_LOCATION
     global HERTZ_STATION_CODE, HERTZ_RESULTS_URL
+    global AVIS_RESULTS_URL, BUDGET_RESULTS_URL
     global DOLLAR_STATION_CODE, DOLLAR_RESULTS_URL
     global THRIFTY_STATION_CODE, THRIFTY_RESULTS_URL
     global KAYAK_LOCATION_ID
@@ -5820,6 +5829,29 @@ def _reinitialize_location_constants() -> None:
     global ACTIVE_CAR_CLASS
 
     airport = BOOKING["airport_code"]
+
+    # Avis / Budget — URLs embed dates and must be rebuilt whenever the booking changes.
+    _pu2 = BOOKING["pickup_date"].split("-")   # ["YYYY", "MM", "DD"]
+    _re2 = BOOKING["return_date"].split("-")
+    AVIS_RESULTS_URL = (
+        "https://www.avis.com/en/reservation/vehicle-availability"
+        "?dropoff_suggestion_type_code=AIRPORT"
+        "&pickup_hour=12&pickup_minute=00&pickup_am_pm=PM"
+        "&pickup_day={pu_day}&pickup_month={pu_month}&pickup_year={pu_year}"
+        "&pickup_location_region=NAM&pickup_suggestion_type_code=AIRPORT"
+        "&residency_value=US"
+        "&return_hour=12&return_minute=00&return_am_pm=PM"
+        "&return_day={re_day}&return_month={re_month}&return_year={re_year}"
+        "&pickup_location_code={loc}&return_location_code={loc}"
+        "&age={age}&country=us&locale=en-US&brand=avis"
+    ).format(
+        pu_day=_pu2[2], pu_month=_pu2[1], pu_year=_pu2[0],
+        re_day=_re2[2], re_month=_re2[1], re_year=_re2[0],
+        loc=BOOKING["airport_code"], age=BOOKING["driver_age"],
+    )
+    BUDGET_RESULTS_URL = AVIS_RESULTS_URL.replace("brand=avis", "brand=budget").replace(
+        "www.avis.com", "www.budget.com"
+    )
 
     # SIXT
     _sixt_loc = _db_lookup("SIXT", airport)
