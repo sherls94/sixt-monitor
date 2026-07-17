@@ -1972,15 +1972,16 @@ async def _check_direct_with_bd_fallback(playwright, provider: str, direct_url: 
 
 async def check_hertz(playwright) -> Dict:
     """
-    Hertz — direct API call (no browser, no Bright Data).
+    Hertz — Bright Data browser with network response interception.
 
-    Uses the Hertz OAuth2 client_credentials flow to fetch a Bearer token, then
-    calls api.hertz.io/vehicle-rates directly.  No browser session is opened.
+    Navigates hertz.com/us/en/book/vehicles with the pre-built HERTZ_RESULTS_URL,
+    intercepts the api.hertz.io/vehicle-rates XHR response the page fires, and
+    extracts pricing from it.  Falls back to the direct OAuth2 API if the browser
+    approach yields no data.
 
-    Token is cached for ~30 minutes so nearby-station checks in the same run
-    reuse it without an additional OAuth round-trip.
-
-    playwright arg is kept for API compatibility but is never used.
+    The direct OAuth2 approach (api.hertz.io) was blocked by Cloudflare 403 when
+    called from the server IP without a browser UA — this browser approach sidesteps
+    that by letting the JS bundle inside hertz.com make the API call instead.
     """
     if not should_check_provider("Hertz"):
         return make_result("Hertz", na=True, error="Not in providers_to_check")
@@ -1990,11 +1991,96 @@ async def check_hertz(playwright) -> Dict:
         print(f"  [Hertz] {msg}")
         return make_result("Hertz", error=msg)
 
+    if not HERTZ_RESULTS_URL:
+        return make_result("Hertz", error="HERTZ_RESULTS_URL not set")
+
+    age = int(BOOKING["driver_age"])
+
+    # ── Bright Data browser approach: intercept vehicle-rates XHR ────────────
+    if BRIGHT_DATA_CDP_URL:
+        print(f"  [Hertz] Browser intercept via Bright Data — station {HERTZ_STATION_CODE}")
+        browser = None
+        ctx = None
+        try:
+            browser = await get_browser(playwright)
+            page, ctx = await _new_bd_page(browser, "hertz")
+
+            captured: list = []
+
+            async def _on_response(response):
+                if "vehicle-rates" in response.url and not captured:
+                    try:
+                        body = await response.json()
+                        if isinstance(body, list) and body:
+                            captured.extend(body)
+                            print(f"  [Hertz] Intercepted vehicle-rates: {len(body)} vehicles  status={response.status}")
+                        elif isinstance(body, dict):
+                            captured.append(body)
+                            print(f"  [Hertz] Intercepted vehicle-rates (dict): status={response.status}  keys={list(body.keys())[:6]}")
+                    except Exception as e:
+                        print(f"  [Hertz] Response parse error: {e}")
+
+            page.on("response", _on_response)
+
+            print(f"  [Hertz] Navigating to {HERTZ_RESULTS_URL[:80]}")
+            await page.goto(HERTZ_RESULTS_URL, timeout=60_000, wait_until="domcontentloaded")
+            await dismiss_popups(page)
+            print(f"  [Hertz] Page: '{await page.title()}' @ {page.url[:80]}")
+
+            # Wait up to 30 s for the XHR to fire — the page JS triggers it on load
+            for _ in range(30):
+                if captured:
+                    break
+                await page.wait_for_timeout(1000)
+
+            if not captured:
+                body_snippet = ""
+                try:
+                    body_snippet = (await page.inner_text("body"))[:300]
+                except Exception:
+                    pass
+                print(f"  [Hertz] No vehicle-rates XHR captured after 30s — body: {body_snippet!r}")
+
+        except Exception as exc:
+            print(f"  [Hertz] Browser intercept failed: {str(exc)[:150]}")
+            captured = []
+        finally:
+            try:
+                if ctx:
+                    await ctx.close()
+            except Exception:
+                pass
+            try:
+                if browser:
+                    await browser.close()
+            except Exception:
+                pass
+
+        if captured:
+            vehicle_data = captured
+            best_price, best_name = _hertz_extract_best(vehicle_data)
+            if best_price is not None:
+                rate_label = HERTZ_RATE_TYPE or "any rate"
+                print(f"  [Hertz] Best Full Size SUV: {best_name} ({rate_label}) @ ${best_price:.2f}")
+                return make_result(
+                    "Hertz",
+                    car_class="Full Size SUV",
+                    model=best_name,
+                    price=best_price,
+                    url=HERTZ_RESULTS_URL,
+                )
+            suvs = [v.get("sipp_code") for v in vehicle_data
+                    if "SUV" in str(v.get("vehicle_body_type", []))]
+            print(f"  [Hertz] Browser intercept: no Full Size SUV in {len(vehicle_data)} vehicles. SUV codes seen: {suvs}")
+            return make_result("Hertz", error=f"No Full Size SUV — SUV codes seen: {suvs}")
+
+        print(f"  [Hertz] Browser intercept yielded no data — falling back to direct API")
+
+    # ── Direct OAuth2 API fallback ─────────────────────────────────────────────
     pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}:00"
     return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}:00"
-    age       = int(BOOKING["driver_age"])
 
-    print(f"  [Hertz] Direct API call (no browser) — station {HERTZ_STATION_CODE}...")
+    print(f"  [Hertz] Direct API call (fallback) — station {HERTZ_STATION_CODE}...")
     try:
         vehicle_data = await asyncio.to_thread(
             _hertz_direct_rates, HERTZ_STATION_CODE, pickup_dt, return_dt, age, "HERTZ"
@@ -2002,7 +2088,6 @@ async def check_hertz(playwright) -> Dict:
         print(f"  [Hertz] {len(vehicle_data)} vehicles returned")
 
         best_price, best_name = _hertz_extract_best(vehicle_data)
-
         if best_price is None:
             suvs = [v.get("sipp_code") for v in vehicle_data
                     if "SUV" in str(v.get("vehicle_body_type", []))]
@@ -2028,11 +2113,11 @@ async def check_hertz(playwright) -> Dict:
         except Exception:
             pass
         err = f"HTTP {exc.code}: {body}"
-        print(f"  [Hertz] API error: {err}")
+        print(f"  [Hertz] Direct API error: {err}")
         return make_result("Hertz", error=err)
     except Exception as exc:
         err = str(exc)[:150]
-        print(f"  [Hertz] API check failed: {err}")
+        print(f"  [Hertz] Direct API failed: {err}")
         return make_result("Hertz", error=err)
 
 
@@ -2057,16 +2142,15 @@ async def check_avis(playwright) -> Dict:
     page, ctx = await _new_bd_page(browser, "avis")
 
     try:
-        # Tight per-goto timeouts: on a healthy BD session Avis loads in ~15 s.
-        # Three gotos at 60 s each + 90 s selector = 270 s worst-case, which
-        # exceeds the 240 s asyncio cap and produces a confusing timeout error.
-        # 30 s caps mean worst-case: 30 + 30 + 5 + 30 + 30 = 125 s — well within 240 s.
-        _AVIS_GOTO_TIMEOUT = 30_000
+        # Per-goto timeout: 60 s gives slow BD sessions time to resolve.
+        # Worst-case: 60 (first) + 60 (home seed) + 5 (wait) + 60 (retry) + 60 (selector) = 245 s
+        # — just within the 240 s asyncio cap on the overall run.
+        _AVIS_GOTO_TIMEOUT = 60_000
 
         print("  [Avis] Loading direct results URL via Bright Data...")
         await page.goto(AVIS_RESULTS_URL, timeout=_AVIS_GOTO_TIMEOUT, wait_until="domcontentloaded")
         await dismiss_popups(page)
-        print(f"  [Avis] Page: '{await page.title()}' @ {page.url}")
+        print(f"  [Avis] Page: '{await page.title()}' @ {page.url[:80]}")
 
         # If redirected away from vehicle-availability, seed a cookie then retry the direct URL
         if "vehicle-availability" not in page.url:
@@ -2076,23 +2160,33 @@ async def check_avis(playwright) -> Dict:
             await page.wait_for_timeout(5000)
             await page.goto(AVIS_RESULTS_URL, timeout=_AVIS_GOTO_TIMEOUT, wait_until="domcontentloaded")
             await dismiss_popups(page)
-            print(f"  [Avis] Retry page: '{await page.title()}' @ {page.url[:60]}")
+            print(f"  [Avis] Retry page: '{await page.title()}' @ {page.url[:80]}")
 
         # After retry, if still not on the results page, fail immediately (bot-blocked)
         if "vehicle-availability" not in page.url:
             return make_result("Avis", error="Bot-blocked — redirected away from results page")
 
-        # Wait for vehicle article cards to appear.
-        # Avis cards typically render within a few seconds of domcontentloaded;
-        # 30 s is generous. If they still aren't there, try a broad article selector.
-        try:
-            await page.wait_for_selector("article[data-testid*='vehicle'], article:not([data-aue-type])", timeout=30_000)
-        except Exception:
-            # Broader fallback — any article on availability page
-            if "vehicle-availability" in page.url:
-                await page.wait_for_selector("article", timeout=15_000)
-            else:
-                raise
+        # Wait for vehicle article cards to appear (primary + progressive fallbacks).
+        _card_found = False
+        for _sel, _tout in [
+            ("article[data-testid*='vehicle'], article:not([data-aue-type])", 45_000),
+            ("article", 15_000),
+            ("div[class*='vehicle'], div[class*='VehicleCard'], div[class*='car-card']", 10_000),
+        ]:
+            try:
+                await page.wait_for_selector(_sel, timeout=_tout)
+                _card_found = True
+                break
+            except Exception:
+                pass
+
+        if not _card_found:
+            body_snippet = ""
+            try:
+                body_snippet = (await page.inner_text("body"))[:500]
+            except Exception:
+                pass
+            print(f"  [Avis] No vehicle cards found — body snippet: {body_snippet!r}")
 
         await page.wait_for_timeout(3000)
         return await _extract_cheapest_suv(page, "Avis")
@@ -2496,56 +2590,83 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
         page, ctx = await _new_bd_page(browser, "national")
         # Navigate to establish session cookies — no form fill (autocomplete click
         # disrupts the SPA and breaks subsequent fetch() calls in page context).
+        print(f"  [National] Navigating to {home_url}...")
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
         await page.wait_for_timeout(3_000)
-        print(f"  [National] Session ready (loc_id={loc_id})  [{time.monotonic()-t0:.1f}s]")
+        print(f"  [National] Page loaded: '{await page.title()}' @ {page.url[:80]}  [{time.monotonic()-t0:.1f}s]")
+        print(f"  [National] Sending API request to {api_url}  (loc_id={loc_id})")
 
         # Direct API call — minimal headers matching working probe_form_v25.
         t_brand = time.monotonic()
         js = f"""async () => {{
             const body = {initiate_body_json};
-            const r = await fetch('{api_url}', {{
-                method: 'POST',
-                credentials: 'include',
-                headers: {{
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                }},
-                body: JSON.stringify(body),
-            }});
-            const d = await r.json();
-            // National response path: d.gma.gbo.reservation.car_classes
-            const classes = d?.gma?.gbo?.reservation?.car_classes
-                          || d?.session?.gbo?.reservation?.car_classes
-                          || d?.session?.analytics?.gbo?.reservation?.car_classes
-                          || [];
-            const msgs = (d?.messages || []).map(m => m.code + ':' + (m.tech_message || m.message || '').slice(0, 80));
-            const EHI_CODE_NAMES = {{{_EHI_CODE_NAMES_JS}}};
-            return {{
-                classes: classes.map(c => ({{
-                    code:   c.code,
-                    name:   c.name || EHI_CODE_NAMES[c.code] || '',
-                    status: c.status || '',
-                    total:  c?.charges?.{EHI_CHARGE_KEY}?.total_price_view?.amount,
-                }})),
-                msgs: msgs,
-                status: r.status,
-            }};
+            let rawText = '';
+            let httpStatus = 0;
+            try {{
+                const r = await fetch('{api_url}', {{
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {{
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }},
+                    body: JSON.stringify(body),
+                }});
+                httpStatus = r.status;
+                rawText = await r.text();
+                let d;
+                try {{ d = JSON.parse(rawText); }} catch(e) {{
+                    return {{ classes: [], msgs: [], status: httpStatus, raw_snippet: rawText.slice(0, 500), parse_error: e.message }};
+                }}
+                // National response path: d.gma.gbo.reservation.car_classes
+                const classes = d?.gma?.gbo?.reservation?.car_classes
+                              || d?.session?.gbo?.reservation?.car_classes
+                              || d?.session?.analytics?.gbo?.reservation?.car_classes
+                              || [];
+                const msgs = (d?.messages || []).map(m => m.code + ':' + (m.tech_message || m.message || '').slice(0, 80));
+                const EHI_CODE_NAMES = {{{_EHI_CODE_NAMES_JS}}};
+                return {{
+                    classes: classes.map(c => ({{
+                        code:   c.code,
+                        name:   c.name || EHI_CODE_NAMES[c.code] || '',
+                        status: c.status || '',
+                        total:  c?.charges?.{EHI_CHARGE_KEY}?.total_price_view?.amount,
+                    }})),
+                    msgs: msgs,
+                    status: httpStatus,
+                    raw_snippet: rawText.slice(0, 500),
+                }};
+            }} catch(fetchErr) {{
+                return {{ classes: [], msgs: [], status: httpStatus, raw_snippet: rawText.slice(0, 200), fetch_error: fetchErr.message }};
+            }}
         }}"""
         raw = await page.evaluate(js)
-        car_classes = raw.get("classes", []) if isinstance(raw, dict) else []
-        api_msgs    = raw.get("msgs", [])    if isinstance(raw, dict) else []
-        api_status  = raw.get("status", 0)   if isinstance(raw, dict) else 0
+        car_classes  = raw.get("classes", [])     if isinstance(raw, dict) else []
+        api_msgs     = raw.get("msgs", [])         if isinstance(raw, dict) else []
+        api_status   = raw.get("status", 0)        if isinstance(raw, dict) else 0
+        raw_snippet  = raw.get("raw_snippet", "")  if isinstance(raw, dict) else ""
+        parse_error  = raw.get("parse_error", "")  if isinstance(raw, dict) else ""
+        fetch_error  = raw.get("fetch_error", "")  if isinstance(raw, dict) else ""
         elapsed = time.monotonic() - t_brand
-        print(f"  [National] {len(car_classes)} classes  status={api_status}  [{elapsed:.1f}s]")
+        print(f"  [National] API response: status={api_status}  {len(car_classes)} classes  [{elapsed:.1f}s]")
+        if fetch_error:
+            print(f"  [National] Fetch error: {fetch_error}")
+        if parse_error:
+            print(f"  [National] JSON parse error: {parse_error}")
+        if api_status != 200 or not car_classes:
+            print(f"  [National] Raw response snippet: {raw_snippet[:500]}")
         if api_msgs:
             print(f"  [National] API messages: {api_msgs[:4]}")
+
+        if fetch_error or parse_error:
+            raise Exception(fetch_error or parse_error)
 
         best_price, best_name = _ehi_extract_best(car_classes, "National")
         if best_price is None:
             raise Exception(
                 f"No Full Size SUV in {len(car_classes)} classes"
                 + (f" | msgs={api_msgs[:2]}" if api_msgs else "")
+                + (f" | status={api_status}" if api_status != 200 else "")
             )
 
         print(f"  [National] Best: {best_name} @ ${best_price:.2f}")
@@ -2557,7 +2678,7 @@ async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
             url=home_url,
         )
     except Exception as exc:
-        print(f"  [National] API error: {str(exc)[:120]} — will form-fill")
+        print(f"  [National] API error: {str(exc)[:200]} — will form-fill")
         _ehi_cache["National"] = None
     finally:
         try:
