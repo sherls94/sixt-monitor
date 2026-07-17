@@ -2561,89 +2561,89 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
 
 async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> None:
     """
-    Fetch National Car Rental prices via gma-national/reservations/initiate.
+    Fetch National Car Rental prices by intercepting gma-national/reservations/initiate
+    from the nationalcar.com SPA.
 
     Opens its own BD browser (BD zone limits each browser to 1 domain).
-    1. Navigate nationalcar.com/en/car-rental.html to establish national session cookies.
-    2. POST directly to gma-national/reservations/initiate from page context (no CORS issue).
-    3. Uses National's location ID (national_gma_id from DB), not Enterprise's ID.
+    nationalcar.com is accessible in BD (confirmed: page loads, no robots.txt block).
 
-    nationalcar.com is accessible in BD (confirmed: page loads without robots.txt block).
-    gma-national cannot be called from enterprise.com (CORS: TypeError: Failed to fetch).
+    Approach (mirrors Hertz vehicle-rates intercept):
+    1. Navigate nationalcar.com home — establishes cookies and initializes the SPA.
+    2. Attach a response listener for gma-national/reservations/initiate.
+    3. Navigate to find-a-vehicle.html#/vehicles?... — the SPA router processes the
+       hash, fires reservations/initiate with the correct headers automatically.
+    4. Capture the response and extract car classes.
+
+    Direct POST to gma-national returns 422 Invalid Request (missing SPA-managed
+    headers/tokens that we can't reproduce manually).
     """
-    nat_id   = loc_cfg.get("national_id", loc_cfg["id"])
+    airport  = BOOKING["airport_code"]
     home_url = "https://www.nationalcar.com/en/car-rental.html"
-    gma_url  = "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate"
     browser  = None
     ctx      = None
 
-    pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}"
-    return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}"
-
-    initiate_body = {
-        "pickup_location":    {"id": nat_id},
-        "return_location":    {"id": nat_id},
-        "pickup_location_id": nat_id,
-        "return_location_id": nat_id,
-        "pickup_time":        pickup_dt,
-        "return_time":        return_dt,
-        "renter_age":         BOOKING["driver_age"],
-        "rate_type":          EHI_CHARGE_KEY,
-        "one_way_rental":     False,
-        "check_if_no_vehicles_available": False,
-        "car_class_codes":    [],
-        "country_of_residence": "US",
-        "locale":             "en_US",
-        "cor":                "US",
-    }
-    initiate_body_json = json.dumps(initiate_body)
+    # Build results URL: same hash format used by NATIONAL_RESULTS_URL
+    _pu = BOOKING["pickup_date"].split("-")   # ["YYYY","MM","DD"]
+    _re = BOOKING["return_date"].split("-")
+    _pu_enc = f"{_pu[1]}%2F{_pu[2]}%2F{_pu[0]}"
+    _re_enc = f"{_re[1]}%2F{_re[2]}%2F{_re[0]}"
+    results_url = (
+        "https://www.nationalcar.com/en/reservation/find-a-vehicle.html"
+        "#/vehicles?from={loc}&to={loc}&pickup={pu}+12%3A00+PM&return={re}+12%3A00+PM"
+    ).format(loc=airport, pu=_pu_enc, re=_re_enc)
 
     try:
         browser = await get_browser(playwright)
         page, ctx = await _new_bd_page(browser, "national")
 
+        captured: list = []
+
+        async def _on_response(response):
+            if "gma-national" in response.url and "reservations/initiate" in response.url and not captured:
+                try:
+                    body = await response.json()
+                    captured.append(body)
+                    print(f"  [National] Intercepted gma-national: status={response.status}  url={response.url[:80]}")
+                except Exception as e:
+                    print(f"  [National] Response parse error: {e}")
+
+        page.on("response", _on_response)
+
+        # Step 1: navigate home to establish cookies and initialize the SPA
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
-        await page.wait_for_timeout(3_000)
-        print(f"  [National] Session ready (nat_id={nat_id})  [{time.monotonic()-t0:.1f}s]")
+        await dismiss_popups(page)
+        await page.wait_for_timeout(2_000)
+        print(f"  [National] Home loaded: '{await page.title()}'  [{time.monotonic()-t0:.1f}s]")
 
-        t_nat = time.monotonic()
-        js = f"""async () => {{
-            const body = {initiate_body_json};
-            try {{
-                const r = await fetch('{gma_url}', {{
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {{
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    }},
-                    body: JSON.stringify(body),
-                }});
-                const text = await r.text();
-                return {{ ok: r.ok, status: r.status, body: text, error: null }};
-            }} catch (e) {{
-                return {{ ok: false, status: 0, body: '', error: e.toString() }};
-            }}
-        }}"""
-        raw = await page.evaluate(js)
-        elapsed = time.monotonic() - t_nat
+        # Step 2: navigate to the results hash URL — SPA router fires reservations/initiate
+        await page.goto(results_url, wait_until="domcontentloaded", timeout=60_000)
+        print(f"  [National] Results page loaded  [{time.monotonic()-t0:.1f}s]")
 
-        if not raw.get("ok"):
-            err     = raw.get("error") or ""
-            status  = raw.get("status", 0)
-            preview = (raw.get("body") or "")[:300]
-            raise Exception(f"gma-national HTTP {status} | err={err!r} | body={preview!r}")
+        # Wait up to 25s for the SPA to fire the XHR
+        for _ in range(25):
+            if captured:
+                break
+            await page.wait_for_timeout(1_000)
 
-        d = json.loads(raw["body"])
+        if not captured:
+            body_snippet = ""
+            try:
+                body_snippet = (await page.inner_text("body"))[:300]
+            except Exception:
+                pass
+            raise Exception(f"No gma-national XHR captured after 25s — body: {body_snippet!r}")
+
+        d = captured[0]
         car_classes_raw = (
             d.get("gma", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
+            or d.get("session", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
             or []
         )
         api_msgs = [
             f"{m.get('code')}:{(m.get('tech_message') or m.get('message',''))[:80]}"
             for m in d.get("messages", [])
         ]
-        print(f"  [National] {len(car_classes_raw)} classes via gma-national (loc={nat_id})  [{elapsed:.1f}s]  msgs={api_msgs[:2]}")
+        print(f"  [National] {len(car_classes_raw)} classes via gma-national  [{time.monotonic()-t0:.1f}s]  msgs={api_msgs[:2]}")
 
         car_classes = [
             {
@@ -2672,7 +2672,7 @@ async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> Non
         )
 
     except Exception as exc:
-        print(f"  [National] gma-national error: {str(exc)[:200]}")
+        print(f"  [National] XHR intercept error: {str(exc)[:200]}")
         _ehi_cache["National"] = None
     finally:
         try:
