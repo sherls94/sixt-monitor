@@ -2559,21 +2559,23 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
                 pass
 
 
-async def _gma_national_from_ent_page(page, loc_cfg: Dict, t0: float) -> None:
+async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> None:
     """
-    Fetch National Car Rental prices via gma-national/reservations/initiate called
-    from the already-loaded enterprise.com page.
+    Fetch National Car Rental prices via gma-national/reservations/initiate.
 
-    Uses National's own backend (gma-national) and National's specific location ID
-    (national_gma_id from DB, e.g. 1018794 for LGA vs 1018775 for Enterprise).
-    This is National's actual pricing API, separate from enterprise-ewt.
+    Opens its own BD browser (BD zone limits each browser to 1 domain).
+    1. Navigate nationalcar.com/en/car-rental.html to establish national session cookies.
+    2. POST directly to gma-national/reservations/initiate from page context (no CORS issue).
+    3. Uses National's location ID (national_gma_id from DB), not Enterprise's ID.
 
-    Falls back to enterprise-ewt with national_id if gma-national is CORS-blocked
-    or returns an error from enterprise.com context.
+    nationalcar.com is accessible in BD (confirmed: page loads without robots.txt block).
+    gma-national cannot be called from enterprise.com (CORS: TypeError: Failed to fetch).
     """
     nat_id   = loc_cfg.get("national_id", loc_cfg["id"])
     home_url = "https://www.nationalcar.com/en/car-rental.html"
     gma_url  = "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate"
+    browser  = None
+    ctx      = None
 
     pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}"
     return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}"
@@ -2596,33 +2598,40 @@ async def _gma_national_from_ent_page(page, loc_cfg: Dict, t0: float) -> None:
     }
     initiate_body_json = json.dumps(initiate_body)
 
-    t_nat = time.monotonic()
-    js = f"""async () => {{
-        const body = {initiate_body_json};
-        try {{
-            const r = await fetch('{gma_url}', {{
-                method: 'POST',
-                credentials: 'include',
-                headers: {{
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                }},
-                body: JSON.stringify(body),
-            }});
-            const text = await r.text();
-            return {{ ok: r.ok, status: r.status, body: text, error: null }};
-        }} catch (e) {{
-            return {{ ok: false, status: 0, body: '', error: e.toString() }};
-        }}
-    }}"""
     try:
+        browser = await get_browser(playwright)
+        page, ctx = await _new_bd_page(browser, "national")
+
+        await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
+        await page.wait_for_timeout(3_000)
+        print(f"  [National] Session ready (nat_id={nat_id})  [{time.monotonic()-t0:.1f}s]")
+
+        t_nat = time.monotonic()
+        js = f"""async () => {{
+            const body = {initiate_body_json};
+            try {{
+                const r = await fetch('{gma_url}', {{
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {{
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }},
+                    body: JSON.stringify(body),
+                }});
+                const text = await r.text();
+                return {{ ok: r.ok, status: r.status, body: text, error: null }};
+            }} catch (e) {{
+                return {{ ok: false, status: 0, body: '', error: e.toString() }};
+            }}
+        }}"""
         raw = await page.evaluate(js)
         elapsed = time.monotonic() - t_nat
 
         if not raw.get("ok"):
-            err    = raw.get("error") or ""
-            status = raw.get("status", 0)
-            preview = (raw.get("body") or "")[:200]
+            err     = raw.get("error") or ""
+            status  = raw.get("status", 0)
+            preview = (raw.get("body") or "")[:300]
             raise Exception(f"gma-national HTTP {status} | err={err!r} | body={preview!r}")
 
         d = json.loads(raw["body"])
@@ -2664,9 +2673,18 @@ async def _gma_national_from_ent_page(page, loc_cfg: Dict, t0: float) -> None:
 
     except Exception as exc:
         print(f"  [National] gma-national error: {str(exc)[:200]}")
-        print(f"  [National] Falling back to enterprise-ewt with nat_id={nat_id}")
-        nat_loc_cfg = {**loc_cfg, "id": nat_id}
-        await _ehi_brand_from_ent_page(page, "NATIONAL", home_url, nat_loc_cfg, t0)
+        _ehi_cache["National"] = None
+    finally:
+        try:
+            if ctx:
+                await ctx.close()
+        except Exception:
+            pass
+        try:
+            if browser:
+                await browser.close()
+        except Exception:
+            pass
 
 
 async def _ehi_brand_from_ent_page(page, brand: str, home_url: str, loc_cfg: Dict, t0: float) -> None:
@@ -3010,18 +3028,13 @@ async def _ehi_alamo_form(playwright, loc_cfg: Dict, t0: float) -> None:
 
 async def _check_ehi_all(playwright) -> None:
     """
-    Open ONE Bright Data browser session and populate _ehi_cache for all three
-    EHI brands from a single enterprise.com page.
+    Enterprise: enterprise-ewt API from enterprise.com BD browser (with retry).
+    National:   gma-national API from nationalcar.com BD browser (own session, parallel).
+    Alamo:      enterprise-ewt with brand=ALAMO from enterprise.com page (robots.txt
+                blocks alamo.com in BD zone, so we reuse the Enterprise session).
 
-    All three brands (Enterprise, National, Alamo) are fetched by calling the
-    enterprise-ewt/reservations/initiate API three times with different brand headers
-    from the same enterprise.com page context. Confirmed working:
-      brand=ENTERPRISE → 58 classes, Enterprise prices
-      brand=NATIONAL   → 58 classes, National prices (same endpoint, same page)
-      brand=ALAMO      → 58 classes, Alamo prices   (same endpoint, same page)
-
-    "Frame was detached" on the first Enterprise call is a transient Bright Data
-    drop — retried once with a fresh browser.
+    Enterprise and National run in parallel — each uses its own BD browser since the
+    BD zone limits each browser to one domain.
 
     Called exclusively through _check_ehi_brand(), which holds _ehi_lock so
     this runs at most once per process.
@@ -3035,11 +3048,14 @@ async def _check_ehi_all(playwright) -> None:
             _ehi_cache[brand] = None
         return
 
-    print(f"  [EHI] Shared session: {airport} — Enterprise + National + Alamo via enterprise-ewt...")
+    print(f"  [EHI] Starting Enterprise + National in parallel  [{airport}]...")
     t0 = time.monotonic()
     browser = None
 
     try:
+        # Launch National in its own BD browser, in parallel with Enterprise.
+        nat_task = asyncio.ensure_future(_gma_national_own_browser(playwright, loc_cfg, t0))
+
         # Enterprise: "Frame was detached" is a transient Bright Data drop — retry once.
         browser = await get_browser(playwright)
         ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
@@ -3052,12 +3068,14 @@ async def _check_ehi_all(playwright) -> None:
             browser = await get_browser(playwright)
             ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
 
+        # Wait for National to finish before proceeding
+        await nat_task
+
         if ent_page and ent_ctx:
-            # Enterprise page is live — fetch National via its own gma-national API,
-            # Alamo via enterprise-ewt (robots.txt blocks alamo.com in BD zone).
+            # Enterprise page is live — fetch Alamo via enterprise-ewt.
+            # robots.txt blocks alamo.com in BD zone, so reuse Enterprise session.
             alamo_home = "https://www.alamo.com/en/reserve.html#/start"
-            await _gma_national_from_ent_page(ent_page, loc_cfg, t0)
-            await _ehi_brand_from_ent_page(ent_page, "ALAMO",    alamo_home, loc_cfg, t0)
+            await _ehi_brand_from_ent_page(ent_page, "ALAMO", alamo_home, loc_cfg, t0)
 
             # Keep enterprise.com page alive for nearby-EHI reuse
             _ehi_enterprise_shared["browser"] = browser
@@ -3066,10 +3084,9 @@ async def _check_ehi_all(playwright) -> None:
             browser = None  # fetch_nearby_ehi_prices() owns cleanup from here
             print(f"  [EHI] enterprise.com session stored for nearby-EHI reuse")
         else:
-            # Enterprise API failed entirely — National and Alamo fall back to form-fill
-            print(f"  [EHI] Enterprise failed after retry — National/Alamo will form-fill")
-            _ehi_cache.setdefault("National", None)
-            _ehi_cache.setdefault("Alamo",    None)
+            # Enterprise API failed entirely — Alamo falls back to form-fill
+            print(f"  [EHI] Enterprise failed after retry — Alamo will form-fill")
+            _ehi_cache.setdefault("Alamo", None)
             try:
                 await browser.close()
             except Exception:
