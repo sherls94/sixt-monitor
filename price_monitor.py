@@ -2559,6 +2559,116 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
                 pass
 
 
+async def _gma_national_from_ent_page(page, loc_cfg: Dict, t0: float) -> None:
+    """
+    Fetch National Car Rental prices via gma-national/reservations/initiate called
+    from the already-loaded enterprise.com page.
+
+    Uses National's own backend (gma-national) and National's specific location ID
+    (national_gma_id from DB, e.g. 1018794 for LGA vs 1018775 for Enterprise).
+    This is National's actual pricing API, separate from enterprise-ewt.
+
+    Falls back to enterprise-ewt with national_id if gma-national is CORS-blocked
+    or returns an error from enterprise.com context.
+    """
+    nat_id   = loc_cfg.get("national_id", loc_cfg["id"])
+    home_url = "https://www.nationalcar.com/en/car-rental.html"
+    gma_url  = "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate"
+
+    pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}"
+    return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}"
+
+    initiate_body = {
+        "pickup_location":    {"id": nat_id},
+        "return_location":    {"id": nat_id},
+        "pickup_location_id": nat_id,
+        "return_location_id": nat_id,
+        "pickup_time":        pickup_dt,
+        "return_time":        return_dt,
+        "renter_age":         BOOKING["driver_age"],
+        "rate_type":          EHI_CHARGE_KEY,
+        "one_way_rental":     False,
+        "check_if_no_vehicles_available": False,
+        "car_class_codes":    [],
+        "country_of_residence": "US",
+        "locale":             "en_US",
+        "cor":                "US",
+    }
+    initiate_body_json = json.dumps(initiate_body)
+
+    t_nat = time.monotonic()
+    js = f"""async () => {{
+        const body = {initiate_body_json};
+        try {{
+            const r = await fetch('{gma_url}', {{
+                method: 'POST',
+                credentials: 'include',
+                headers: {{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }},
+                body: JSON.stringify(body),
+            }});
+            const text = await r.text();
+            return {{ ok: r.ok, status: r.status, body: text, error: null }};
+        }} catch (e) {{
+            return {{ ok: false, status: 0, body: '', error: e.toString() }};
+        }}
+    }}"""
+    try:
+        raw = await page.evaluate(js)
+        elapsed = time.monotonic() - t_nat
+
+        if not raw.get("ok"):
+            err    = raw.get("error") or ""
+            status = raw.get("status", 0)
+            preview = (raw.get("body") or "")[:200]
+            raise Exception(f"gma-national HTTP {status} | err={err!r} | body={preview!r}")
+
+        d = json.loads(raw["body"])
+        car_classes_raw = (
+            d.get("gma", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
+            or []
+        )
+        api_msgs = [
+            f"{m.get('code')}:{(m.get('tech_message') or m.get('message',''))[:80]}"
+            for m in d.get("messages", [])
+        ]
+        print(f"  [National] {len(car_classes_raw)} classes via gma-national (loc={nat_id})  [{elapsed:.1f}s]  msgs={api_msgs[:2]}")
+
+        car_classes = [
+            {
+                "code":   c.get("code", ""),
+                "name":   c.get("name", "") or _EHI_CODE_NAMES.get(c.get("code", ""), ""),
+                "status": c.get("status", ""),
+                "total":  (c.get("charges") or {}).get(EHI_CHARGE_KEY, {}).get("total_price_view", {}).get("amount"),
+            }
+            for c in car_classes_raw
+        ]
+
+        best_price, best_name = _ehi_extract_best(car_classes, "National")
+        if best_price is None:
+            raise Exception(
+                f"No Full Size SUV in {len(car_classes)} classes"
+                + (f" | msgs={api_msgs[:2]}" if api_msgs else "")
+            )
+
+        print(f"  [National] Best: {best_name} @ ${best_price:.2f}")
+        _ehi_cache["National"] = make_result(
+            "National",
+            car_class="Full Size SUV",
+            model=best_name,
+            price=best_price,
+            url=home_url,
+        )
+
+    except Exception as exc:
+        print(f"  [National] gma-national error: {str(exc)[:200]}")
+        print(f"  [National] Falling back to enterprise-ewt with nat_id={nat_id}")
+        nat_loc_cfg = {**loc_cfg, "id": nat_id}
+        await _ehi_brand_from_ent_page(page, "NATIONAL", home_url, nat_loc_cfg, t0)
+
+
 async def _ehi_brand_from_ent_page(page, brand: str, home_url: str, loc_cfg: Dict, t0: float) -> None:
     """
     Fetch National or Alamo prices by calling enterprise-ewt with brand=NATIONAL/ALAMO
@@ -2943,11 +3053,10 @@ async def _check_ehi_all(playwright) -> None:
             ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
 
         if ent_page and ent_ctx:
-            # Enterprise page is live — call enterprise-ewt with NATIONAL and ALAMO brands
-            # from the same page context (no extra browser sessions needed).
-            nat_home   = "https://www.nationalcar.com/en/car-rental.html"
+            # Enterprise page is live — fetch National via its own gma-national API,
+            # Alamo via enterprise-ewt (robots.txt blocks alamo.com in BD zone).
             alamo_home = "https://www.alamo.com/en/reserve.html#/start"
-            await _ehi_brand_from_ent_page(ent_page, "NATIONAL", nat_home,   loc_cfg, t0)
+            await _gma_national_from_ent_page(ent_page, loc_cfg, t0)
             await _ehi_brand_from_ent_page(ent_page, "ALAMO",    alamo_home, loc_cfg, t0)
 
             # Keep enterprise.com page alive for nearby-EHI reuse
