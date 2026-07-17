@@ -5474,6 +5474,110 @@ def _format_results_section(results: List[Dict], booked_price: float) -> List[Di
     return out
 
 
+def send_price_alert(booking: dict, best_result: dict, nearby_deals: list) -> None:
+    try:
+        import resend
+    except ImportError:
+        print("resend not installed — skipping email alert")
+        return
+
+    resend.api_key = os.environ.get("RESEND_API_KEY")
+    if not resend.api_key:
+        print("RESEND_API_KEY not set — skipping email alert")
+        return
+
+    alert_email = os.environ.get("ALERT_EMAIL")
+    if not alert_email:
+        print("ALERT_EMAIL not set — skipping email alert")
+        return
+
+    provider    = booking.get("provider", "")
+    airport     = booking.get("airport_code", "")
+    pickup      = booking.get("pickup_date", "")
+    return_date = booking.get("return_date", "")
+    booked_price = booking.get("booked_price", 0)
+
+    deals_html = ""
+    if best_result:
+        saving = booked_price - best_result["price"]
+        deals_html = f"""
+        <tr>
+            <td style="padding:8px">{best_result['provider']}</td>
+            <td style="padding:8px">{best_result.get('car_class','')}</td>
+            <td style="padding:8px">${best_result['price']:.2f}</td>
+            <td style="padding:8px;color:#22c55e;font-weight:bold">Save ${saving:.2f}</td>
+            <td style="padding:8px">{best_result.get('source','')}</td>
+        </tr>"""
+
+    nearby_html = ""
+    for deal in nearby_deals[:3]:
+        nearby_html += f"""
+        <tr>
+            <td style="padding:8px">{deal['location_name']}</td>
+            <td style="padding:8px">${deal['best_price']:.2f}</td>
+            <td style="padding:8px">{deal.get('best_provider','')}</td>
+            <td style="padding:8px;color:#22c55e;font-weight:bold">Net save ${deal['net_saving']:.2f}</td>
+        </tr>"""
+
+    nearby_section = ""
+    if nearby_html:
+        nearby_section = f"""
+        <h3>Nearby location deals:</h3>
+        <table style="width:100%;border-collapse:collapse">
+            <tr style="background:#f3f4f6">
+                <th style="padding:8px;text-align:left">Location</th>
+                <th style="padding:8px;text-align:left">Price</th>
+                <th style="padding:8px;text-align:left">Provider</th>
+                <th style="padding:8px;text-align:left">Net Saving</th>
+            </tr>
+            {nearby_html}
+        </table>"""
+
+    html = f"""
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
+        <h2 style="color:#22c55e">&#x1F4B0; Price Drop Alert</h2>
+        <p>A better deal was found for your <strong>{provider}</strong> booking at <strong>{airport}</strong></p>
+        <p>&#x1F4C5; {pickup} &rarr; {return_date} &nbsp;|&nbsp; Your price: <strong>${booked_price:.2f}</strong></p>
+
+        <h3>Better prices found:</h3>
+        <table style="width:100%;border-collapse:collapse">
+            <tr style="background:#f3f4f6">
+                <th style="padding:8px;text-align:left">Provider</th>
+                <th style="padding:8px;text-align:left">Class</th>
+                <th style="padding:8px;text-align:left">Price</th>
+                <th style="padding:8px;text-align:left">Saving</th>
+                <th style="padding:8px;text-align:left">Source</th>
+            </tr>
+            {deals_html}
+        </table>
+
+        {nearby_section}
+
+        <br>
+        <p style="color:#6b7280;font-size:12px">
+            You can cancel your current booking and rebook at the better price.<br>
+            Monitored by CardVault Price Tracker
+        </p>
+    </div>"""
+
+    best_saving = booked_price - best_result["price"] if best_result else 0
+    subject = (
+        f"\U0001F4B0 Price drop for your {provider} booking at {airport}"
+        f" — save up to ${best_saving:.2f}"
+    )
+
+    try:
+        resend.Emails.send({
+            "from": "CardVault <onboarding@resend.dev>",
+            "to": [alert_email],
+            "subject": subject,
+            "html": html,
+        })
+        print(f"Alert email sent to {alert_email}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+
 def _write_json_results(
     results: List[Dict],
     nearby_rows: List[Dict],
@@ -6025,6 +6129,21 @@ async def main() -> None:
     # ── Supabase results upload ──────────────────────────────────────────────
     if booking_id:
         save_results_to_supabase(booking_id, results_data)
+
+    # ── Email alert ──────────────────────────────────────────────────────────
+    savings = [
+        r for r in results_data.get("results", [])
+        if r.get("status") == "ok"
+        and r.get("saving") is not None
+        and r["saving"] >= MIN_SAVING
+    ]
+    nearby_deals = [
+        n for n in results_data.get("nearby", [])
+        if n.get("is_deal") and n.get("net_saving") is not None
+    ]
+    if savings or nearby_deals:
+        best = min(savings, key=lambda x: x["price"]) if savings else None
+        send_price_alert(BOOKING, best, nearby_deals)
 
     # ── Bright Data usage summary ────────────────────────────────────────────
     _print_bd_usage()
