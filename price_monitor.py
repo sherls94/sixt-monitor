@@ -3367,13 +3367,11 @@ async def _dump_kayak_raw_body(playwright, label: str, url: str) -> None:
     print the first 60 lines of page body text.  Used as last-resort diagnosis when
     a Kayak tab returns empty even after relaxed retry.
     """
-    _bd_track("kayak")
-    _browser = await get_browser(playwright)
-    _cdp = bool(BRIGHT_DATA_CDP_URL and _browser.contexts)
-    _ctx = _browser.contexts[0] if _cdp else await _new_context(_browser)
+    # Local Chromium — Kayak blocks Bright Data zones via robots.txt restriction.
+    _browser = await playwright.chromium.launch(headless=True, args=_stealth_launch_args())
+    _ctx = await _new_context(_browser)
     pg = await _ctx.new_page()
-    if not _cdp:
-        await _apply_stealth(pg)
+    await _apply_stealth(pg)
     await _block_heavy_resources(pg)
     try:
         await pg.goto(url, timeout=TIMEOUT_MS * 2, wait_until="domcontentloaded")
@@ -3401,8 +3399,7 @@ async def _dump_kayak_raw_body(playwright, label: str, url: str) -> None:
         except Exception:
             pass
         try:
-            if not _cdp:
-                await _ctx.close()
+            await _ctx.close()
         except Exception:
             pass
         await _browser.close()
@@ -3516,8 +3513,7 @@ async def _fetch_kayak_results(playwright) -> Dict[str, Dict]:
             except Exception:
                 pass
             try:
-                if not _cdp:
-                    await _ctx.close()
+                await _ctx.close()
             except Exception:
                 pass
             await _browser.close()
@@ -3750,8 +3746,7 @@ async def fetch_nearby_kayak_prices(
             except Exception:
                 pass
             try:
-                if not _cdp:
-                    await _ctx.close()
+                await _ctx.close()
             except Exception:
                 pass
             await _browser.close()
