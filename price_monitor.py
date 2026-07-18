@@ -2561,36 +2561,19 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
 
 async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> None:
     """
-    Fetch National Car Rental prices by intercepting gma-national/reservations/initiate
-    from the nationalcar.com SPA.
+    Fetch National Car Rental prices by:
+    1. Opening nationalcar.com in its own BD browser (BD zone limits to 1 domain).
+    2. Attaching an XHR response listener for gma-national/reservations/initiate.
+    3. Filling and submitting the home-page search form via _fill_enterprise_group_form.
+       The SPA fires reservations/initiate naturally after the form submits — we capture it.
 
-    Opens its own BD browser (BD zone limits each browser to 1 domain).
-    nationalcar.com is accessible in BD (confirmed: page loads, no robots.txt block).
-
-    Approach (mirrors Hertz vehicle-rates intercept):
-    1. Navigate nationalcar.com home — establishes cookies and initializes the SPA.
-    2. Attach a response listener for gma-national/reservations/initiate.
-    3. Navigate to find-a-vehicle.html#/vehicles?... — the SPA router processes the
-       hash, fires reservations/initiate with the correct headers automatically.
-    4. Capture the response and extract car classes.
-
-    Direct POST to gma-national returns 422 Invalid Request (missing SPA-managed
-    headers/tokens that we can't reproduce manually).
+    Direct POST to gma-national returns 422 (requires SPA-managed session headers).
+    Navigating to the hash results URL causes the SPA to render a 404 (needs prior state).
+    Form-fill + intercept is the only reliable path.
     """
-    airport  = BOOKING["airport_code"]
     home_url = "https://www.nationalcar.com/en/car-rental.html"
     browser  = None
     ctx      = None
-
-    # Build results URL: same hash format used by NATIONAL_RESULTS_URL
-    _pu = BOOKING["pickup_date"].split("-")   # ["YYYY","MM","DD"]
-    _re = BOOKING["return_date"].split("-")
-    _pu_enc = f"{_pu[1]}%2F{_pu[2]}%2F{_pu[0]}"
-    _re_enc = f"{_re[1]}%2F{_re[2]}%2F{_re[0]}"
-    results_url = (
-        "https://www.nationalcar.com/en/reservation/find-a-vehicle.html"
-        "#/vehicles?from={loc}&to={loc}&pickup={pu}+12%3A00+PM&return={re}+12%3A00+PM"
-    ).format(loc=airport, pu=_pu_enc, re=_re_enc)
 
     try:
         browser = await get_browser(playwright)
@@ -2609,18 +2592,19 @@ async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> Non
 
         page.on("response", _on_response)
 
-        # Step 1: navigate home to establish cookies and initialize the SPA
+        # Navigate home — establishes cookies and initializes the National SPA
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
         await dismiss_popups(page)
         await page.wait_for_timeout(2_000)
         print(f"  [National] Home loaded: '{await page.title()}'  [{time.monotonic()-t0:.1f}s]")
 
-        # Step 2: navigate to the results hash URL — SPA router fires reservations/initiate
-        await page.goto(results_url, wait_until="domcontentloaded", timeout=60_000)
-        print(f"  [National] Results page loaded  [{time.monotonic()-t0:.1f}s]")
+        # Fill and submit the search form — SPA fires gma-national/reservations/initiate
+        # after navigating to the results view; our listener captures the response.
+        await _fill_enterprise_group_form(page, brand="National")
+        print(f"  [National] Form fill complete  [{time.monotonic()-t0:.1f}s]")
 
-        # Wait up to 25s for the SPA to fire the XHR
-        for _ in range(25):
+        # Wait up to 30s for the SPA to fire the XHR after form submission
+        for _ in range(30):
             if captured:
                 break
             await page.wait_for_timeout(1_000)
@@ -2631,7 +2615,7 @@ async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> Non
                 body_snippet = (await page.inner_text("body"))[:300]
             except Exception:
                 pass
-            raise Exception(f"No gma-national XHR captured after 25s — body: {body_snippet!r}")
+            raise Exception(f"No gma-national XHR captured after 30s — url={page.url[:80]!r}  body: {body_snippet!r}")
 
         d = captured[0]
         car_classes_raw = (
@@ -5033,6 +5017,20 @@ async def _fill_enterprise_group_form(page, brand: str = "National") -> None:
     suggestions_found = bool(sugg_info.get("found"))
 
     if suggestions_found:
+        # Strategy 0: Playwright native click — fires full browser event chain (mousedown/up/click)
+        # which React event delegation picks up correctly. Try this FIRST before fiber.
+        sel = sugg_info["found"][0]["sel"]
+        try:
+            await page.locator(sel).first.click(timeout=5000)
+            await page.wait_for_timeout(2000)
+            loc_val = await loc_input.input_value(timeout=2000)
+            print(f"  [form] Location after native click: '{loc_val}'")
+        except Exception as e:
+            print(f"  [form] Native click failed: {e}")
+
+    if suggestions_found and len(loc_val) <= len(BOOKING["airport_code"]) + 2:
+        # loc_val is still just the raw code (not full airport name) — try fiber next
+        loc_val = ""  # reset so we fall through
         found = sugg_info["found"][0]
         sel = found["sel"]
         handlers = found.get("handlers", "")
@@ -5198,9 +5196,13 @@ async def _fill_enterprise_group_form(page, brand: str = "National") -> None:
     print(f"  [form] history after fiber submit: {history_after_fiber}")
     print(f"  [form] URL after fiber submit: {page.url[:80]}")
 
-    if "/home" in page.url:
-        # Strategy B: DOM click
-        await submit_btn.click(force=True, timeout=10000)
+    if not history_after_fiber and "reserve" not in page.url and "find-a-vehicle" not in page.url:
+        # Strategy B: DOM click — fiber didn't navigate, try native browser events
+        try:
+            await submit_btn.click(force=True, timeout=10000)
+        except Exception:
+            await page.evaluate("(sel) => { var b=document.querySelector(sel); if(b) b.click(); }",
+                                _submit_sel.split(",")[0].strip())
         print("  [form] Submit DOM-clicked — waiting 3s for reaction...")
         await page.wait_for_timeout(3000)
         print(f"  [form] URL 3s after submit: {page.url[:80]}")
