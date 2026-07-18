@@ -2559,85 +2559,91 @@ async def _ehi_enterprise_api(browser, loc_cfg: Dict, t0: float):
                 pass
 
 
-async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> None:
+async def _ehi_national_api(browser, loc_cfg: Dict, t0: float) -> None:
     """
-    Fetch National Car Rental prices by:
-    1. Opening nationalcar.com in its own BD browser (BD zone limits to 1 domain).
-    2. Attaching an XHR response listener for gma-national/reservations/initiate.
-    3. Filling and submitting the home-page search form via _fill_enterprise_group_form.
-       The SPA fires reservations/initiate naturally after the form submits — we capture it.
+    National via gma-national/reservations/initiate direct API.
 
-    Direct POST to gma-national returns 422 (requires SPA-managed session headers).
-    Navigating to the hash results URL causes the SPA to render a 404 (needs prior state).
-    Form-fill + intercept is the only reliable path.
+    Confirmed working approach (probe_form_v25 Strategy 6):
+    1. Navigate nationalcar.com to establish session cookies (no form fill needed).
+    2. POST to gma-national/reservations/initiate from the page context using
+       credentials: 'include' so session cookies are sent.
+    3. Payload MUST include BOTH pickup_location: {id} object AND top-level
+       pickup_location_id string — omitting the top-level field causes
+       CROS_RES_PICKUP_LOCATION_REQUIRED.
+    4. pickup_time / return_time: full ISO datetime "YYYY-MM-DDTHH:MM".
+    5. loc_cfg["national_id"] is the National GMA location ID for this airport
+       (may differ from the Enterprise location ID loc_cfg["id"]).
+    6. Response path: d.gma.gbo.reservation.car_classes
+    7. Do NOT fill the form: autocomplete click navigates the SPA and disrupts
+       subsequent page.evaluate fetch calls (TypeError: Failed to fetch).
     """
     home_url = "https://www.nationalcar.com/en/car-rental.html"
-    browser  = None
+    api_url  = "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate"
+    loc_id   = loc_cfg.get("national_id", loc_cfg["id"])
     ctx      = None
 
+    pickup_dt = f"{BOOKING['pickup_date']}T{BOOKING['pickup_time']}"
+    return_dt = f"{BOOKING['return_date']}T{BOOKING['return_time']}"
+
+    initiate_body = {
+        "pickup_location":    {"id": loc_id},
+        "return_location":    {"id": loc_id},
+        "pickup_location_id": loc_id,
+        "return_location_id": loc_id,
+        "pickup_time":        pickup_dt,
+        "return_time":        return_dt,
+        "renter_age":         BOOKING["driver_age"],
+        "rate_type":          EHI_CHARGE_KEY,
+        "country_of_residence": "US",
+        "locale":             "en_US",
+        "cor":                "US",
+    }
+    initiate_body_json = json.dumps(initiate_body)
+
     try:
-        browser = await get_browser(playwright)
         page, ctx = await _new_bd_page(browser, "national")
-
-        captured: list = []
-
-        async def _on_response(response):
-            if "gma-national" in response.url and "reservations/initiate" in response.url and not captured:
-                try:
-                    body = await response.json()
-                    captured.append(body)
-                    print(f"  [National] Intercepted gma-national: status={response.status}  url={response.url[:80]}")
-                except Exception as e:
-                    print(f"  [National] Response parse error: {e}")
-
-        page.on("response", _on_response)
-
-        # Navigate home — establishes cookies and initializes the National SPA
         await page.goto(home_url, wait_until="domcontentloaded", timeout=60_000)
-        await dismiss_popups(page)
-        await page.wait_for_timeout(2_000)
-        print(f"  [National] Home loaded: '{await page.title()}'  [{time.monotonic()-t0:.1f}s]")
+        await page.wait_for_timeout(3_000)
+        print(f"  [National] Session ready (loc_id={loc_id})  [{time.monotonic()-t0:.1f}s]")
 
-        # Fill and submit the search form — SPA fires gma-national/reservations/initiate
-        # after navigating to the results view; our listener captures the response.
-        await _fill_enterprise_group_form(page, brand="National")
-        print(f"  [National] Form fill complete  [{time.monotonic()-t0:.1f}s]")
-
-        # Wait up to 30s for the SPA to fire the XHR after form submission
-        for _ in range(30):
-            if captured:
-                break
-            await page.wait_for_timeout(1_000)
-
-        if not captured:
-            body_snippet = ""
-            try:
-                body_snippet = (await page.inner_text("body"))[:300]
-            except Exception:
-                pass
-            raise Exception(f"No gma-national XHR captured after 30s — url={page.url[:80]!r}  body: {body_snippet!r}")
-
-        d = captured[0]
-        car_classes_raw = (
-            d.get("gma", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
-            or d.get("session", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
-            or []
-        )
-        api_msgs = [
-            f"{m.get('code')}:{(m.get('tech_message') or m.get('message',''))[:80]}"
-            for m in d.get("messages", [])
-        ]
-        print(f"  [National] {len(car_classes_raw)} classes via gma-national  [{time.monotonic()-t0:.1f}s]  msgs={api_msgs[:2]}")
-
-        car_classes = [
-            {
-                "code":   c.get("code", ""),
-                "name":   c.get("name", "") or _EHI_CODE_NAMES.get(c.get("code", ""), ""),
-                "status": c.get("status", ""),
-                "total":  (c.get("charges") or {}).get(EHI_CHARGE_KEY, {}).get("total_price_view", {}).get("amount"),
-            }
-            for c in car_classes_raw
-        ]
+        t_brand = time.monotonic()
+        js = f"""async () => {{
+            const body = {initiate_body_json};
+            const r = await fetch('{api_url}', {{
+                method: 'POST',
+                credentials: 'include',
+                headers: {{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }},
+                body: JSON.stringify(body),
+            }});
+            const d = await r.json();
+            const classes = d?.gma?.gbo?.reservation?.car_classes
+                          || d?.session?.gbo?.reservation?.car_classes
+                          || d?.session?.analytics?.gbo?.reservation?.car_classes
+                          || [];
+            const msgs = (d?.messages || []).map(m => m.code + ':' + (m.tech_message || m.message || '').slice(0, 80));
+            const EHI_CODE_NAMES = {{{_EHI_CODE_NAMES_JS}}};
+            return {{
+                classes: classes.map(c => ({{
+                    code:   c.code,
+                    name:   c.name || EHI_CODE_NAMES[c.code] || '',
+                    status: c.status || '',
+                    total:  c?.charges?.{EHI_CHARGE_KEY}?.total_price_view?.amount,
+                }})),
+                msgs: msgs,
+                status: r.status,
+            }};
+        }}"""
+        raw = await page.evaluate(js)
+        car_classes = raw.get("classes", []) if isinstance(raw, dict) else []
+        api_msgs    = raw.get("msgs", [])    if isinstance(raw, dict) else []
+        api_status  = raw.get("status", 0)   if isinstance(raw, dict) else 0
+        elapsed = time.monotonic() - t_brand
+        print(f"  [National] {len(car_classes)} classes  status={api_status}  [{elapsed:.1f}s]")
+        if api_msgs:
+            print(f"  [National] API messages: {api_msgs[:4]}")
 
         best_price, best_name = _ehi_extract_best(car_classes, "National")
         if best_price is None:
@@ -2654,19 +2660,13 @@ async def _gma_national_own_browser(playwright, loc_cfg: Dict, t0: float) -> Non
             price=best_price,
             url=home_url,
         )
-
     except Exception as exc:
-        print(f"  [National] XHR intercept error: {str(exc)[:200]}")
+        print(f"  [National] API error: {str(exc)[:120]} — will form-fill")
         _ehi_cache["National"] = None
     finally:
         try:
             if ctx:
                 await ctx.close()
-        except Exception:
-            pass
-        try:
-            if browser:
-                await browser.close()
         except Exception:
             pass
 
@@ -2763,126 +2763,6 @@ async def _ehi_brand_from_ent_page(page, brand: str, home_url: str, loc_cfg: Dic
         _ehi_cache[provider] = None
 
 
-async def _ehi_national_api(playwright, loc_cfg: Dict, t0: float) -> None:
-    """
-    National via Bright Data browser intercept of gma-national/reservations/initiate.
-
-    Opens its own Bright Data browser (zone limits each browser to 1 domain).
-
-    Approach (mirrors the working Hertz browser-intercept):
-    1. Navigate to NATIONAL_RESULTS_URL (find-a-vehicle.html#/vehicles?...) — the
-       SPA processes the hash parameters and fires reservations/initiate automatically.
-    2. Intercept the network response to capture car classes directly.
-    3. No form fill, no manual API call — let the site's own JS do the work.
-
-    The previous approach (POST to /reservations/initiate from page context) returned
-    422 Invalid Request for all tested location IDs; root cause unknown but likely
-    a missing session token or header that the site's own JS provides automatically.
-    """
-    airport = BOOKING["airport_code"]
-    # Build the direct results URL dynamically from current BOOKING values
-    _pu = BOOKING["pickup_date"].split("-")   # ["YYYY","MM","DD"]
-    _re = BOOKING["return_date"].split("-")
-    _pu_enc = f"{_pu[1]}%2F{_pu[2]}%2F{_pu[0]}"
-    _re_enc = f"{_re[1]}%2F{_re[2]}%2F{_re[0]}"
-    results_url = (
-        "https://www.nationalcar.com/en/reservation/find-a-vehicle.html"
-        "#/vehicles?from={loc}&to={loc}&pickup={pu}+12%3A00+PM&return={re}+12%3A00+PM"
-    ).format(loc=airport, pu=_pu_enc, re=_re_enc)
-
-    home_url = "https://www.nationalcar.com/en/car-rental.html"
-    browser  = None
-    ctx      = None
-
-    try:
-        browser = await get_browser(playwright)
-        page, ctx = await _new_bd_page(browser, "national")
-
-        captured: list = []
-
-        async def _on_response(response):
-            if "reservations/initiate" in response.url and "national" in response.url and not captured:
-                try:
-                    body = await response.json()
-                    captured.append(body)
-                    print(f"  [National] Intercepted initiate: status={response.status}  url={response.url[:80]}")
-                except Exception as e:
-                    print(f"  [National] Initiate response parse error: {e}")
-
-        page.on("response", _on_response)
-
-        print(f"  [National] Navigating to results URL (browser intercept)...")
-        await page.goto(results_url, timeout=60_000, wait_until="domcontentloaded")
-        await dismiss_popups(page)
-        print(f"  [National] Page: '{await page.title()}' @ {page.url[:80]}  [{time.monotonic()-t0:.1f}s]")
-
-        # Wait up to 25s for the SPA to fire reservations/initiate
-        for _ in range(25):
-            if captured:
-                break
-            await page.wait_for_timeout(1000)
-
-        if not captured:
-            # SPA may not have fired — print body snippet for diagnosis
-            body_snippet = ""
-            try:
-                body_snippet = (await page.inner_text("body"))[:300]
-            except Exception:
-                pass
-            print(f"  [National] No initiate XHR captured after 25s — body: {body_snippet!r}")
-            raise Exception("No reservations/initiate XHR captured from nationalcar.com SPA")
-
-        d = captured[0]
-        car_classes_raw = (
-            d.get("gma", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
-            or d.get("session", {}).get("gbo", {}).get("reservation", {}).get("car_classes")
-            or []
-        )
-        api_msgs = [
-            f"{m.get('code')}:{(m.get('tech_message') or m.get('message',''))[:80]}"
-            for m in d.get("messages", [])
-        ]
-        print(f"  [National] {len(car_classes_raw)} classes  msgs={api_msgs[:2]}")
-
-        car_classes = [
-            {
-                "code":   c.get("code", ""),
-                "name":   c.get("name", "") or _EHI_CODE_NAMES.get(c.get("code", ""), ""),
-                "status": c.get("status", ""),
-                "total":  (c.get("charges") or {}).get(EHI_CHARGE_KEY, {}).get("total_price_view", {}).get("amount"),
-            }
-            for c in car_classes_raw
-        ]
-
-        best_price, best_name = _ehi_extract_best(car_classes, "National")
-        if best_price is None:
-            raise Exception(
-                f"No Full Size SUV in {len(car_classes)} classes"
-                + (f" | msgs={api_msgs[:2]}" if api_msgs else "")
-            )
-
-        print(f"  [National] Best: {best_name} @ ${best_price:.2f}")
-        _ehi_cache["National"] = make_result(
-            "National",
-            car_class="Full Size SUV",
-            model=best_name,
-            price=best_price,
-            url=home_url,
-        )
-    except Exception as exc:
-        print(f"  [National] Browser intercept error: {str(exc)[:200]} — will form-fill")
-        _ehi_cache["National"] = None
-    finally:
-        try:
-            if ctx:
-                await ctx.close()
-        except Exception:
-            pass
-        try:
-            if browser:
-                await browser.close()
-        except Exception:
-            pass
 
 
 async def _ehi_alamo_form(playwright, loc_cfg: Dict, t0: float) -> None:
@@ -3012,13 +2892,13 @@ async def _ehi_alamo_form(playwright, loc_cfg: Dict, t0: float) -> None:
 
 async def _check_ehi_all(playwright) -> None:
     """
-    Enterprise: enterprise-ewt API from enterprise.com BD browser (with retry).
-    National:   gma-national API from nationalcar.com BD browser (own session, parallel).
-    Alamo:      enterprise-ewt with brand=ALAMO from enterprise.com page (robots.txt
-                blocks alamo.com in BD zone, so we reuse the Enterprise session).
+    Open ONE Bright Data browser session and populate _ehi_cache for all three
+    EHI brands sequentially, each on its own page context.
 
-    Enterprise and National run in parallel — each uses its own BD browser since the
-    BD zone limits each browser to one domain.
+    Enterprise:  enterprise-ewt API from enterprise.com page.
+    National:    gma-national/reservations/initiate direct API from nationalcar.com
+                 page context (navigate home for cookies, then POST — no form fill).
+    Alamo:       _ehi_alamo_form — gma-alamo direct API from alamo.com page context.
 
     Called exclusively through _check_ehi_brand(), which holds _ehi_lock so
     this runs at most once per process.
@@ -3032,16 +2912,14 @@ async def _check_ehi_all(playwright) -> None:
             _ehi_cache[brand] = None
         return
 
-    print(f"  [EHI] Starting Enterprise + National in parallel  [{airport}]...")
+    print(f"  [EHI] Shared session: {airport} — Enterprise + National + Alamo...")
     t0 = time.monotonic()
     browser = None
 
     try:
-        # Launch National in its own BD browser, in parallel with Enterprise.
-        nat_task = asyncio.ensure_future(_gma_national_own_browser(playwright, loc_cfg, t0))
-
-        # Enterprise: "Frame was detached" is a transient Bright Data drop — retry once.
         browser = await get_browser(playwright)
+
+        # Enterprise: retry once on "Frame was detached" (transient BD drop)
         ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
         if ent_page is None and ent_ctx is None:
             print(f"  [EHI] Enterprise first attempt failed — retrying with fresh browser")
@@ -3052,15 +2930,10 @@ async def _check_ehi_all(playwright) -> None:
             browser = await get_browser(playwright)
             ent_page, ent_ctx = await _ehi_enterprise_api(browser, loc_cfg, t0)
 
-        # Wait for National to finish before proceeding
-        await nat_task
+        # National: direct gma-national API call from nationalcar.com page context
+        await _ehi_national_api(browser, loc_cfg, t0)
 
         if ent_page and ent_ctx:
-            # Enterprise page is live — fetch Alamo via enterprise-ewt.
-            # robots.txt blocks alamo.com in BD zone, so reuse Enterprise session.
-            alamo_home = "https://www.alamo.com/en/reserve.html#/start"
-            await _ehi_brand_from_ent_page(ent_page, "ALAMO", alamo_home, loc_cfg, t0)
-
             # Keep enterprise.com page alive for nearby-EHI reuse
             _ehi_enterprise_shared["browser"] = browser
             _ehi_enterprise_shared["page"]    = ent_page
@@ -3068,14 +2941,15 @@ async def _check_ehi_all(playwright) -> None:
             browser = None  # fetch_nearby_ehi_prices() owns cleanup from here
             print(f"  [EHI] enterprise.com session stored for nearby-EHI reuse")
         else:
-            # Enterprise API failed entirely — Alamo falls back to form-fill
-            print(f"  [EHI] Enterprise failed after retry — Alamo will form-fill")
-            _ehi_cache.setdefault("Alamo", None)
+            print(f"  [EHI] Enterprise failed after retry — nearby-EHI will open fresh session")
             try:
                 await browser.close()
             except Exception:
                 pass
             browser = None
+
+        # Alamo: own browser session (gma-alamo direct API)
+        await _ehi_alamo_form(playwright, loc_cfg, t0)
 
         print(f"  [EHI] All brands done  [{time.monotonic()-t0:.1f}s total]")
 
