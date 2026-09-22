@@ -1,10 +1,13 @@
 from fastapi import FastAPI, HTTPException, Header, Request, Response
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import json
 import asyncio
 import os
 from pathlib import Path
 from datetime import datetime
+
+import price_monitor
 
 # ── Pure ASGI middleware — sits outside the FastAPI router entirely ────────────
 # BaseHTTPMiddleware (@app.middleware) in Starlette 1.x doesn't intercept
@@ -101,6 +104,59 @@ async def get_status():
             RESULTS_FILE.stat().st_mtime
         ).isoformat() if RESULTS_FILE.exists() else None,
     }
+
+
+class SearchRequest(BaseModel):
+    airport_code: str
+    pickup_date: str    # "YYYY-MM-DD"
+    pickup_time: str = "12:00"
+    return_date: str    # "YYYY-MM-DD"
+    return_time: str = "12:00"
+    driver_age: int = 30
+    acriss_code: str | None = None   # defaults to Full Size SUV (GFAR) if omitted
+
+
+_search_lock = asyncio.Lock()
+
+
+@_r.post("/search")
+async def live_search(req: SearchRequest):
+    """
+    Ad-hoc multi-provider price search for arbitrary dates/location — not tied
+    to a stored booking. Reuses price_monitor.py's provider-check functions,
+    which read from its module-level BOOKING dict, so concurrent searches are
+    serialized behind a lock to avoid two requests stomping each other's state.
+    """
+    async with _search_lock:
+        saved_booking = dict(price_monitor.BOOKING)
+        try:
+            price_monitor.BOOKING.update({
+                "airport_code": req.airport_code,
+                "pickup_date":  req.pickup_date,
+                "pickup_time":  req.pickup_time,
+                "return_date":  req.return_date,
+                "return_time":  req.return_time,
+                "driver_age":   req.driver_age,
+                "acriss_code":  req.acriss_code or "GFAR",
+                "booked_price": 0,
+            })
+            price_monitor._reinitialize_location_constants()
+
+            results = await asyncio.gather(
+                *[price_monitor.check_provider(p) for p in price_monitor.PROVIDERS],
+                return_exceptions=True,
+            )
+            clean = [
+                r if not isinstance(r, Exception)
+                else price_monitor.make_result(p, error=str(r)[:150])
+                for p, r in zip(price_monitor.PROVIDERS, results)
+            ]
+            clean.sort(key=lambda r: (r.get("price") is None, r.get("price") or 0))
+            return {"results": clean}
+        finally:
+            price_monitor.BOOKING.clear()
+            price_monitor.BOOKING.update(saved_booking)
+            price_monitor._reinitialize_location_constants()
 
 
 async def _run_monitor(booking_id: str | None = None):
