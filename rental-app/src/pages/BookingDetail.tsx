@@ -79,7 +79,7 @@ export default function BookingDetail() {
               <Loader2 className="h-3.5 w-3.5 animate-spin" /> Checking prices — this takes about a minute…
             </p>
           )}
-          {results.map(r => <ProviderResultCard key={r.provider} r={r} />)}
+          {results.map((r, i) => <ProviderResultCard key={r.provider} r={r} isCheapest={i === 0 && r.price != null} />)}
         </div>
       </div>
 

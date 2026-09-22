@@ -82,7 +82,7 @@ export default function Search() {
           {results.every(r => r.price == null) && (
             <p className="text-sm text-muted-foreground">No prices found for this route/date.</p>
           )}
-          {results.filter(r => r.price != null).map(r => <ProviderResultCard key={r.provider} r={r} />)}
+          {results.filter(r => r.price != null).map((r, i) => <ProviderResultCard key={r.provider} r={r} isCheapest={i === 0} />)}
         </div>
       )}
     </div>
