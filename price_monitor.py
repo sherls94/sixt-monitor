@@ -547,6 +547,19 @@ def _hertz_direct_rates(
     return data if isinstance(data, list) else [data]
 
 
+def _hertz_holdings_booking_url(domain: str, station: str) -> str:
+    """Deep link into a Hertz Holdings site's results, prepopulated with this booking's dates/age."""
+    return (
+        f"https://www.{domain}/us/en/book/vehicles"
+        f"?pid={station}"
+        f"&pdate={BOOKING['pickup_date']}T{BOOKING['pickup_time']}:00"
+        f"&did={station}"
+        f"&ddate={BOOKING['return_date']}T{BOOKING['return_time']}:00"
+        f"&pCountryCode=US"
+        f"&age={BOOKING['driver_age']}"
+    )
+
+
 async def check_hertz() -> Dict:
     """Hertz Full Size SUV price via the direct OAuth2 + vehicle-rates API."""
     if not should_check_provider("Hertz"):
@@ -578,7 +591,7 @@ async def check_hertz() -> Dict:
         car_class="Full Size SUV",
         model=best_name,
         price=best_price,
-        url=f"https://www.hertz.com/us/en/book/vehicles?pid={HERTZ_STATION_CODE}",
+        url=_hertz_holdings_booking_url("hertz.com", HERTZ_STATION_CODE),
     )
 
 
@@ -621,7 +634,7 @@ async def check_dollar() -> Dict:
         car_class="Full Size SUV",
         model=best_name,
         price=best_price,
-        url=f"https://www.dollar.com/us/en/book/vehicles?pid={airport}",
+        url=_hertz_holdings_booking_url("dollar.com", airport),
     )
 
 
@@ -664,7 +677,7 @@ async def check_thrifty() -> Dict:
         car_class="Full Size SUV",
         model=best_name,
         price=best_price,
-        url=f"https://www.thrifty.com/us/en/book/vehicles?pid={THRIFTY_STATION_CODE}",
+        url=_hertz_holdings_booking_url("thrifty.com", THRIFTY_STATION_CODE),
     )
 
 
@@ -1159,6 +1172,7 @@ def make_result(
     url: str = "",
     error: Optional[str] = None,
     na: bool = False,
+    image_url: str = "",
 ) -> Dict:
     """Return a standardised result dict.
 
@@ -1166,6 +1180,10 @@ def make_result(
     permanently closed) — these show as N/A in the output rather than ERROR,
     since there is nothing wrong with the monitor; the provider simply has no
     coverage at this airport.
+
+    model should be the actual vehicle (e.g. "Ford Expedition", "BMW X5"),
+    not a generic class label — that's what actually differs between
+    providers within the "same" booked class and is worth showing.
     """
     return {
         "provider":  provider,
@@ -1175,6 +1193,7 @@ def make_result(
         "url":       url,
         "error":     error,
         "na":        na,
+        "image_url": image_url,
     }
 
 
@@ -1396,25 +1415,42 @@ def _ehi_class_price(cc: dict) -> Optional[float]:
         return None
 
 
+def _ehi_vehicle_image(cc: dict) -> str:
+    """Extract a real vehicle photo URL from an EHI car_class dict, if present."""
+    path = cc.get("images", {}).get("ThreeQuarter", {}).get("path", "")
+    if not path:
+        return ""
+    return path.replace("{width}", "320").replace("{quality}", "high")
+
+
 def _ehi_extract_best_from_raw(car_classes: list) -> tuple:
     """
     Like _ehi_extract_best(), but reads raw EHI car_class dicts directly
     (code/name/charges) rather than the pre-flattened {name, total} shape the
-    old JS-side extraction produced. Falls back to _EHI_CODE_NAMES for
-    display name when the API doesn't supply one.
+    old JS-side extraction produced.
+
+    Returns (price, class_name, vehicle_name, image_url). class_name (e.g.
+    "Full Size SUV") is used for is_fullsize_suv() matching; vehicle_name
+    (e.g. "Ford Expedition") is the actual car the provider will give you —
+    what's shown to the user, since that's what genuinely differs between
+    providers within the "same" booked class.
     """
     best_price: Optional[float] = None
-    best_name = ""
+    best_class_name = ""
+    best_vehicle_name = ""
+    best_image = ""
     for cc in car_classes:
-        name = cc.get("name") or _EHI_CODE_NAMES.get(cc.get("code", ""), "")
+        class_name = cc.get("name") or _EHI_CODE_NAMES.get(cc.get("code", ""), "")
         price = _ehi_class_price(cc)
         if price is None or price <= 0:
             continue
-        if is_fullsize_suv(name):
+        if is_fullsize_suv(class_name):
             if best_price is None or price < best_price:
                 best_price = price
-                best_name = name
-    return best_price, best_name
+                best_class_name = class_name
+                best_vehicle_name = cc.get("make_model_or_similar_text") or class_name
+                best_image = _ehi_vehicle_image(cc)
+    return best_price, best_class_name, best_vehicle_name, best_image
 
 
 def _ehi_enterprise_body(loc_cfg: Dict) -> dict:
@@ -1483,7 +1519,35 @@ def _ehi_headers(brand: str) -> dict:
     }
 
 
-async def _ehi_check(provider: str, brand: str, api_url: str, body: dict) -> Dict:
+def _twelve_hour(time_str: str) -> str:
+    """'14:00' -> '2%3A00+PM' (URL-encoded 12-hour time) for EHI deep-link fragments."""
+    hh, mm = time_str.split(":")
+    hh_int = int(hh)
+    ampm = "AM" if hh_int < 12 else "PM"
+    hh12 = hh_int % 12 or 12
+    return f"{hh12}%3A{mm}+{ampm}"
+
+
+def _ehi_booking_url(domain: str, airport: str) -> str:
+    """
+    Deep link into the provider's own search results (prepopulated with this
+    booking's location/dates), not just the homepage. These sites are SPAs
+    using hash-based routing — the server serves find-a-vehicle.html for any
+    request to that path; the client-side router reads the #/vehicles fragment.
+    """
+    pu = BOOKING["pickup_date"].split("-")   # ["YYYY","MM","DD"]
+    re_ = BOOKING["return_date"].split("-")
+    pu_mmddyyyy = f"{pu[1]}%2F{pu[2]}%2F{pu[0]}"
+    re_mmddyyyy = f"{re_[1]}%2F{re_[2]}%2F{re_[0]}"
+    fragment = (
+        f"#/vehicles?from={airport}&to={airport}"
+        f"&pickup={pu_mmddyyyy}+{_twelve_hour(BOOKING['pickup_time'])}"
+        f"&return={re_mmddyyyy}+{_twelve_hour(BOOKING['return_time'])}"
+    )
+    return f"https://{domain}/en/reservation/find-a-vehicle.html{fragment}"
+
+
+async def _ehi_check(provider: str, brand: str, api_url: str, body: dict, domain: str) -> Dict:
     """
     Shared implementation for check_enterprise/check_national/check_alamo.
     Plain HTTP POST, no browser, no proxy — all three EHI endpoints accept
@@ -1506,18 +1570,19 @@ async def _ehi_check(provider: str, brand: str, api_url: str, body: dict) -> Dic
         return make_result(provider, error=f"No car classes returned — messages={msgs[:2]}")
 
     print(f"  [{provider}] {len(car_classes)} classes returned")
-    best_price, best_name = _ehi_extract_best_from_raw(car_classes)
+    best_price, class_name, vehicle_name, image_url = _ehi_extract_best_from_raw(car_classes)
     if best_price is None:
         codes = [c.get("code") for c in car_classes]
         return make_result(provider, error=f"No Full Size SUV — codes seen: {codes[:10]}")
 
-    print(f"  [{provider}] Best: {best_name} @ ${best_price:.2f}")
+    print(f"  [{provider}] Best: {vehicle_name} @ ${best_price:.2f}")
     return make_result(
         provider,
-        car_class="Full Size SUV",
-        model=best_name,
+        car_class=class_name or "Full Size SUV",
+        model=vehicle_name,
         price=best_price,
-        url=PROVIDER_URLS.get(provider, ""),
+        url=_ehi_booking_url(domain, BOOKING["airport_code"]),
+        image_url=image_url,
     )
 
 
@@ -1530,6 +1595,7 @@ async def check_enterprise() -> Dict:
         "Enterprise", "ENTERPRISE",
         f"{EH_API_BASE}/reservations/initiate",
         _ehi_enterprise_body(loc_cfg),
+        "www.enterprise.com",
     )
 
 
@@ -1542,6 +1608,7 @@ async def check_national() -> Dict:
         "National", "NATIONAL",
         "https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate",
         _ehi_gma_body(loc_cfg["national_id"]),
+        "www.nationalcar.com",
     )
 
 
@@ -1554,6 +1621,7 @@ async def check_alamo() -> Dict:
         "Alamo", "ALAMO",
         "https://prd-east.webapi.alamo.com/gma-alamo/reservations/initiate",
         _ehi_gma_body(loc_cfg["alamo_id"]),
+        "www.alamo.com",
     )
 
 
@@ -1578,7 +1646,10 @@ def _hertz_extract_best(vehicle_data: list) -> tuple:
     for v in vehicle_data:
         if not _is_fullsize(v):
             continue
-        name = v.get("vehicle_display_name") or v.get("sipp_code") or "Full Size SUV"
+        # Prefer the actual vehicle (e.g. "Chevrolet Tahoe") over Hertz's generic
+        # class label ("Medium 7 Passenger SUV") — that's what genuinely differs
+        # between providers within the "same" booked class.
+        name = v.get("make_model") or v.get("vehicle_display_name") or v.get("sipp_code") or "Full Size SUV"
         for rate in v.get("pricing", {}).values():
             if HERTZ_RATE_TYPE and rate.get("rate_type") != HERTZ_RATE_TYPE:
                 continue
@@ -1792,10 +1863,10 @@ async def fetch_nearby_ehi_prices(
             print(f"  [NearbyEHI/{lkey}] Error: {str(exc)[:120]}")
             return
 
-        best_price, best_name = _ehi_extract_best_from_raw(car_classes)
+        best_price, _class_name, vehicle_name, _img = _ehi_extract_best_from_raw(car_classes)
         if best_price:
             prices[lkey] = best_price
-            print(f"  [NearbyEHI/{lkey}] Best: {best_name} @ ${best_price:.2f}")
+            print(f"  [NearbyEHI/{lkey}] Best: {vehicle_name} @ ${best_price:.2f}")
         else:
             codes = [c.get("code") for c in car_classes]
             print(f"  [NearbyEHI/{lkey}] No Full Size SUV (codes: {codes[:8]})")
