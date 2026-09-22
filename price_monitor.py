@@ -2123,6 +2123,7 @@ def _format_results_section(results: List[Dict], booked_price: float) -> List[Di
             "source":      "direct",
             "status":      status,
             "booking_url": r.get("url") or None,
+            "image_url":   r.get("image_url") or None,
         })
     return out
 
