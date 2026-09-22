@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-22T20:34:58",
-  "runtime_seconds": 4.6,
+  "last_checked": "2026-09-22T21:17:14",
+  "runtime_seconds": 13.7,
   "results": [
     {
       "provider": "SIXT",
@@ -47,23 +47,23 @@
     },
     {
       "provider": "National",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 641.33,
+      "saving": -4.6,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.nationalcar.com"
     },
     {
       "provider": "Alamo",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 482.01,
+      "saving": 154.72,
       "source": "direct",
-      "status": "error",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.alamo.com"
     },
     {
       "provider": "Dollar",
@@ -115,17 +115,6 @@
       "location_key": "2481",
       "distance_miles": 2.1,
       "cab_fare": 16.18,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "Astoria",
-      "airport_code": null,
-      "location_key": "2490",
-      "distance_miles": 3.5,
-      "cab_fare": 20.63,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -187,6 +176,28 @@
       "is_deal": false
     },
     {
+      "location_name": "New York City Williamsburg",
+      "airport_code": null,
+      "location_key": "BRANCH:47571",
+      "distance_miles": 6.2,
+      "cab_fare": 28.6,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Astoria",
+      "airport_code": null,
+      "location_key": "2490",
+      "distance_miles": 3.5,
+      "cab_fare": 20.63,
+      "best_price": 338.31,
+      "best_provider": "EHI",
+      "net_saving": 277.79,
+      "is_deal": true
+    },
+    {
       "location_name": "New York City Long Island City",
       "airport_code": null,
       "location_key": "BRANCH:46582",
@@ -206,17 +217,6 @@
       "best_price": 558.16,
       "best_provider": "SIXT",
       "net_saving": 51.5,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York City Williamsburg",
-      "airport_code": null,
-      "location_key": "BRANCH:47571",
-      "distance_miles": 6.2,
-      "cab_fare": 28.6,
-      "best_price": 558.16,
-      "best_provider": "SIXT",
-      "net_saving": 49.97,
       "is_deal": true
     },
     {
