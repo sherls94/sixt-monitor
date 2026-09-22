@@ -1557,7 +1557,11 @@ async def _ehi_check(provider: str, brand: str, api_url: str, body: dict, domain
         return make_result(provider, na=True, error="Not in providers_to_check")
 
     try:
-        async with httpx.AsyncClient(timeout=30) as client:
+        # Routed through BD_ISP_PROXY like Hertz/Dollar/Thrifty: these endpoints
+        # work fine calling directly from most IPs, but Incapsula can flag and
+        # block a server's IP after enough volume — the rotating residential
+        # proxy avoids that instead of waiting for a block to clear.
+        async with httpx.AsyncClient(timeout=30, proxy=BD_ISP_PROXY or None) as client:
             resp = await client.post(api_url, json=body, headers=_ehi_headers(brand))
             resp.raise_for_status()
             data = resp.json()
@@ -1871,7 +1875,7 @@ async def fetch_nearby_ehi_prices(
             codes = [c.get("code") for c in car_classes]
             print(f"  [NearbyEHI/{lkey}] No Full Size SUV (codes: {codes[:8]})")
 
-    async with httpx.AsyncClient(timeout=30) as client:
+    async with httpx.AsyncClient(timeout=30, proxy=BD_ISP_PROXY or None) as client:
         await asyncio.gather(*[_fetch_one(loc, client) for loc in ehi_locs])
 
     return prices
