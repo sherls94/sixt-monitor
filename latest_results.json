@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-22T23:12:48",
-  "runtime_seconds": 13.9,
+  "last_checked": "2026-09-22T23:20:24",
+  "runtime_seconds": 13.6,
   "results": [
     {
       "provider": "SIXT",
@@ -23,7 +23,8 @@
       "saving": 2.7,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.sixt.com/car-rental/usa/"
+      "booking_url": "https://www.sixt.com/car-rental/usa/",
+      "image_url": null
     },
     {
       "provider": "Hertz",
@@ -33,37 +34,41 @@
       "saving": 23.49,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31"
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "image_url": null
     },
     {
       "provider": "Enterprise",
-      "car_class": "Full Size SUV AWD",
-      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 681.62,
-      "saving": -82.62,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
+      "status": "error",
+      "booking_url": null,
+      "image_url": null
     },
     {
       "provider": "National",
-      "car_class": "Full Size SUV AWD",
-      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 737.36,
-      "saving": -138.36,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.nationalcar.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
+      "status": "error",
+      "booking_url": null,
+      "image_url": null
     },
     {
       "provider": "Alamo",
-      "car_class": "Full Size SUV AWD",
-      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 661.22,
-      "saving": -62.22,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.alamo.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
+      "status": "error",
+      "booking_url": null,
+      "image_url": null
     },
     {
       "provider": "Dollar",
@@ -73,7 +78,8 @@
       "saving": 20.04,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31"
+      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "image_url": null
     },
     {
       "provider": "Thrifty",
@@ -83,7 +89,8 @@
       "saving": null,
       "source": "direct",
       "status": "na",
-      "booking_url": null
+      "booking_url": null,
+      "image_url": null
     }
   ],
   "nearby": [
@@ -115,6 +122,17 @@
       "location_key": "2481",
       "distance_miles": 2.1,
       "cab_fare": 16.18,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Astoria",
+      "airport_code": null,
+      "location_key": "2490",
+      "distance_miles": 3.5,
+      "cab_fare": 20.63,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -239,17 +257,6 @@
       "best_price": 660.4,
       "best_provider": "SIXT",
       "net_saving": -83.4,
-      "is_deal": false
-    },
-    {
-      "location_name": "Astoria",
-      "airport_code": null,
-      "location_key": "2490",
-      "distance_miles": 3.5,
-      "cab_fare": 20.63,
-      "best_price": 1329.48,
-      "best_provider": "EHI",
-      "net_saving": -751.11,
       "is_deal": false
     }
   ],
