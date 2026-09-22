@@ -2,25 +2,25 @@
   "booking": {
     "provider": "SIXT",
     "car_class": "Full Size SUV",
-    "location": "LGA Airport",
+    "location": "LaGuardia Airport, New York",
     "airport_code": "LGA",
-    "pickup_date": "2026-06-02",
+    "pickup_date": "2026-12-02",
     "pickup_time": "12:00",
-    "return_date": "2026-06-05",
+    "return_date": "2026-12-06",
     "return_time": "12:00",
-    "booked_price": 600.0,
+    "booked_price": 636.73,
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-05-04T16:10:16",
-  "runtime_seconds": 207.2,
+  "last_checked": "2026-09-22T15:39:14",
+  "runtime_seconds": 8.4,
   "results": [
     {
       "provider": "SIXT",
       "car_class": "Full Size SUV",
       "model": "Fullsize Elite (BMW X5)",
-      "price": 757.25,
-      "saving": -157.25,
+      "price": 467.76,
+      "saving": 168.97,
       "source": "direct",
       "status": "ok",
       "booking_url": "https://www.sixt.com/car-rental/usa/"
@@ -29,71 +29,51 @@
       "provider": "Hertz",
       "car_class": "Full Size SUV",
       "model": "Medium 7 Passenger SUV",
-      "price": 600.06,
-      "saving": -0.06,
+      "price": 463.31,
+      "saving": 173.42,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-06-02T12:00:00&did=LGAT01&ddate=2026-06-05T12:00:00&pCountryCode=US&age=31"
-    },
-    {
-      "provider": "Avis",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
-      "source": "direct",
-      "status": "error",
-      "booking_url": null
-    },
-    {
-      "provider": "Budget",
-      "car_class": "Full Size SUV",
-      "model": "GMC Yukon",
-      "price": 783.0,
-      "saving": -183.0,
-      "source": "Kayak",
-      "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=carpolicies=cancel;caragency=budget;carclass=SUV&attempt=1&lastms=1777925227792"
-    },
-    {
-      "provider": "National",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV",
-      "price": 1058.65,
-      "saving": -458.65,
-      "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.nationalcar.com/en/car-rental.html"
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01"
     },
     {
       "provider": "Enterprise",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 992.34,
-      "saving": -392.34,
+      "price": 560.98,
+      "saving": 75.75,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/home.html"
+      "booking_url": "https://www.enterprise.com"
+    },
+    {
+      "provider": "National",
+      "car_class": "Full Size SUV",
+      "model": "Full Size SUV",
+      "price": 641.33,
+      "saving": -4.6,
+      "source": "direct",
+      "status": "ok",
+      "booking_url": "https://www.nationalcar.com"
     },
     {
       "provider": "Alamo",
       "car_class": "Full Size SUV",
       "model": "Full Size SUV",
-      "price": 909.45,
-      "saving": -309.45,
+      "price": 482.01,
+      "saving": 154.72,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.alamo.com/en/reserve.html#/start"
+      "booking_url": "https://www.alamo.com"
     },
     {
       "provider": "Dollar",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Ford Expedition",
+      "price": 502.25,
+      "saving": 134.48,
       "source": "direct",
-      "status": "na",
-      "booking_url": null
+      "status": "ok",
+      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA"
     },
     {
       "provider": "Thrifty",
@@ -104,16 +84,6 @@
       "source": "direct",
       "status": "na",
       "booking_url": null
-    },
-    {
-      "provider": "Kayak",
-      "car_class": "Full Size SUV",
-      "model": "Dodge Durango",
-      "price": 397.0,
-      "saving": 203.0,
-      "source": "Kayak",
-      "status": "ok",
-      "booking_url": "https://www.kayak.com/cars/LGA-a15830/2026-06-02/2026-06-05?sort=rank_a&fs=carpolicies=cancel;carclass=SUV"
     }
   ],
   "nearby": [
@@ -129,11 +99,44 @@
       "is_deal": false
     },
     {
-      "location_name": "New York - East 76th Street",
+      "location_name": "East Elmhurst",
       "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
+      "location_key": "2485",
+      "distance_miles": 1.3,
+      "cab_fare": 13.91,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Woodside",
+      "airport_code": null,
+      "location_key": "2481",
+      "distance_miles": 2.1,
+      "cab_fare": 16.18,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Forest Hills",
+      "airport_code": null,
+      "location_key": "2489",
+      "distance_miles": 4.5,
+      "cab_fare": 23.42,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Middle Village - Metropolitan Avenue",
+      "airport_code": null,
+      "location_key": "NYCE24",
+      "distance_miles": 4.9,
+      "cab_fare": 24.78,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -162,59 +165,15 @@
       "is_deal": false
     },
     {
-      "location_name": "New York - West 55th Street",
-      "airport_code": null,
-      "location_key": "NYCC14",
-      "distance_miles": 5.6,
-      "cab_fare": 26.8,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "John F Kennedy Intl, New York, United States (JFK)",
-      "airport_code": "JFK",
-      "location_key": "JFK",
-      "distance_miles": 10.6,
-      "cab_fare": 30.0,
-      "best_price": 217.0,
-      "best_provider": "Kayak",
-      "net_saving": 353.0,
-      "is_deal": true
-    },
-    {
-      "location_name": "Newark Liberty International Airport",
-      "airport_code": "EWR",
-      "location_key": "EWR",
-      "distance_miles": 16.5,
-      "cab_fare": 55.0,
-      "best_price": 240.0,
-      "best_provider": "Kayak",
-      "net_saving": 305.0,
-      "is_deal": true
-    },
-    {
       "location_name": "Bronx E. Third Ave",
       "airport_code": null,
       "location_key": "24C6",
       "distance_miles": 5.5,
       "cab_fare": 26.52,
-      "best_price": 326.33,
-      "best_provider": "EHI",
-      "net_saving": 247.15,
-      "is_deal": true
-    },
-    {
-      "location_name": "Woodside",
-      "airport_code": null,
-      "location_key": "2481",
-      "distance_miles": 2.1,
-      "cab_fare": 16.18,
-      "best_price": 398.82,
-      "best_provider": "EHI",
-      "net_saving": 185.0,
-      "is_deal": true
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
     },
     {
       "location_name": "Astoria",
@@ -222,9 +181,9 @@
       "location_key": "2490",
       "distance_miles": 3.5,
       "cab_fare": 20.63,
-      "best_price": 398.82,
+      "best_price": 338.31,
       "best_provider": "EHI",
-      "net_saving": 180.55,
+      "net_saving": 277.79,
       "is_deal": true
     },
     {
@@ -233,42 +192,9 @@
       "location_key": "BRANCH:46582",
       "distance_miles": 4.1,
       "cab_fare": 22.34,
-      "best_price": 414.66,
-      "best_provider": "SIXT",
-      "net_saving": 163.0,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
       "best_price": 435.36,
       "best_provider": "SIXT",
-      "net_saving": 142.64,
-      "is_deal": true
-    },
-    {
-      "location_name": "Middle Village - Metropolitan Avenue",
-      "airport_code": null,
-      "location_key": "NYCE24",
-      "distance_miles": 4.9,
-      "cab_fare": 24.78,
-      "best_price": 442.77,
-      "best_provider": "Hertz",
-      "net_saving": 132.45,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York City Williamsburg",
-      "airport_code": null,
-      "location_key": "BRANCH:47571",
-      "distance_miles": 6.2,
-      "cab_fare": 28.6,
-      "best_price": 438.98,
-      "best_provider": "SIXT",
-      "net_saving": 132.42,
+      "net_saving": 179.03,
       "is_deal": true
     },
     {
@@ -277,40 +203,60 @@
       "location_key": "BRANCH:45915",
       "distance_miles": 5.7,
       "cab_fare": 27.07,
-      "best_price": 483.98,
+      "best_price": 558.16,
       "best_provider": "SIXT",
-      "net_saving": 88.95,
+      "net_saving": 51.5,
       "is_deal": true
     },
     {
-      "location_name": "East Elmhurst",
+      "location_name": "New York City Williamsburg",
       "airport_code": null,
-      "location_key": "2485",
-      "distance_miles": 1.3,
-      "cab_fare": 13.91,
-      "best_price": 543.84,
-      "best_provider": "EHI",
-      "net_saving": 42.25,
+      "location_key": "BRANCH:47571",
+      "distance_miles": 6.2,
+      "cab_fare": 28.6,
+      "best_price": 558.16,
+      "best_provider": "SIXT",
+      "net_saving": 49.97,
       "is_deal": true
     },
     {
-      "location_name": "Forest Hills",
+      "location_name": "New York - East 76th Street",
       "airport_code": null,
-      "location_key": "2489",
-      "distance_miles": 4.5,
-      "cab_fare": 23.42,
-      "best_price": 543.84,
-      "best_provider": "EHI",
-      "net_saving": 32.74,
-      "is_deal": true
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
+      "best_price": 616.95,
+      "best_provider": "Hertz",
+      "net_saving": -3.12,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York - West 55th Street",
+      "airport_code": null,
+      "location_key": "NYCC14",
+      "distance_miles": 5.6,
+      "cab_fare": 26.8,
+      "best_price": 616.95,
+      "best_provider": "Hertz",
+      "net_saving": -7.02,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York City Upper East Side",
+      "airport_code": null,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": 709.11,
+      "best_provider": "SIXT",
+      "net_saving": -94.38,
+      "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 600.06,
-    "best_direct_saving": -0.06,
-    "best_ota_provider": "Kayak",
-    "best_ota_price": 397.0,
-    "best_ota_saving": 203.0
-  }
+    "best_direct_price": 463.31,
+    "best_direct_saving": 173.42
+  },
+  "alternative_classes": []
 }
