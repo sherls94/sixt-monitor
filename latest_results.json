@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-22T21:21:26",
-  "runtime_seconds": 37.1,
+  "last_checked": "2026-09-22T23:12:48",
+  "runtime_seconds": 13.9,
   "results": [
     {
       "provider": "SIXT",
@@ -28,42 +28,42 @@
     {
       "provider": "Hertz",
       "car_class": "Full Size SUV",
-      "model": "Medium 7 Passenger SUV",
+      "model": "Nissan Pathfinder",
       "price": 575.51,
       "saving": 23.49,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01"
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31"
     },
     {
       "provider": "Enterprise",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV AWD",
+      "car_class": "Full Size SUV AWD",
+      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
       "price": 681.62,
       "saving": -82.62,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.enterprise.com"
+      "booking_url": "https://www.enterprise.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
     },
     {
       "provider": "National",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV AWD",
+      "car_class": "Full Size SUV AWD",
+      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
       "price": 737.36,
       "saving": -138.36,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.nationalcar.com"
+      "booking_url": "https://www.nationalcar.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
     },
     {
       "provider": "Alamo",
-      "car_class": "Full Size SUV",
-      "model": "Full Size SUV AWD",
+      "car_class": "Full Size SUV AWD",
+      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
       "price": 661.22,
       "saving": -62.22,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.alamo.com"
+      "booking_url": "https://www.alamo.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM"
     },
     {
       "provider": "Dollar",
@@ -73,7 +73,7 @@
       "saving": 20.04,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA"
+      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31"
     },
     {
       "provider": "Thrifty",
