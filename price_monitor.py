@@ -1884,21 +1884,34 @@ PROVIDER_FUNCS = {
 }
 
 
-async def check_provider(provider: str) -> Dict:
-    """
-    Run a single provider check with a hard 60-second asyncio timeout.
-    Returns a result dict (with error key set) if anything goes wrong.
-    """
+async def _check_provider_once(provider: str) -> Dict:
     func = PROVIDER_FUNCS.get(provider)
     if func is None:
         return make_result(provider, error="No implementation for this provider")
-
     try:
         return await asyncio.wait_for(func(), timeout=60.0)
     except asyncio.TimeoutError:
         return make_result(provider, error="Timed out after 60s")
     except Exception as exc:
-        return make_result(provider, error=str(exc)[:100])
+        return make_result(provider, error=str(exc)[:150])
+
+
+async def check_provider(provider: str) -> Dict:
+    """
+    Run a single provider check, retrying once on failure.
+
+    These are undocumented third-party APIs (WAF challenges, occasional 403s)
+    — a single transient failure shouldn't drop a provider from the results
+    when a second attempt a moment later usually succeeds. na=True results
+    ("Thrifty has no station here") are legitimate answers, not failures,
+    and are never retried.
+    """
+    result = await _check_provider_once(provider)
+    if result.get("error") and not result.get("na"):
+        await asyncio.sleep(2.0)
+        print(f"  [{provider}] Retrying after: {result['error'][:80]}")
+        result = await _check_provider_once(provider)
+    return result
 
 
 # ─────────────────────────────────────────────────────────────────────────────

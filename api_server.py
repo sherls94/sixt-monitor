@@ -96,6 +96,40 @@ async def trigger_run(x_api_key: str = Header(None), booking_id: str | None = No
     return {"status": "started"}
 
 
+@_r.post("/bookings/{booking_id}/check")
+async def trigger_booking_check(booking_id: str, authorization: str = Header(None)):
+    """
+    User-facing equivalent of /run, scoped to one booking. Unlike /run (a
+    static API key with no ownership check — unsafe to embed in a public
+    mobile app, since it would let anyone trigger a check on any booking_id),
+    this verifies the caller's Supabase auth token and that they own the
+    booking before starting a check.
+    """
+    global RUNNING
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing bearer token")
+    token = authorization.removeprefix("Bearer ").strip()
+
+    sb = price_monitor.get_supabase()
+    try:
+        user_resp = sb.auth.get_user(token)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    user = getattr(user_resp, "user", None)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    booking = sb.table("bookings").select("id,user_id").eq("id", booking_id).maybe_single().execute()
+    if not booking.data or booking.data.get("user_id") != user.id:
+        raise HTTPException(status_code=404, detail="Booking not found")
+
+    if RUNNING:
+        return {"status": "already_running"}
+    RUNNING = True
+    asyncio.create_task(_run_monitor(booking_id))
+    return {"status": "started"}
+
+
 @_r.get("/status")
 async def get_status():
     return {
