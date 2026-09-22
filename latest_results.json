@@ -12,8 +12,8 @@
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-22T23:20:24",
-  "runtime_seconds": 13.6,
+  "last_checked": "2026-09-22T23:20:48",
+  "runtime_seconds": 5.0,
   "results": [
     {
       "provider": "SIXT",
