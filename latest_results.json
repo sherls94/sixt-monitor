@@ -4,81 +4,81 @@
     "car_class": "Full Size SUV",
     "location": "LGA Airport",
     "airport_code": "LGA",
-    "pickup_date": "2027-01-10",
+    "pickup_date": "2026-12-02",
     "pickup_time": "12:00",
-    "return_date": "2027-01-14",
+    "return_date": "2026-12-06",
     "return_time": "12:00",
-    "booked_price": 599.0,
+    "booked_price": 636.73,
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-23T05:45:59",
-  "runtime_seconds": 26.5,
+  "last_checked": "2026-09-23T08:57:09",
+  "runtime_seconds": 11.5,
   "results": [
     {
       "provider": "SIXT",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Full Size SUV",
+      "model": "Fullsize Elite (BMW X5)",
+      "price": 467.76,
+      "saving": 168.97,
       "source": "direct",
-      "status": "error",
-      "booking_url": null,
+      "status": "ok",
+      "booking_url": "https://www.sixt.com/car-rental/usa/",
       "image_url": null
     },
     {
       "provider": "Hertz",
       "car_class": "Full Size SUV",
       "model": "Nissan Pathfinder",
-      "price": 575.51,
-      "saving": 23.49,
+      "price": 463.31,
+      "saving": 173.42,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-02T12:00:00&did=LGAT01&ddate=2026-12-06T12:00:00&pCountryCode=US&age=31",
       "image_url": null
     },
     {
       "provider": "Enterprise",
-      "car_class": "Full Size SUV AWD",
+      "car_class": "Full Size SUV",
       "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 681.62,
-      "saving": -82.62,
+      "price": 560.98,
+      "saving": 75.75,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.enterprise.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM",
-      "image_url": "https://assets.gcs.ehi.com/content/enterprise_cros/data/vehicle/bookingCountries/US/SUVS/FFDR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
+      "booking_url": "https://www.enterprise.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=12%2F02%2F2026+12%3A00+PM&return=12%2F06%2F2026+12%3A00+PM",
+      "image_url": "https://assets.gcs.ehi.com/content/enterprise_cros/data/vehicle/bookingCountries/US/SUVS/FFAR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
     },
     {
       "provider": "National",
-      "car_class": "Full Size SUV AWD",
+      "car_class": "Full Size SUV",
       "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 737.36,
-      "saving": -138.36,
+      "price": 641.33,
+      "saving": -4.6,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.nationalcar.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM",
-      "image_url": "https://assets.gcs.ehi.com/content/national/data/vehicle/bookingCountries/US/SUVS/FFDR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
+      "booking_url": "https://www.nationalcar.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=12%2F02%2F2026+12%3A00+PM&return=12%2F06%2F2026+12%3A00+PM",
+      "image_url": "https://assets.gcs.ehi.com/content/national/data/vehicle/bookingCountries/US/SUVS/FFAR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
     },
     {
       "provider": "Alamo",
-      "car_class": "Full Size SUV AWD",
+      "car_class": "Full Size SUV",
       "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 661.22,
-      "saving": -62.22,
+      "price": 482.01,
+      "saving": 154.72,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.alamo.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM",
-      "image_url": "https://assets.gcs.ehi.com/content/alamo/data/vehicle/bookingCountries/US/SUVS/FFDR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
+      "booking_url": "https://www.alamo.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=12%2F02%2F2026+12%3A00+PM&return=12%2F06%2F2026+12%3A00+PM",
+      "image_url": "https://assets.gcs.ehi.com/content/alamo/data/vehicle/bookingCountries/US/SUVS/FFAR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
     },
     {
       "provider": "Dollar",
       "car_class": "Full Size SUV",
       "model": "Ford Expedition",
-      "price": 578.96,
-      "saving": 20.04,
+      "price": 502.25,
+      "saving": 134.48,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2026-12-02T12:00:00&did=LGA&ddate=2026-12-06T12:00:00&pCountryCode=US&age=31",
       "image_url": null
     },
     {
@@ -122,28 +122,6 @@
       "location_key": "2481",
       "distance_miles": 2.1,
       "cab_fare": 16.18,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York City Long Island City",
-      "airport_code": null,
-      "location_key": "BRANCH:46582",
-      "distance_miles": 4.1,
-      "cab_fare": 22.34,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -205,15 +183,37 @@
       "is_deal": false
     },
     {
+      "location_name": "Astoria",
+      "airport_code": null,
+      "location_key": "2490",
+      "distance_miles": 3.5,
+      "cab_fare": 20.63,
+      "best_price": 338.31,
+      "best_provider": "EHI",
+      "net_saving": 277.79,
+      "is_deal": true
+    },
+    {
+      "location_name": "New York City Long Island City",
+      "airport_code": null,
+      "location_key": "BRANCH:46582",
+      "distance_miles": 4.1,
+      "cab_fare": 22.34,
+      "best_price": 435.36,
+      "best_provider": "SIXT",
+      "net_saving": 179.03,
+      "is_deal": true
+    },
+    {
       "location_name": "New York City Times Square",
       "airport_code": null,
       "location_key": "BRANCH:45915",
       "distance_miles": 5.7,
       "cab_fare": 27.07,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
+      "best_price": 558.16,
+      "best_provider": "SIXT",
+      "net_saving": 51.5,
+      "is_deal": true
     },
     {
       "location_name": "New York City Williamsburg",
@@ -221,10 +221,10 @@
       "location_key": "BRANCH:47571",
       "distance_miles": 6.2,
       "cab_fare": 28.6,
-      "best_price": null,
-      "best_provider": null,
-      "net_saving": null,
-      "is_deal": false
+      "best_price": 558.16,
+      "best_provider": "SIXT",
+      "net_saving": 49.97,
+      "is_deal": true
     },
     {
       "location_name": "New York - East 76th Street",
@@ -234,7 +234,7 @@
       "cab_fare": 22.9,
       "best_price": 616.95,
       "best_provider": "Hertz",
-      "net_saving": -40.85,
+      "net_saving": -3.12,
       "is_deal": false
     },
     {
@@ -245,25 +245,25 @@
       "cab_fare": 26.8,
       "best_price": 616.95,
       "best_provider": "Hertz",
-      "net_saving": -44.75,
+      "net_saving": -7.02,
       "is_deal": false
     },
     {
-      "location_name": "Astoria",
+      "location_name": "New York City Upper East Side",
       "airport_code": null,
-      "location_key": "2490",
-      "distance_miles": 3.5,
-      "cab_fare": 20.63,
-      "best_price": 1329.48,
-      "best_provider": "EHI",
-      "net_saving": -751.11,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": 709.11,
+      "best_provider": "SIXT",
+      "net_saving": -94.38,
       "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 575.51,
-    "best_direct_saving": 23.49
+    "best_direct_price": 463.31,
+    "best_direct_saving": 173.42
   },
   "alternative_classes": []
 }
