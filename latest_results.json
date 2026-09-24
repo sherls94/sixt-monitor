@@ -1,41 +1,49 @@
 {
   "booking": {
-    "provider": "SIXT",
-    "car_class": "Full Size SUV",
+    "provider": "Hertz",
+    "car_class": "Special SUV",
     "location": "LGA Airport",
     "airport_code": "LGA",
-    "pickup_date": "2027-01-10",
+    "pickup_date": "2026-12-24",
     "pickup_time": "12:00",
-    "return_date": "2027-01-14",
+    "return_date": "2026-12-26",
     "return_time": "12:00",
-    "booked_price": 599.0,
+    "booked_price": 502.79,
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-24T18:51:49",
-  "runtime_seconds": 17.5,
+  "last_checked": "2026-09-24T20:22:27",
+  "runtime_seconds": 18.6,
   "results": [
     {
       "provider": "SIXT",
-      "car_class": "Full-size SUV",
-      "model": "Fullsize Elite (BMW X5)",
-      "price": 596.3,
-      "saving": 2.7,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.sixt.com/car-rental/usa/",
-      "image_url": null
+      "status": "error",
+      "booking_url": null,
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "Hertz",
-      "car_class": "Full-size SUV",
-      "model": "Nissan Pathfinder",
-      "price": 575.51,
-      "saving": 23.49,
+      "car_class": "Special SUV",
+      "model": "INEOS GRENADIER - DREAM CARS",
+      "price": 529.19,
+      "saving": -26.4,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
-      "image_url": null
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T12:00:00&did=LGAT01&ddate=2026-12-26T12:00:00&pCountryCode=US&age=32",
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "Enterprise",
@@ -46,7 +54,11 @@
       "source": "direct",
       "status": "error",
       "booking_url": null,
-      "image_url": null
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "National",
@@ -57,29 +69,41 @@
       "source": "direct",
       "status": "error",
       "booking_url": null,
-      "image_url": null
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "Alamo",
-      "car_class": "Full Size SUV",
-      "model": "Chevrolet Tahoe, Jeep Wagoneer, Ford Expedition",
-      "price": 622.38,
-      "saving": -23.38,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.alamo.com/en/reservation/find-a-vehicle.html#/vehicles?from=LGA&to=LGA&pickup=01%2F10%2F2027+12%3A00+PM&return=01%2F14%2F2027+12%3A00+PM",
-      "image_url": "https://assets.gcs.ehi.com/content/alamo/data/vehicle/bookingCountries/US/SUVS/FFAR.doi.320.high.imageSmallThreeQuarterNodePath.png/1780950717742.png"
+      "status": "error",
+      "booking_url": null,
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "Dollar",
-      "car_class": "Full-size SUV",
-      "model": "Ford Expedition",
-      "price": 578.96,
-      "saving": 20.04,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
-      "image_url": null
+      "status": "error",
+      "booking_url": null,
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     },
     {
       "provider": "Thrifty",
@@ -90,7 +114,11 @@
       "source": "direct",
       "status": "na",
       "booking_url": null,
-      "image_url": null
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null
     }
   ],
   "nearby": [
@@ -111,6 +139,17 @@
       "location_key": "BRANCH:46773",
       "distance_miles": 0.9,
       "cab_fare": 12.6,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "Lga Svc Cntr - No Tows",
+      "airport_code": null,
+      "location_key": "24R1",
+      "distance_miles": 1.0,
+      "cab_fare": 13.06,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -139,11 +178,44 @@
       "is_deal": false
     },
     {
-      "location_name": "Forest Hills",
+      "location_name": "Astoria",
       "airport_code": null,
-      "location_key": "2489",
-      "distance_miles": 4.5,
-      "cab_fare": 23.42,
+      "location_key": "2490",
+      "distance_miles": 3.5,
+      "cab_fare": 20.63,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York City Upper East Side",
+      "airport_code": null,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York City Long Island City",
+      "airport_code": null,
+      "location_key": "BRANCH:46582",
+      "distance_miles": 4.1,
+      "cab_fare": 22.34,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York - East 76th Street",
+      "airport_code": null,
+      "location_key": "NYCC13",
+      "distance_miles": 4.3,
+      "cab_fare": 22.9,
       "best_price": null,
       "best_provider": null,
       "net_saving": null,
@@ -183,6 +255,17 @@
       "is_deal": false
     },
     {
+      "location_name": "New York - West 55th Street",
+      "airport_code": null,
+      "location_key": "NYCC14",
+      "distance_miles": 5.6,
+      "cab_fare": 26.8,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "New York City Times Square",
       "airport_code": null,
       "location_key": "BRANCH:45915",
@@ -203,67 +286,12 @@
       "best_provider": null,
       "net_saving": null,
       "is_deal": false
-    },
-    {
-      "location_name": "New York City Long Island City",
-      "airport_code": null,
-      "location_key": "BRANCH:46582",
-      "distance_miles": 4.1,
-      "cab_fare": 22.34,
-      "best_price": 543.32,
-      "best_provider": "SIXT",
-      "net_saving": 33.34,
-      "is_deal": true
-    },
-    {
-      "location_name": "New York - East 76th Street",
-      "airport_code": null,
-      "location_key": "NYCC13",
-      "distance_miles": 4.3,
-      "cab_fare": 22.9,
-      "best_price": 616.95,
-      "best_provider": "Hertz",
-      "net_saving": -40.85,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York - West 55th Street",
-      "airport_code": null,
-      "location_key": "NYCC14",
-      "distance_miles": 5.6,
-      "cab_fare": 26.8,
-      "best_price": 616.95,
-      "best_provider": "Hertz",
-      "net_saving": -44.75,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
-      "best_price": 660.4,
-      "best_provider": "SIXT",
-      "net_saving": -83.4,
-      "is_deal": false
-    },
-    {
-      "location_name": "Astoria",
-      "airport_code": null,
-      "location_key": "2490",
-      "distance_miles": 3.5,
-      "cab_fare": 20.63,
-      "best_price": 1329.48,
-      "best_provider": "EHI",
-      "net_saving": -751.11,
-      "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 575.51,
-    "best_direct_saving": 23.49
+    "best_direct_price": 529.19,
+    "best_direct_saving": -26.4
   },
   "alternative_classes": []
 }
