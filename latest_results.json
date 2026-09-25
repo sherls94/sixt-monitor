@@ -1,19 +1,19 @@
 {
   "booking": {
-    "provider": "National",
-    "car_class": "Emerald Aisle (National)",
+    "provider": "Hertz",
+    "car_class": "Full-size SUV",
     "location": "LGA Airport",
     "airport_code": "LGA",
-    "pickup_date": "2026-12-24",
-    "pickup_time": "13:00",
-    "return_date": "2026-12-26",
-    "return_time": "13:00",
-    "booked_price": 179.67,
-    "payment_type": "PAY_LATER",
+    "pickup_date": "2026-11-20",
+    "pickup_time": "12:00",
+    "return_date": "2026-11-23",
+    "return_time": "12:00",
+    "booked_price": 900.0,
+    "payment_type": "PREPAID",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-25T14:46:12",
-  "runtime_seconds": 7.7,
+  "last_checked": "2026-09-25T15:53:07",
+  "runtime_seconds": 14.5,
   "results": [
     {
       "provider": "SIXT",
@@ -22,28 +22,30 @@
       "price": null,
       "saving": null,
       "source": "direct",
+      "status": "na",
+      "booking_url": null,
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null,
+      "payment_type": null
+    },
+    {
+      "provider": "Hertz",
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
+      "source": "direct",
       "status": "error",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
-      "price_high": null
-    },
-    {
-      "provider": "Hertz",
-      "car_class": "Intermediate Car",
-      "model": "Kia K4",
-      "price": 270.42,
-      "saving": -90.75,
-      "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T13:00:00&did=LGAT01&ddate=2026-12-26T13:00:00&pCountryCode=US&age=32",
-      "image_url": null,
-      "estimate": false,
-      "note": null,
-      "price_low": null,
-      "price_high": null
+      "price_high": null,
+      "payment_type": null
     },
     {
       "provider": "Enterprise",
@@ -52,13 +54,14 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "error",
+      "status": "na",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
-      "price_high": null
+      "price_high": null,
+      "payment_type": null
     },
     {
       "provider": "National",
@@ -67,16 +70,33 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "error",
+      "status": "na",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
-      "price_high": null
+      "price_high": null,
+      "payment_type": null
     },
     {
       "provider": "Alamo",
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
+      "source": "direct",
+      "status": "na",
+      "booking_url": null,
+      "image_url": null,
+      "estimate": false,
+      "note": null,
+      "price_low": null,
+      "price_high": null,
+      "payment_type": null
+    },
+    {
+      "provider": "Dollar",
       "car_class": "",
       "model": "",
       "price": null,
@@ -88,22 +108,8 @@
       "estimate": false,
       "note": null,
       "price_low": null,
-      "price_high": null
-    },
-    {
-      "provider": "Dollar",
-      "car_class": "Intermediate Car",
-      "model": "Kia K4",
-      "price": 270.42,
-      "saving": -90.75,
-      "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2026-12-24T13:00:00&did=LGA&ddate=2026-12-26T13:00:00&pCountryCode=US&age=32",
-      "image_url": null,
-      "estimate": false,
-      "note": null,
-      "price_low": null,
-      "price_high": null
+      "price_high": null,
+      "payment_type": null
     },
     {
       "provider": "Thrifty",
@@ -118,7 +124,8 @@
       "estimate": false,
       "note": null,
       "price_low": null,
-      "price_high": null
+      "price_high": null,
+      "payment_type": null
     }
   ],
   "nearby": [
@@ -244,36 +251,14 @@
       "is_deal": false
     },
     {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
-      "best_price": 428.19,
-      "best_provider": "SIXT",
-      "net_saving": -270.52,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York City Long Island City",
-      "airport_code": null,
-      "location_key": "BRANCH:46582",
-      "distance_miles": 4.1,
-      "cab_fare": 22.34,
-      "best_price": 428.19,
-      "best_provider": "SIXT",
-      "net_saving": -270.86,
-      "is_deal": false
-    },
-    {
       "location_name": "New York City Times Square",
       "airport_code": null,
       "location_key": "BRANCH:45915",
       "distance_miles": 5.7,
       "cab_fare": 27.07,
-      "best_price": 428.19,
-      "best_provider": "SIXT",
-      "net_saving": -275.59,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
       "is_deal": false
     },
     {
@@ -282,16 +267,38 @@
       "location_key": "BRANCH:47571",
       "distance_miles": 6.2,
       "cab_fare": 28.6,
-      "best_price": 428.19,
-      "best_provider": "SIXT",
-      "net_saving": -277.12,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
       "is_deal": false
+    },
+    {
+      "location_name": "New York City Long Island City",
+      "airport_code": null,
+      "location_key": "BRANCH:46582",
+      "distance_miles": 4.1,
+      "cab_fare": 22.34,
+      "best_price": 494.16,
+      "best_provider": "SIXT",
+      "net_saving": 383.5,
+      "is_deal": true
+    },
+    {
+      "location_name": "New York City Upper East Side",
+      "airport_code": null,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": 544.82,
+      "best_provider": "SIXT",
+      "net_saving": 333.18,
+      "is_deal": true
     }
   ],
   "summary": {
-    "best_direct_provider": "Hertz",
-    "best_direct_price": 270.42,
-    "best_direct_saving": -90.75
+    "best_direct_provider": null,
+    "best_direct_price": null,
+    "best_direct_saving": null
   },
   "alternative_classes": []
 }
