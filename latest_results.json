@@ -1,45 +1,45 @@
 {
   "booking": {
-    "provider": "SIXT",
-    "car_class": "Full Size SUV",
+    "provider": "Hertz",
+    "car_class": "Special SUV",
     "location": "LGA Airport",
     "airport_code": "LGA",
-    "pickup_date": "2027-01-10",
+    "pickup_date": "2026-12-24",
     "pickup_time": "12:00",
-    "return_date": "2027-01-14",
+    "return_date": "2026-12-26",
     "return_time": "12:00",
-    "booked_price": 599.0,
+    "booked_price": 502.79,
     "payment_type": "PAY_LATER",
     "free_cancellation": true
   },
-  "last_checked": "2026-09-25T23:33:11",
-  "runtime_seconds": 15.7,
+  "last_checked": "2026-09-25T23:33:53",
+  "runtime_seconds": 8.0,
   "results": [
     {
       "provider": "SIXT",
-      "car_class": "Full-size SUV",
-      "model": "Fullsize Elite (BMW X5)",
-      "price": 615.17,
-      "saving": -16.17,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.sixt.com/car-rental/usa/",
+      "status": "error",
+      "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": "PAY_LATER"
+      "payment_type": null
     },
     {
       "provider": "Hertz",
-      "car_class": "Full-size SUV",
-      "model": "Nissan Pathfinder",
-      "price": 575.51,
-      "saving": 23.49,
+      "car_class": "Special SUV",
+      "model": "INEOS GRENADIER - DREAM CARS",
+      "price": 529.19,
+      "saving": -26.4,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2027-01-10T12:00:00&did=LGAT01&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T12:00:00&did=LGAT01&ddate=2026-12-26T12:00:00&pCountryCode=US&age=32",
       "image_url": null,
       "estimate": false,
       "note": null,
@@ -97,19 +97,19 @@
     },
     {
       "provider": "Dollar",
-      "car_class": "Full-size SUV",
-      "model": "Ford Expedition",
-      "price": 578.96,
-      "saving": 20.04,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2027-01-10T12:00:00&did=LGA&ddate=2027-01-14T12:00:00&pCountryCode=US&age=31",
+      "status": "error",
+      "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": "PAY_LATER"
+      "payment_type": null
     },
     {
       "provider": "Thrifty",
@@ -196,6 +196,28 @@
       "is_deal": false
     },
     {
+      "location_name": "New York City Upper East Side",
+      "airport_code": null,
+      "location_key": "BRANCH:45899",
+      "distance_miles": 4.0,
+      "cab_fare": 22.0,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
+      "location_name": "New York City Long Island City",
+      "airport_code": null,
+      "location_key": "BRANCH:46582",
+      "distance_miles": 4.1,
+      "cab_fare": 22.34,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "New York - East 76th Street",
       "airport_code": null,
       "location_key": "NYCC13",
@@ -251,25 +273,14 @@
       "is_deal": false
     },
     {
-      "location_name": "New York City Long Island City",
-      "airport_code": null,
-      "location_key": "BRANCH:46582",
-      "distance_miles": 4.1,
-      "cab_fare": 22.34,
-      "best_price": 638.66,
-      "best_provider": "SIXT",
-      "net_saving": -62.0,
-      "is_deal": false
-    },
-    {
       "location_name": "New York City Times Square",
       "airport_code": null,
       "location_key": "BRANCH:45915",
       "distance_miles": 5.7,
       "cab_fare": 27.07,
-      "best_price": 638.73,
-      "best_provider": "SIXT",
-      "net_saving": -66.8,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
       "is_deal": false
     },
     {
@@ -278,27 +289,16 @@
       "location_key": "BRANCH:47571",
       "distance_miles": 6.2,
       "cab_fare": 28.6,
-      "best_price": 638.73,
-      "best_provider": "SIXT",
-      "net_saving": -68.33,
-      "is_deal": false
-    },
-    {
-      "location_name": "New York City Upper East Side",
-      "airport_code": null,
-      "location_key": "BRANCH:45899",
-      "distance_miles": 4.0,
-      "cab_fare": 22.0,
-      "best_price": 759.6,
-      "best_provider": "SIXT",
-      "net_saving": -182.6,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
       "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 575.51,
-    "best_direct_saving": 23.49
+    "best_direct_price": 529.19,
+    "best_direct_saving": -26.4
   },
   "alternative_classes": []
 }
