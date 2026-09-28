@@ -1,52 +1,52 @@
 {
   "booking": {
-    "provider": "Hertz",
-    "car_class": "Special SUV",
+    "provider": "National",
+    "car_class": "Emerald Aisle (National)",
     "location": "LGA Airport",
     "airport_code": "LGA",
     "place_id": null,
     "place_label": null,
     "pickup_date": "2026-12-24",
-    "pickup_time": "12:00",
+    "pickup_time": "13:00",
     "return_date": "2026-12-26",
-    "return_time": "12:00",
-    "booked_price": 502.79,
+    "return_time": "13:00",
+    "booked_price": 179.67,
     "payment_type": "PAY_LATER",
     "free_cancellation": true,
     "currency": "USD"
   },
-  "last_checked": "2026-09-28T22:19:54",
-  "runtime_seconds": 40.8,
+  "last_checked": "2026-09-28T22:20:47",
+  "runtime_seconds": 17.4,
   "results": [
     {
       "provider": "SIXT",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Intermediate Car",
+      "model": "Intermediate (NISSAN SENTRA)",
+      "price": 340.75,
+      "saving": -161.08,
       "source": "direct",
-      "status": "error",
-      "booking_url": null,
+      "status": "ok",
+      "booking_url": "https://www.sixt.com/car-rental/usa/",
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null,
-      "currency": null,
-      "comparable": null,
-      "reason_code": "error",
-      "reason": "SelectLocation or GetOfferRecommendationsV2 API failed"
+      "payment_type": "PAY_LATER",
+      "currency": "USD",
+      "comparable": true,
+      "free_cancellation": true,
+      "cancellation_source": "provider response"
     },
     {
       "provider": "Hertz",
-      "car_class": "Special SUV",
-      "model": "INEOS GRENADIER - DREAM CARS",
-      "price": 529.19,
-      "saving": -26.4,
+      "car_class": "Intermediate Car",
+      "model": "Kia K4",
+      "price": 357.72,
+      "saving": -178.05,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T12:00:00&did=LGAT01&ddate=2026-12-26T12:00:00&pCountryCode=US&age=32",
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T13:00:00&did=LGAT01&ddate=2026-12-26T13:00:00&pCountryCode=US&age=32",
       "image_url": null,
       "estimate": false,
       "note": null,
@@ -73,8 +73,8 @@
       "payment_type": null,
       "currency": null,
       "comparable": null,
-      "reason_code": "error",
-      "reason": "No car classes returned — messages=[{'code': 'PRICING_16007', 'message': 'We’re sorry, but this location has no vehicles available during the selected dates and/or times. Please modify your dates and/or times or choose a different location.', 'display_as': 'callus', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
+      "reason_code": "blocked",
+      "reason": "API error: Client error '403 Forbidden' for url 'https://prd-east.webapi.enterprise.com/enterprise-ewt/reservations/initiate'\nFor more information check: https:/"
     },
     {
       "provider": "National",
@@ -93,8 +93,8 @@
       "payment_type": null,
       "currency": null,
       "comparable": null,
-      "reason_code": "error",
-      "reason": "No car classes returned — messages=[{'code': 'CROS_RES_PICKUP_LOCATION_HOURS_INVALID', 'message': \"We're sorry, there's something wrong with the selected pick-up time. Please adjust your pick-up time.\", 'display_as': 'alert', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
+      "reason_code": "blocked",
+      "reason": "API error: Client error '403 Forbidden' for url 'https://prd-east.webapi.nationalcar.com/gma-national/reservations/initiate'\nFor more information check: https://"
     },
     {
       "provider": "Alamo",
@@ -113,28 +113,26 @@
       "payment_type": null,
       "currency": null,
       "comparable": null,
-      "reason_code": "error",
-      "reason": "No car classes returned — messages=[{'code': 'PRICING_16007', 'message': 'We’re sorry, but this location has no vehicles available during the selected dates and/or times. Please modify your dates and/or times or choose a different location.', 'display_as': 'callus', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
+      "reason_code": "blocked",
+      "reason": "API error: Client error '403 Forbidden' for url 'https://prd-east.webapi.alamo.com/gma-alamo/reservations/initiate'\nFor more information check: https://developer"
     },
     {
       "provider": "Dollar",
-      "car_class": "",
-      "model": "",
-      "price": null,
-      "saving": null,
+      "car_class": "Intermediate Car",
+      "model": "Kia K4",
+      "price": 357.7,
+      "saving": -178.03,
       "source": "direct",
-      "status": "error",
-      "booking_url": null,
+      "status": "ok",
+      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2026-12-24T13:00:00&did=LGA&ddate=2026-12-26T13:00:00&pCountryCode=US&age=32",
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null,
-      "currency": null,
-      "comparable": null,
-      "reason_code": "error",
-      "reason": "No Special SUV — categories seen: ['SUV Standard', 'SUV Premium', 'Mid-size', 'Standard', 'Standard', 'Standard Pickup', 'Mid-size', 'Mid-size']"
+      "payment_type": "PAY_LATER",
+      "currency": "USD",
+      "comparable": true
     },
     {
       "provider": "Thrifty",
@@ -325,9 +323,9 @@
     }
   ],
   "summary": {
-    "best_direct_provider": "Hertz",
-    "best_direct_price": 529.19,
-    "best_direct_saving": -26.4
+    "best_direct_provider": "SIXT",
+    "best_direct_price": 340.75,
+    "best_direct_saving": -161.08
   },
   "alternative_classes": []
 }
