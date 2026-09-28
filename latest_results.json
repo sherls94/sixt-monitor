@@ -1,19 +1,22 @@
 {
   "booking": {
     "provider": "Hertz",
-    "car_class": "Full-size SUV",
+    "car_class": "Special SUV",
     "location": "LGA Airport",
     "airport_code": "LGA",
-    "pickup_date": "2026-11-20",
+    "place_id": null,
+    "place_label": null,
+    "pickup_date": "2026-12-24",
     "pickup_time": "12:00",
-    "return_date": "2026-11-23",
+    "return_date": "2026-12-26",
     "return_time": "12:00",
-    "booked_price": 218.0,
-    "payment_type": "PREPAID",
-    "free_cancellation": true
+    "booked_price": 502.79,
+    "payment_type": "PAY_LATER",
+    "free_cancellation": true,
+    "currency": "USD"
   },
-  "last_checked": "2026-09-28T19:07:20",
-  "runtime_seconds": 2.7,
+  "last_checked": "2026-09-28T22:19:54",
+  "runtime_seconds": 40.8,
   "results": [
     {
       "provider": "SIXT",
@@ -22,30 +25,36 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "error",
+      "reason": "SelectLocation or GetOfferRecommendationsV2 API failed"
     },
     {
       "provider": "Hertz",
-      "car_class": "Full-size SUV",
-      "model": "Nissan Pathfinder",
-      "price": 359.21,
-      "saving": -141.21,
+      "car_class": "Special SUV",
+      "model": "INEOS GRENADIER - DREAM CARS",
+      "price": 529.19,
+      "saving": -26.4,
       "source": "direct",
       "status": "ok",
-      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-11-20T12:00:00&did=LGAT01&ddate=2026-11-23T12:00:00&pCountryCode=US&age=30",
+      "booking_url": "https://www.hertz.com/us/en/book/vehicles?pid=LGAT01&pdate=2026-12-24T12:00:00&did=LGAT01&ddate=2026-12-26T12:00:00&pCountryCode=US&age=32",
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": "PREPAID"
+      "payment_type": "PAY_LATER",
+      "currency": "USD",
+      "comparable": true
     },
     {
       "provider": "Enterprise",
@@ -54,14 +63,18 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "error",
+      "reason": "No car classes returned — messages=[{'code': 'PRICING_16007', 'message': 'We’re sorry, but this location has no vehicles available during the selected dates and/or times. Please modify your dates and/or times or choose a different location.', 'display_as': 'callus', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
     },
     {
       "provider": "National",
@@ -70,14 +83,18 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "error",
+      "reason": "No car classes returned — messages=[{'code': 'CROS_RES_PICKUP_LOCATION_HOURS_INVALID', 'message': \"We're sorry, there's something wrong with the selected pick-up time. Please adjust your pick-up time.\", 'display_as': 'alert', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
     },
     {
       "provider": "Alamo",
@@ -86,30 +103,38 @@
       "price": null,
       "saving": null,
       "source": "direct",
-      "status": "na",
+      "status": "error",
       "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "error",
+      "reason": "No car classes returned — messages=[{'code': 'PRICING_16007', 'message': 'We’re sorry, but this location has no vehicles available during the selected dates and/or times. Please modify your dates and/or times or choose a different location.', 'display_as': 'callus', 'locale': 'en_US', 'priority': 'ERROR', 'originating_application': 'gbo-rental'}]"
     },
     {
       "provider": "Dollar",
-      "car_class": "Full-size SUV",
-      "model": "Ford Expedition",
-      "price": 457.95,
-      "saving": -239.95,
+      "car_class": "",
+      "model": "",
+      "price": null,
+      "saving": null,
       "source": "direct",
-      "status": "ok",
-      "booking_url": "https://www.dollar.com/us/en/book/vehicles?pid=LGA&pdate=2026-11-20T12:00:00&did=LGA&ddate=2026-11-23T12:00:00&pCountryCode=US&age=30",
+      "status": "error",
+      "booking_url": null,
       "image_url": null,
       "estimate": false,
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": "PREPAID"
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "error",
+      "reason": "No Special SUV — categories seen: ['SUV Standard', 'SUV Premium', 'Mid-size', 'Standard', 'Standard', 'Standard Pickup', 'Mid-size', 'Mid-size']"
     },
     {
       "provider": "Thrifty",
@@ -125,7 +150,11 @@
       "note": null,
       "price_low": null,
       "price_high": null,
-      "payment_type": null
+      "payment_type": null,
+      "currency": null,
+      "comparable": null,
+      "reason_code": "no_office",
+      "reason": "No Thrifty station near LGA"
     }
   ],
   "nearby": [
@@ -229,6 +258,17 @@
       "is_deal": false
     },
     {
+      "location_name": "Middle Village - Metropolitan Avenue",
+      "airport_code": null,
+      "location_key": "NYCE24",
+      "distance_miles": 4.9,
+      "cab_fare": 24.78,
+      "best_price": null,
+      "best_provider": null,
+      "net_saving": null,
+      "is_deal": false
+    },
+    {
       "location_name": "New York - East 48th Street",
       "airport_code": null,
       "location_key": "NYCC10",
@@ -282,23 +322,12 @@
       "best_provider": null,
       "net_saving": null,
       "is_deal": false
-    },
-    {
-      "location_name": "Middle Village - Metropolitan Avenue",
-      "airport_code": null,
-      "location_key": "NYCE24",
-      "distance_miles": 4.9,
-      "cab_fare": 24.78,
-      "best_price": 290.79,
-      "best_provider": "Hertz",
-      "net_saving": -97.57,
-      "is_deal": false
     }
   ],
   "summary": {
     "best_direct_provider": "Hertz",
-    "best_direct_price": 359.21,
-    "best_direct_saving": -141.21
+    "best_direct_price": 529.19,
+    "best_direct_saving": -26.4
   },
   "alternative_classes": []
 }
